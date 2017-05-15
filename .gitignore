@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+=======
 # Built application files
 *.apk
 *.ap_
@@ -38,3 +49,4 @@ captures/
 
 # Keystore files
 *.jks
+>>>>>>> e3b46fb8e8d7cdc8f7c2fefa7a88997654d93756
