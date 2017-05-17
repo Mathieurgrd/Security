@@ -46,6 +46,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         FirebaseUser user = mAuth.getCurrentUser();
+
+
+        if (mAuth.getCurrentUser() !=  null){
+            // user already signed in
+        } else{
+           // startActivityForResult();
+        }
+
+
+
+
+
+
+
+
+
         if (user != null){signOut();}
 
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
