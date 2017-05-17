@@ -15,4 +15,5 @@
     <string name="back_to_menu">Back to menu</string>
     <string name="toastcheckyourmail">Success !</string>
     <string name="create_account_with_e_mail">Create Account with E-Mail</string>
+    <string name="facebook_app_id">828310827320246</string>
 </resources>
