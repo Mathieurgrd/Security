@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
 
 
+        FacebookSdk.sdkInitialize(LoginActivity.this);
+
         // set the view now
         setContentView(R.layout.activity_login);
 
@@ -43,6 +46,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         FirebaseUser user = mAuth.getCurrentUser();
+
+
+        if (mAuth.getCurrentUser() !=  null){
+            // user already signed in
+        } else{
+
+        }
+
+
+
+
+
+
+
+
+
         if (user != null){signOut();}
 
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
