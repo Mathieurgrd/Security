@@ -17,4 +17,9 @@
     <string name="create_account_with_e_mail">Create Account with E-Mail</string>
     <string name="facebook_app_id">828310827320246</string>
     <string name="hintedittextcompetitionname">CompetitionName</string>
+    <string name="ForgotPassword">Mot de passe oublié ?</string>
+    <string name="CreateNewAccount">Créer un nouveau compte !</string>
+    <string name="cancel_login">L\'operation c\'est stoppé !</string>
+    <string name="error_login">Une erreur c\'est produite</string>
+    <string name="firebase_error_login">Erreur lors de la connexion à Firebase</string>
 </resources>
