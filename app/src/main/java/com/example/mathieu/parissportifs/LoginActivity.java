@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (mAuth.getCurrentUser() !=  null){
             // user already signed in
         } else{
-           // startActivityForResult();
+
         }
 
 
