@@ -17,4 +17,18 @@
     <string name="create_account_with_e_mail">Create Account with E-Mail</string>
     <string name="facebook_app_id">828310827320246</string>
     <string name="hintedittextcompetitionname">CompetitionName</string>
+    <string name="championship_prompt">Select Championship</string>
+
+    <string-array name="championship_arrays">
+        <item>Ligue 1</item>
+        <item>Barclays League</item>
+        <item>Bundesliga</item>
+        <item>Liga 1</item>
+        <item>Serie A</item>
+        <item>Liga</item>
+
+    </string-array>
+
+
+
 </resources>

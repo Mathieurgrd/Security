@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "423213568332-rt0r6rq37sv761tdk4dbkm1ggtu6ikki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mathieu.parissportifs",
+            "certificate_hash": "7a58da281c2813a5562ef98d335bbe3bd0f59cd5"
+          }
+        },
+        {
           "client_id": "423213568332-jvs2tt227ti8hqioaakq0e1en7po8nj6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
