@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private Button joinCompettion;
     private Spinner championshipSelector;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +31,16 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         findViewById(R.id.button_create_competition).setOnClickListener(this);
         findViewById(R.id.button_join_competition).setOnClickListener(this);
+        mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
 
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference("CompetitionList");
 
-        CompetitionListAdapter mTripResultAdapter = new CompetitionListAdapter(mDatabase, this, R.layout.competitions_list_items ); // APPELLE L'ADAPTER
+        CompetitionListAdapter mCompetitionResultAdapter = new CompetitionListAdapter(mDatabase, this, R.layout.competitions_list_items ); // APPELLE L'ADAPTER
 
-        mCompetitionListView.setAdapter(mTripResultAdapter); //FUSION LIST ET ADAPTER
+        mCompetitionListView.setAdapter(mCompetitionResultAdapter); //FUSION LIST ET ADAPTER
 
 
 

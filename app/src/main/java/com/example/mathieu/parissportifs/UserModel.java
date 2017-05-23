@@ -1,5 +1,7 @@
 package com.example.mathieu.parissportifs;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ public class UserModel {
     }
 
 
-    public UserModel(String userId, String userName, ArrayList<CompetitionModel> userCompetitions, float userScorePerCompetition) {
+    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, float userScorePerCompetition) {
         this.userId = userId;
         this.userName = userName;
         this.userCompetitions = userCompetitions;

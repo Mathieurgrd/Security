@@ -19,16 +19,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText inputEmail, inputPassword, verifyPassword;
+    private EditText inputEmail, inputPassword, verifyPassword, inputUserName;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog progress;
     private TextView mStatusTextView, mDetailTextView;
+    private FirebaseDatabase database;
+    private DatabaseReference userRef;
+    private FirebaseDatabase userDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //EditText et ProgressBar
 
+        inputUserName = (EditText) findViewById(R.id.eTextuserName);
         inputEmail = (EditText) findViewById(R.id.emailText);
         inputPassword = (EditText) findViewById(R.id.passwordText);
         verifyPassword = (EditText) findViewById(R.id.editTextVerifyPass);
@@ -89,6 +95,25 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    public void pushUserOnFirebase(){
+        if (!validateForm()) {
+            return;
+        }
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+        FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        String UserPseudo = inputUserName.getText().toString();
+
+        userDatabase  = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
+        myRef = userDatabase.getReference("Users");
+
+        UserModel user = new UserModel(UserId, UserPseudo, null, 0);
+        myRef.push().setValue(user);
+    }
+
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
@@ -129,6 +154,14 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private boolean validateForm() {
         boolean valid = true;
 
+        String UserPseudo = inputUserName.getText().toString();
+        if (TextUtils.isEmpty(UserPseudo)) {
+            inputUserName.setError("Required.");
+            valid = false;
+        } else {
+            inputUserName.setError(null);
+        }
+
         String email = inputEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
             inputEmail.setError("Required.");
@@ -164,7 +197,11 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.buttonSignUp) {
+
+            pushUserOnFirebase();
+
             createAccount(inputEmail.getText().toString().trim(), inputPassword.getText().toString().trim());
+            SignUpEmailActivity.this.finish();
             //Toast.makeText(SignUpActivity.this, "Confirmer votre E-Mail pour vous logger", Toast.LENGTH_LONG).show();
         }
         if (i == R.id.buttonBack) {

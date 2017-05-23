@@ -85,4 +85,15 @@
         android:layout_toRightOf="@+id/progressBar"
         android:text="@string/back_to_menu" />
 
+    <EditText
+        android:id="@+id/eTextuserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/pseudo_etextsignup"
+        android:layout_above="@+id/emailText"
+        android:layout_toRightOf="@+id/progressBar"
+        android:layout_toEndOf="@+id/progressBar" />
+
 </RelativeLayout>

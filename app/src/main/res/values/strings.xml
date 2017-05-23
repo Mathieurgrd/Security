@@ -18,6 +18,9 @@
     <string name="facebook_app_id">828310827320246</string>
     <string name="hintedittextcompetitionname">CompetitionName</string>
     <string name="championship_prompt">Select Championship</string>
+    <string name="button_validatecreatescreen">Create</string>
+    <string name="competition_s_name_etext">Competition\'s Name</string>
+    <string name="pseudo_etextsignup">Pseudo</string>
 
     <string-array name="championship_arrays">
         <item>Ligue 1</item>
