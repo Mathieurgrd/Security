@@ -42,41 +42,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_login);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-
-        // set the view now
-        setContentView(R.layout.activity_login);
 
         inputEmail = (EditText) findViewById(R.id.inputEmail);
         inputPassword = (EditText) findViewById(R.id.inputPassword);
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
         findViewById(R.id.textViewForgotPassword).setOnClickListener(this);
         findViewById(R.id.textViewCreateNewAccount).setOnClickListener(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        loginFacebookButton = (LoginButton) findViewById(R.id.loginFacebookButton);
+
+
         //Get Firebase auth instance
         firebaseAuth = FirebaseAuth.getInstance();
-
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-        if (firebaseAuth.getCurrentUser() !=  null){
+        if (user !=  null){
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             LoginActivity.this.finish();
         }
 
-
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         callbackManager = CallbackManager.Factory.create();
-
-        loginFacebookButton = (LoginButton) findViewById(R.id.loginFacebookButton);
-
         loginFacebookButton.setReadPermissions("email", "public_profile");
-
         loginFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -214,9 +206,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
         }
-       /**  if (i == R.id.buttonSignUp) {
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-        } */
         if (i == R.id.textViewForgotPassword) {
             startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
 
@@ -225,7 +214,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(getApplicationContext(), SignUpEmailActivity.class));
 
         }
-
     }
 }
 
