@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:hint="@string/password_hint"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/inputEmail"
@@ -27,7 +27,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="@string/e_mail_hint"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:layout_marginBottom="27dp"
         android:layout_above="@+id/inputPassword"
         android:layout_centerHorizontal="true" />

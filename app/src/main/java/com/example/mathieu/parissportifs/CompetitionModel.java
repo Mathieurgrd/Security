@@ -1,6 +1,8 @@
 package com.example.mathieu.parissportifs;
 
-import java.util.ArrayList;
+import android.support.annotation.Nullable;
+
+import java.util.List;
 
 /**
  * Created by mathieu on 22/05/17.
@@ -11,14 +13,14 @@ public class CompetitionModel {
 
     String competitionName;
     String userAdmin;
-    ArrayList<UserModel> userList;
+    List<UserModel> userList;
     int ratingMatchScore;
     int ratingMatchResult;
-    float competitionIdReedeemCode;
+    String competitionIdReedeemCode;
 
     private CompetitionModel() {}
 
-    public CompetitionModel(String competitionName, String userAdmin, ArrayList<UserModel> userList, int ratingMatchScore, int ratingMatchResult, float competitionIdReedeemCode) {
+    public CompetitionModel(String competitionName, String userAdmin, List<UserModel> userList, int ratingMatchScore, int ratingMatchResult,  @Nullable String competitionIdReedeemCode) {
         this.competitionName = competitionName;
         this.userAdmin = userAdmin;
         this.userList = userList;
@@ -36,7 +38,7 @@ public class CompetitionModel {
         return userAdmin;
     }
 
-    public ArrayList<UserModel> getUserList() {
+    public List<UserModel> getUserList() {
         return userList;
     }
 
@@ -48,7 +50,7 @@ public class CompetitionModel {
         return ratingMatchResult;
     }
 
-    public float getCompetitionIdReedeemCode() {
+    public String getCompetitionIdReedeemCode() {
         return competitionIdReedeemCode;
     }
 

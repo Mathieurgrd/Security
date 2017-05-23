@@ -108,7 +108,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         String UserPseudo = inputUserName.getText().toString();
 
         userDatabase  = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
-        myRef = userDatabase.getReference("Users");
+        myRef = userDatabase.getReference("users/" + UserId);
 
         UserModel user = new UserModel(UserId, UserPseudo, null, 0);
         myRef.push().setValue(user);
