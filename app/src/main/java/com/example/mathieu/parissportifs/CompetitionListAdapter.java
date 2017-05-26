@@ -2,6 +2,7 @@ package com.example.mathieu.parissportifs;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.Query;
@@ -10,6 +11,9 @@ import com.google.firebase.database.Query;
 public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
 
     TextView CompetitionName;
+    TextView ChampionshipName;
+    ImageView CaptainBrassard;
+
 
 
 
@@ -25,6 +29,11 @@ public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
         CompetitionName = (TextView) view.findViewById(R.id.eTextCompetitionName);
 
         CompetitionName.setText(String.valueOf(mCompetition.getCompetitionName()));
+
+        ChampionshipName = (TextView) view.findViewById(R.id.eTextChampionnatName);
+
+        ChampionshipName.setText(String.valueOf(mCompetition.getChamionshipName()));
+
 
 
     }

@@ -6,11 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateCompetitionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class CreateCompetitionActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private FirebaseDatabase database;
     private DatabaseReference competitionRef;
@@ -36,13 +33,10 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
     private EditText etnameCompetition;
     private DatabaseReference myRef;
     private List<UserModel> userfornewCompetitionList;
-    private RadioButton rButton1ptSE, rButton2ptSE, rButton3ptSE, rButton4ptSE, rButton1pt1N2,
-            rButton2pt1N2, rButton3pt1N2, rButton4pt1N2;
     private int scaleVictory, scaleScore;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private String competitionName;
-
+    private String competitionName, championHShipName;
 
 
     @Override
@@ -56,37 +50,12 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if (mAuth.getCurrentUser() !=  null){
+        if (mAuth.getCurrentUser() != null) {
             Toast.makeText(CreateCompetitionActivity.this, "Yay you're logged !", Toast.LENGTH_LONG).show();
-        } else{
+        } else {
             Toast.makeText(CreateCompetitionActivity.this, "FAIL !", Toast.LENGTH_LONG).show();
 
         }
-
-
-        rButton1ptSE = (RadioButton) findViewById(R.id.radioButton);
-        rButton1ptSE.setOnCheckedChangeListener(this);
-
-        rButton2ptSE = (RadioButton) findViewById(R.id.radioButton2);
-        rButton2ptSE.setOnCheckedChangeListener(this);
-
-        rButton3ptSE = (RadioButton) findViewById(R.id.radioButton3);
-        rButton3ptSE.setOnCheckedChangeListener(this);
-
-        rButton4ptSE = (RadioButton) findViewById(R.id.radioButton4);
-        rButton4ptSE.setOnCheckedChangeListener(this);
-
-        rButton1pt1N2 = (RadioButton) findViewById(R.id.radioButton5);
-        rButton1pt1N2.setOnCheckedChangeListener(this);
-
-        rButton2pt1N2 = (RadioButton) findViewById(R.id.radioButton6);
-        rButton2pt1N2.setOnCheckedChangeListener(this);
-
-        rButton3pt1N2 = (RadioButton) findViewById(R.id.radioButton7);
-        rButton3pt1N2.setOnCheckedChangeListener(this);
-
-        rButton4pt1N2 = (RadioButton) findViewById(R.id.radioButton8);
-        rButton4pt1N2.setOnCheckedChangeListener(this);
 
 
         championShipSelector = (Spinner) findViewById(R.id.championship_spinner);
@@ -94,11 +63,10 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
 
         findViewById(R.id.button_validate_mycompetition).setOnClickListener(this);
 
-         etnameCompetition = (EditText) findViewById(R.id.eTextNameYourCompetition);
+        etnameCompetition = (EditText) findViewById(R.id.eTextNameYourCompetition);
 
         FirebaseAuth.getInstance().getCurrentUser().getUid();
         String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
 
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -108,7 +76,6 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
 
                 UserModel userProfile = dataSnapshot.getValue(UserModel.class);
@@ -125,11 +92,6 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-
-
-
-
 
 
         addItemOnChampionShipSelector();
@@ -150,59 +112,34 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
         championShipSelector.setAdapter(dataAdapter);
     }
 
-    public void onRadioButtonClicked(View view){
-        int scaleVictory = 0;
-        int scaleScore = 0;
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        boolean checked = ((RadioButton) view).isChecked();
+        Toast.makeText(parent.getContext(),
+                "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                Toast.LENGTH_SHORT).show();
 
-        switch(view.getId()) {
-            case R.id.radioButton:
-                if (checked){scaleVictory = 1;}
-
-                    break;
-            case R.id.radioButton2:
-                if (checked){scaleVictory = 2;}
-                    // Ninjas rule
-                    break;
-            case R.id.radioButton3:
-                if (checked){scaleVictory = 3;}
-                    // Pirates are the best
-                    break;
-            case R.id.radioButton4:
-                if (checked){scaleVictory = 4;}
-                    // Pirates are the best
-                    break;
-            case R.id.radioButton5:
-                if (checked){scaleScore = 1;}
-                    // Pirates are the best
-                    break;
-            case R.id.radioButton6:
-                if (checked){scaleScore = 2;}
-                    // Pirates are the best
-                    break;
-            case R.id.radioButton7:
-                if (checked){scaleScore = 3;}
-                    // Pirates are the best
-                    break;
-            case R.id.radioButton8:
-                if (checked){scaleScore = 4;}
-                    // Pirates are the best
-                    break;
-        }
-
-
+        championHShipName = parent.getItemAtPosition(position).toString();
     }
 
     @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
+    @Override
     public void onClick(View v) {
-        int i =v.getId();
+        int i = v.getId();
 
-        if (i == R.id.button_validate_mycompetition){
-
+        if (i == R.id.button_validate_mycompetition) {
 
 
             String competitionName = etnameCompetition.getText().toString();
+
+            if (competitionName.length() == 0){
+                Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name", Toast.LENGTH_SHORT).show();
+            }
 
             // Write a message to the database
 
@@ -212,16 +149,15 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
             competitionRef = database.getReference("Competitions");
 
 
-
             /** FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("Competitions");*/
+             DatabaseReference myRef = database.getReference("Competitions");*/
             FirebaseAuth.getInstance().getCurrentUser().getUid();
             String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
             competitionDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
             competitionRef = competitionDatabase.getReference("Competitions");
 
-            CompetitionModel userCompetition = new CompetitionModel(competitionName, UserId, userfornewCompetitionList,
+            CompetitionModel userCompetition = new CompetitionModel(competitionName, championHShipName,UserId, userfornewCompetitionList,
                     scaleScore, scaleVictory, null);
             competitionRef.push().setValue(userCompetition);
 
@@ -232,68 +168,8 @@ public class CreateCompetitionActivity extends AppCompatActivity implements Adap
 
 
     // Spinners selection methods
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        Toast.makeText(parent.getContext(),
-                "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
 
-        Button createButton = (Button) findViewById(R.id.button_create_competition);
-        createButton.setEnabled(false);
-
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            if (buttonView.getId() == R.id.radioButton) {
-
-                rButton2ptSE.setChecked(false);
-                rButton3ptSE.setChecked(false);
-                rButton4ptSE.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton2) {
-                rButton1ptSE.setChecked(false);
-                rButton3ptSE.setChecked(false);
-                rButton4ptSE.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton3) {
-                rButton1ptSE.setChecked(false);
-                rButton2ptSE.setChecked(false);
-                rButton4ptSE.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton4) {
-                rButton2ptSE.setChecked(false);
-                rButton1ptSE.setChecked(false);
-                rButton3ptSE.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton5) {
-                rButton2pt1N2.setChecked(false);
-                rButton3pt1N2.setChecked(false);
-                rButton4pt1N2.setChecked(false);
-
-            }
-            if (buttonView.getId() == R.id.radioButton6) {
-                rButton1pt1N2.setChecked(false);
-                rButton3pt1N2.setChecked(false);
-                rButton4pt1N2.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton7) {
-                rButton2pt1N2.setChecked(false);
-                rButton4pt1N2.setChecked(false);
-                rButton1pt1N2.setChecked(false);
-            }
-            if (buttonView.getId() == R.id.radioButton8) {
-                rButton1pt1N2.setChecked(false);
-                rButton2pt1N2.setChecked(false);
-                rButton3pt1N2.setChecked(false);
-            }
-        }
-
-    }
 }
+

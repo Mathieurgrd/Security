@@ -22,6 +22,7 @@
     <string name="competition_s_name_etext">Competition\'s Name</string>
     <string name="pseudo_etextsignup">Pseudo</string>
     <string name="set_your_rating_scales">Set your rating-scales !</string>
+    <string name="select_favorite_team">Select Your Favorite Team</string>
 
     <string-array name="championship_arrays">
         <item>Ligue 1</item>

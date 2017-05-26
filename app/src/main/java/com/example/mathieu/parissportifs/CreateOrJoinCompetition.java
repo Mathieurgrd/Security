@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,18 +35,22 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase = database.getReference("CompetitionList");
+        DatabaseReference mDatabase = database.getReference("Competitions");
+
+        mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
 
         CompetitionListAdapter mCompetitionResultAdapter = new CompetitionListAdapter(mDatabase, this, R.layout.competitions_list_items ); // APPELLE L'ADAPTER
 
         mCompetitionListView.setAdapter(mCompetitionResultAdapter); //FUSION LIST ET ADAPTER
 
+        mCompetitionResultAdapter.notifyDataSetChanged();
 
 
 
 
 
-        mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
+
+
         mCompetitionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -56,6 +59,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Toast.makeText(CreateOrJoinCompetition.this, "Coucou ca marche", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -66,9 +70,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         int i = v.getId();
         if (i == R.id.button_create_competition) {
             startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
+            CreateOrJoinCompetition.this.finish();
         }
 
         if (i == R.id.button_join_competition) {
+
 
 
         }

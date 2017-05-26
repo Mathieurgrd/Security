@@ -12,6 +12,7 @@ public class CompetitionModel {
 
 
     String competitionName;
+    String chamionshipName;
     String userAdmin;
     List<UserModel> userList;
     int ratingMatchScore;
@@ -20,12 +21,13 @@ public class CompetitionModel {
 
     private CompetitionModel() {}
 
-    public CompetitionModel(String competitionName, String userAdmin, List<UserModel> userList, int ratingMatchScore, int ratingMatchResult,  @Nullable String competitionIdReedeemCode) {
+    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, List<UserModel> userList, int ratingMatchScore, int ratingMatchResult,  @Nullable String competitionIdReedeemCode) {
         this.competitionName = competitionName;
+        this.chamionshipName = chamionshipName;
         this.userAdmin = userAdmin;
         this.userList = userList;
-        this.ratingMatchScore = ratingMatchScore;
-        this.ratingMatchResult = ratingMatchResult;
+        this.ratingMatchScore = 3;
+        this.ratingMatchResult = 1;
         this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
 
@@ -40,6 +42,10 @@ public class CompetitionModel {
 
     public List<UserModel> getUserList() {
         return userList;
+    }
+
+    public String getChamionshipName() {
+        return chamionshipName;
     }
 
     public int getRatingMatchScore() {
