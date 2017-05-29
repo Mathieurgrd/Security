@@ -62,5 +62,13 @@
         app:layout_constraintTop_toBottomOf="@+id/championship_spinner"
         app:layout_constraintVertical_bias="0.975" />
 
+    <TextView
+        android:id="@+id/textViewtest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="246dp" />
+
 
 </android.support.constraint.ConstraintLayout>
