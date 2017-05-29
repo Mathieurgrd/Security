@@ -22,4 +22,5 @@
     <string name="cancel_login">L\'operation c\'est stoppé !</string>
     <string name="error_login">Une erreur c\'est produite</string>
     <string name="firebase_error_login">Erreur lors de la connexion à Firebase</string>
+    <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string>
 </resources>
