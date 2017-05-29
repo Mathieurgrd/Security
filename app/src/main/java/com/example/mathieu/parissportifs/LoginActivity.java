@@ -38,6 +38,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginButton loginFacebookButton;
     private CallbackManager callbackManager;
     private ProgressBar progressBar;
+    private FirebaseUser user;
+    private boolean isAdmin = false;
+
+    private static final String ADMIN_USER = "YjJuckSpAaYN9PRQxoXxOzF9f1C2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +63,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Get Firebase auth instance
         firebaseAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
 
 
         if (user !=  null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, ModifyProfile.class));
             LoginActivity.this.finish();
+        }
+
+        String uId = user.getUid();
+        if(ADMIN_USER.equals(uId)){
+            isAdmin=true;
         }
 
         callbackManager = CallbackManager.Factory.create();
@@ -174,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void goMainScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ModifyProfile.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -205,7 +214,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (i == R.id.buttonSignIn) {
 
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+
+            if (isAdmin) {
+                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+            } else {
+                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+            }
+
         }
+
         if (i == R.id.textViewForgotPassword) {
             startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
 
