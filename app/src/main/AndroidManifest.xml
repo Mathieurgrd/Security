@@ -3,7 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mathieu.parissportifs">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="25" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -11,33 +21,53 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.mathieu.parissportifs"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
         <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen"
             android:theme="@style/FullscreenTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignUpEmailActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".CreateOrJoinCompetition" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity android:name=".Navigation">
 
         </activity>
-        <activity android:name=".CreateOrJoinCompetition">
-
+        <activity android:name=".ModifyProfile">
         </activity>
+
+
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"
             tools:replace="android:value"></meta-data>
 
+
+        
     </application>
 
 </manifest>

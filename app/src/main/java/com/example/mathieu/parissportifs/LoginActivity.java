@@ -50,6 +50,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginButton loginFacebookButton;
     private CallbackManager callbackManager;
     private ProgressBar progressBar;
+    private FirebaseUser user;
+    private boolean isAdmin = false;
+    private static final String ADMIN_USER = "YjJuckSpAaYN9PRQxoXxOzF9f1C2";
     private SignInButton loginGoogle;
     private final static int RC_SIGN_IN = 1;
     private final static String TAG = "LOGIN_ACTIVITY";
@@ -59,13 +62,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_login);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-
-        // set the view now
-        setContentView(R.layout.activity_login);
 
         inputEmail = (EditText) findViewById(R.id.inputEmail);
         inputPassword = (EditText) findViewById(R.id.inputPassword);
@@ -73,18 +73,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
         findViewById(R.id.textViewForgotPassword).setOnClickListener(this);
         findViewById(R.id.textViewCreateNewAccount).setOnClickListener(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        loginFacebookButton = (LoginButton) findViewById(R.id.loginFacebookButton);
+
+
         //Get Firebase auth instance
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        user = firebaseAuth.getCurrentUser();
+
+
+        if (user !=  null){
+            startActivity(new Intent(LoginActivity.this, ModifyProfile.class));
+            LoginActivity.this.finish();
+        }
+
+        String uId = user.getUid();
+        if(ADMIN_USER.equals(uId)){
+            isAdmin=true;
+        }
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+
         callbackManager = CallbackManager.Factory.create();
-
-        loginFacebookButton = (LoginButton) findViewById(R.id.loginFacebookButton);
-
         loginFacebookButton.setReadPermissions("email", "public_profile");
-
         loginFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -247,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void goMainScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ModifyProfile.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -297,10 +314,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (i == R.id.buttonSignIn) {
 
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+
+            if (isAdmin) {
+                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+            } else {
+                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+            }
+
         }
-       /**  if (i == R.id.buttonSignUp) {
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-        } */
+
         if (i == R.id.textViewForgotPassword) {
             startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
 
@@ -309,7 +331,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(getApplicationContext(), SignUpEmailActivity.class));
 
         }
-
     }
 
 
