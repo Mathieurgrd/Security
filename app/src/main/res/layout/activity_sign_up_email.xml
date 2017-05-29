@@ -85,4 +85,25 @@
         android:layout_toRightOf="@+id/progressBar"
         android:text="@string/back_to_menu" />
 
+    <EditText
+        android:id="@+id/eTextuserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/pseudo_etextsignup"
+        android:layout_above="@+id/emailText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinner_favorite_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:prompt="@string/select_favorite_team"
+        android:layout_above="@+id/eTextuserName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp" />
+
+
 </RelativeLayout>

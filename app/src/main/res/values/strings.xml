@@ -17,6 +17,24 @@
     <string name="create_account_with_e_mail">Create Account with E-Mail</string>
     <string name="facebook_app_id">828310827320246</string>
     <string name="hintedittextcompetitionname">CompetitionName</string>
+    <string name="championship_prompt">Select Championship</string>
+    <string name="button_validatecreatescreen">Create</string>
+    <string name="competition_s_name_etext">Competition\'s Name</string>
+    <string name="pseudo_etextsignup">Pseudo</string>
+    <string name="set_your_rating_scales">Set your rating-scales !</string>
+    <string name="select_favorite_team">Select Your Favorite Team</string>
+
+    <string-array name="championship_arrays">
+        <item>Ligue 1</item>
+        <item>Barclays League</item>
+        <item>Bundesliga</item>
+        <item>Liga 1</item>
+        <item>Serie A</item>
+        <item>Liga</item>
+
+    </string-array>
+
+
     <string name="ForgotPassword">Mot de passe oublié ?</string>
     <string name="CreateNewAccount">Créer un nouveau compte !</string>
     <string name="cancel_login">L\'operation c\'est stoppé !</string>

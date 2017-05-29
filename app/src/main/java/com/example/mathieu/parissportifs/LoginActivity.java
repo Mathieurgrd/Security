@@ -236,7 +236,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else { // if success
-                           startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
+                            LoginActivity.this.finish();
+
                         }
 
                         progress.dismiss();
@@ -314,6 +316,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (i == R.id.buttonSignIn) {
 
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+
 
             if (isAdmin) {
                 startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
