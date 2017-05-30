@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -50,9 +53,12 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
     private String pseudo;
     private String email;
     private Uri photoUrl;
+    private FirebaseDatabase userDatabase;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final int PICK_IMAGE_REQUEST = 256;
     private static final int REQUEST_IMAGE_CAPTURE = 234;
+    private static final String TAG = "TAG";
 
 
     private Uri imageUri;
@@ -64,7 +70,7 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_modify_profile);
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("users_avatar");
 
         userEmail = (EditText) findViewById(R.id.editTextModifyEmail);
@@ -101,6 +107,48 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
 
         downloadPicture();
+
+        // [START auth_state_listener]
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        };
+        // [END auth_state_listener]
+    }
+
+
+
+
+    public void pushUserOnFirebase() {
+
+        Intent intent = getIntent();
+        String favoriteTeam = intent.getStringExtra("TAG");
+
+        userDatabase = FirebaseDatabase.getInstance();
+       DatabaseReference myRef = userDatabase.getReference("users/" + user.getUid());
+
+
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        String UserId = currentuser.getUid();
+
+
+        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam);
+        myRef.push().setValue(user);
     }
 
     public void changeProfil() {
@@ -334,8 +382,12 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
     public void onClick (View v) {
         if (v == save) {
             changeProfil();
+            // __________A VIRER SI BUG_______________
+            pushUserOnFirebase();
+            // __________A VIRER SI BUG_______________
+
             finish();
-            startActivity(new Intent(this, Navigation.class));
+            startActivity(new Intent(this, CreateOrJoinCompetition.class));
         }
         if (v == removeAccount) {
 

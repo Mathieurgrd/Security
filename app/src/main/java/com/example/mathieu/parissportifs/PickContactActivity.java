@@ -34,6 +34,7 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
     private FirebaseDatabase competitionDatabase;
     private String CompetitionId;
     private String CompareCompetId;
+    public final static String COMPET = "compet";
 
 
 
@@ -47,6 +48,9 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
         contactListView = (ListView) findViewById(android.R.id.list);
 
         Intent intent = getIntent();
+        CompetitionId= intent.getStringExtra("oui");
+
+
 
 
         //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
@@ -55,16 +59,6 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
         //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
 
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                CompetitionId = null;
-            } else {
-                CompetitionId = extras.getString("COMPET");
-            }
-        } else {
-            CompetitionId = (String) savedInstanceState.getSerializable("COMPET");
-        }
 
 
         adapter = new ArrayAdapter<String>(this,
@@ -109,7 +103,7 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
 
                 CompetitionModel model = dataSnapshot.getValue(CompetitionModel.class);
 
-                String CompareCompetId = model.competitionIdReedeemCode;
+                 CompareCompetId = model.competitionIdReedeemCode;
 
 
 
@@ -156,7 +150,7 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
         if (i == R.id.buttonfinishpickcontacts){
 
             String[] contactArray = listItems.toArray(new String[listItems.size()]);
-            String message = "Si tu reçois ca c'est que j'ai réussi ;)";
+            String message = "Voici le code " + CompetitionId;
             sendSMS(message, contactArray);
             startActivity(new Intent(PickContactActivity.this, CreateOrJoinCompetition.class));
 

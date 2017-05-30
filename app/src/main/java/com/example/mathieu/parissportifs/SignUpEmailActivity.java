@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -42,6 +43,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private FirebaseDatabase userDatabase;
     private Spinner favoriteTeamSelector;
     private String favoriteTeam;
+    public  final static String ITAG = "TAG";
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -145,16 +150,47 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    public void CreateAuthProfile() {
+
+        user = mAuth.getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(inputUserName.getText().toString())
+                .build();
+
+        user.updateEmail(inputEmail.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User email address updated.");
+                        }
+                    }
+                });
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                        }
+                    }
+                });
+    }
+
     public void pushUserOnFirebase() {
         if (!validateForm()) {
             return;
         }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        userDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
-        FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        String UserId = currentuser.getUid();
         String UserPseudo = inputUserName.getText().toString();
 
         userDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
@@ -266,8 +302,15 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                             Toast.makeText(SignUpEmailActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else { // if success
-                            startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
-                            SignUpEmailActivity.this.finish();
+                            if (user != null)
+                            CreateAuthProfile();
+                            else {
+                                Toast.makeText(SignUpEmailActivity.this,
+                                        "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" +
+                                                "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" +
+                                                "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUuu"
+                                        , Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         progress.dismiss();
@@ -282,10 +325,16 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         int i = v.getId();
         if (i == R.id.buttonSignUp) {
 
-            pushUserOnFirebase();
+
+            Intent intent = new Intent(SignUpEmailActivity.this, ModifyProfile.class);
+            intent.putExtra(ITAG, favoriteTeam);
 
             createAccount(inputEmail.getText().toString().trim(), inputPassword.getText().toString().trim());
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+
+            startActivity(intent);
+           // pushUserOnFirebase();
+            finish();
         }
         if (i == R.id.buttonBack) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -303,6 +352,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+
 
     }
 }
