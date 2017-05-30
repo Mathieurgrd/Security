@@ -27,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.503"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
-       " />
+
 
     <EditText
         android:id="@+id/inputEmail"
@@ -47,7 +47,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/inputPassword"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintVertical_bias="0.841"
