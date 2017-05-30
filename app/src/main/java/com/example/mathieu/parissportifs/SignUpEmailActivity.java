@@ -182,9 +182,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                         Toast.makeText(SignUpEmailActivity.this, R.string.toastcheckyourmail, Toast.LENGTH_LONG).show();
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+
+
                         if (!task.isSuccessful()) {
                             Toast.makeText(SignUpEmailActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
@@ -197,9 +196,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                 });
         // [END create_user_with_email]
     }
-
-
-    // [END send_email_verification]
 
     private boolean validateForm() {
         boolean valid = true;

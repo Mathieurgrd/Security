@@ -47,6 +47,9 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
     private TextView modifyPicture, modifyPassword, removeAccount, logOut;
     private Button save;
     private FirebaseUser user;
+    private String pseudo;
+    private String email;
+    private Uri photoUrl;
 
     private static final int PICK_IMAGE_REQUEST = 256;
     private static final int REQUEST_IMAGE_CAPTURE = 234;
@@ -71,9 +74,9 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         civProfilePic.setOnClickListener(this);
 
 
-        String pseudo = user.getDisplayName();
-        String email = user.getEmail();
-        Uri photoUrl = user.getPhotoUrl();
+        pseudo = user.getDisplayName();
+        email = user.getEmail();
+        photoUrl = user.getPhotoUrl();
 
         userEmail.setText(email);
         userName.setText(pseudo);
