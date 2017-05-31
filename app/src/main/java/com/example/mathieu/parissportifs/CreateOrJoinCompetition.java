@@ -32,7 +32,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private String pass;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,63 +69,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     }
 
 
-    /** public boolean getCompetitionsList(String password) {
-
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-               ArrayList Competitionlist = new ArrayList<String>();
-
-
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-                    Competitionlist.add(String.valueOf(dsp.getValue())); //add result into array list
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-    } */
-
-    public boolean isGoodCode(){
-
-        final EditText input = new EditText(CreateOrJoinCompetition.this);
-
-        final String competitionPassword = input.getText().toString();
-        Query competitionQuery = mDatabase.child("competitionIdReedeemCode").equalTo(competitionPassword);
-        pass = "";
-
-        competitionQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                pass = dataSnapshot.getKey();
-
-                if (!pass.equals(competitionPassword)){
-                    return;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                return;
-
-            }
-        });
-     return true;
-    }
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -139,7 +81,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateOrJoinCompetition.this);
-            alertDialog.setTitle("PASSWORD");
+            alertDialog.setTitle("Join Competition");
             alertDialog.setMessage("Enter Password");
             final EditText input = new EditText(CreateOrJoinCompetition.this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -149,42 +91,55 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             alertDialog.setView(input);
 
 
-
             alertDialog.setPositiveButton("Validate",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final String competitionPassword = input.getText().toString();
-                            Query competitionQuery = mDatabase.child("competitionIdReedeemCode").equalTo(competitionPassword);
-                             pass = "";
+                            Query competitionQuery = mDatabase;
+                            pass = "";
 
                             competitionQuery.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                         // To change !!!!!!!!!! en dessous
-                                    pass = dataSnapshot.getKey();
 
-                                    if (pass.equals(competitionPassword)){
+                                    long allItems = dataSnapshot.getChildrenCount();
+                                    int maxNum = (int) allItems;
 
-                                        for (int i = 0; i < 5 ; i ++) {
-                                            Toast.makeText(CreateOrJoinCompetition.this, "Yeah", Toast.LENGTH_SHORT).show();
+                                    for (int i = 0; i <= maxNum; i++) {
+
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                            CompetitionModel competitionToJoin = dataSnapshot.getValue(CompetitionModel.class);
+                                            pass = postSnapshot.getKey();
+
+                                            if (competitionPassword.length() != 0 ) {
+                                                if (pass.equals(competitionPassword)) {
+                                                    setTitle("Succesful I DID IT !");
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Password Matched", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                } else {
+
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "Wrong Password!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
                                         }
                                     }
+
+
+
+
+
                                 }
+
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
 
                                 }
                             });
-                            if (competitionPassword.compareTo("") == 0) {
-                                if (pass.equals(competitionPassword)) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Password Matched", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Wrong Password!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
+
                         }
                     });
 
