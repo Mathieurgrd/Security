@@ -201,7 +201,7 @@
                 competitionRef.push().setValue(userCompetition);
 
                 Intent intent = new Intent(CreateCompetitionActivity.this, PickContactActivity.class);
-                intent.putExtra(CreateCompetitionActivity.COMPET, mGroupId);
+                intent.putExtra("oui", mGroupId);
 
 
 
@@ -209,7 +209,7 @@
                     startActivity(intent);
 
 
-                    CreateCompetitionActivity.this.finish();
+                    finish();
                 }
             }
 
