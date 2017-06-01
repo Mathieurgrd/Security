@@ -69,7 +69,7 @@
 
             etnameCompetition = (EditText) findViewById(R.id.eTextNameYourCompetition);
 
-            FirebaseAuth.getInstance().getCurrentUser().getUid();
+            FirebaseAuth.getInstance().getCurrentUser();
             String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
 

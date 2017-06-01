@@ -39,12 +39,18 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private ProgressDialog progress;
     private TextView mStatusTextView, mDetailTextView;
     private FirebaseDatabase database;
-    private DatabaseReference userRef;
+    private DatabaseReference mDatabase;
     private FirebaseDatabase userDatabase;
     private Spinner favoriteTeamSelector;
     private String favoriteTeam;
-    public  final static String ITAG = "TAG";
-    private FirebaseUser user;
+    private String userPseudo;
+    private UserProfileChangeRequest profileUpdates;
+    private ProgressDialog progressDialog;
+    private String email;
+    private String password;
+    private String userName;
+    private UserModel mUser;
+    private static String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +59,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -68,7 +72,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         inputEmail = (EditText) findViewById(R.id.emailText);
         inputPassword = (EditText) findViewById(R.id.passwordText);
         verifyPassword = (EditText) findViewById(R.id.editTextVerifyPass);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressDialog = new ProgressDialog(this);
+
 
 
         //Button
@@ -125,119 +130,81 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         ligue1List.add("TFC");
 
 
-
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ligue1List);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         favoriteTeamSelector.setAdapter(dataAdapter);
     }
 
-    // [START on_start_add_listener]
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-    // [END on_start_add_listener]
+    private void createAccount() {
+        email = inputEmail.getText().toString().trim();
+        password  = inputPassword.getText().toString().trim();
+        userName = inputUserName .getText().toString().trim();
 
-    // [START on_stop_remove_listener]
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
 
-    public void CreateAuthProfile() {
 
-        user = mAuth.getCurrentUser();
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(inputUserName.getText().toString())
-                .build();
-
-        user.updateEmail(inputEmail.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User email address updated.");
-                        }
-                    }
-                });
-
-        user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated.");
-                        }
-                    }
-                });
-    }
-
-    public void pushUserOnFirebase() {
         if (!validateForm()) {
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Users");
 
-        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+        progressDialog.setMessage("Wait");
+        progressDialog.show();
 
-
-        String UserId = currentuser.getUid();
-        String UserPseudo = inputUserName.getText().toString();
-
-        userDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
-        myRef = userDatabase.getReference("users/" + UserId);
-
-        UserModel user = new UserModel(UserId, UserPseudo, null, 0, favoriteTeam);
-        myRef.push().setValue(user);
-    }
-
-
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
-        progress = ProgressDialog.show(this, "Creating Account",
-                "Loading...", true);
-
-        // [START create_user_with_email]
+        // [START sign_in_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        Toast.makeText(SignUpEmailActivity.this, R.string.toastcheckyourmail, Toast.LENGTH_LONG).show();
+                        //checking if success
+                        if(task.isSuccessful()){
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(userName)
+                                    .build();
+
+                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Log.d("TAG", "User profile update.");
 
 
 
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(SignUpEmailActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+                            idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            mUser = new UserModel (idUser,userName,null,0,favoriteTeam);
+                            mDatabase.child(idUser).setValue(mUser);
+
+                            startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+                            SignUpEmailActivity.this.finish();
+
+
+
+                        } else{
+                            //display some message here
+                            //Log.e(TAG, "Sign-in Failed: " + task.getException().getMessage());
+                            // If the connection keeps failing un comment this :
+                            //Toast.makeText(NewAccountActivity.this,"Sign-in Failed: " + task.getException().getMessage(),Toast.LENGTH_LONG).show();
+
+                            Toast.makeText(SignUpEmailActivity.this,"NO",Toast.LENGTH_LONG).show();
                         }
-                       /* if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(SignUpActivity.this,
-                                    "User with this email already exist.", Toast.LENGTH_SHORT).show();} */
-                        progress.dismiss();
+                        progressDialog.dismiss();
                     }
                 });
-        // [END create_user_with_email]
+
     }
 
     private boolean validateForm() {
         boolean valid = true;
 
-        String UserPseudo = inputUserName.getText().toString();
-        if (TextUtils.isEmpty(UserPseudo)) {
+        String userPseudo = inputUserName.getText().toString();
+        if (TextUtils.isEmpty(userPseudo)) {
             inputUserName.setError("Required.");
             valid = false;
         } else {
@@ -276,65 +243,14 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
-
-        if (!validateForm()) {
-            return;
-        }
-
-
-        progress = ProgressDialog.show(this, "Signin' you in", "please wait ...", true);
-        ;
-
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) { // if failed
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(SignUpEmailActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        } else { // if success
-                            if (user != null)
-                            CreateAuthProfile();
-                            else {
-                                Toast.makeText(SignUpEmailActivity.this,
-                                        "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" +
-                                                "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU" +
-                                                "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUuu"
-                                        , Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        progress.dismiss();
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END sign_in_with_em
-    }
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.buttonSignUp) {
 
 
-            Intent intent = new Intent(SignUpEmailActivity.this, ModifyProfile.class);
-            intent.putExtra(ITAG, favoriteTeam);
+            createAccount();
 
-            createAccount(inputEmail.getText().toString().trim(), inputPassword.getText().toString().trim());
-            signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
-
-            startActivity(intent);
-           // pushUserOnFirebase();
-            finish();
         }
         if (i == R.id.buttonBack) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -346,14 +262,12 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        String favoriteTeam = parent.getItemAtPosition(position).toString();
+        favoriteTeam = parent.getItemAtPosition(position).toString();
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
-
 
     }
 }
