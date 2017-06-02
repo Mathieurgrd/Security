@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private FirebaseUser user;
     private boolean isAdmin = false;
-    private static final String ADMIN_USER = "YjJuckSpAaYN9PRQxoXxOzF9f1C2";
     private SignInButton loginGoogle;
     private final static int RC_SIGN_IN = 1;
     private final static String TAG = "LOGIN_ACTIVITY";
@@ -227,10 +226,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        } else { // if success
+                        } else {// if success
                             startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
-                            LoginActivity.this.finish();
-
                         }
 
                         progress.dismiss();
@@ -309,16 +306,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
 
-            /*uId = user.getUid();
-            if(ADMIN_USER.equals(uId)){
-                isAdmin=true;
-            }*/
-
-            if (isAdmin) {
-                startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
-            } else {
-                startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
-            }
 
         }
 

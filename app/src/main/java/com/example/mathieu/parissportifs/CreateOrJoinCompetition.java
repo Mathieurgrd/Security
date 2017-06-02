@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +40,9 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private List<UserModel> userList;
+    private Button goModifyProfil;
+    private String uId;
+    private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
     @Override
@@ -46,25 +50,24 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_or_join_competition);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        uId = user.getUid();
+        if(uId.equals(ADMIN_USER)){
+            startActivity(new Intent(CreateOrJoinCompetition.this, AdminGames.class));
+            finish();
+        }
+        if (user == null) {
+            startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
+        }
+
         findViewById(R.id.button_create_competition).setOnClickListener(this);
         findViewById(R.id.button_join_competition).setOnClickListener(this);
+        goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
+        goModifyProfil.setOnClickListener(this);
         mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
         final EditText input = new EditText(CreateOrJoinCompetition.this);
 
         mAuth = FirebaseAuth.getInstance();
-
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
-                }else{
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    userId = user.getUid();
-                }
-            }
-        };
 
 
         database = FirebaseDatabase.getInstance();
@@ -80,7 +83,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         mCompetitionResultAdapter.notifyDataSetChanged();
 
 
-        mCompetitionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCompetitionListView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
 
 
             @Override
@@ -99,6 +102,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         int i = v.getId();
         if (i == R.id.button_create_competition) {
             startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
+            CreateOrJoinCompetition.this.finish();
+        }
+
+        if (i==R.id.goModifyProfil){
+            startActivity(new Intent(CreateOrJoinCompetition.this, ModifyProfile.class));
             CreateOrJoinCompetition.this.finish();
         }
 
@@ -142,13 +150,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                                 }
                             });
-
-
-
-
-
-
-
 
                             pass = "";
 
