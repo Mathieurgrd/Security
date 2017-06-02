@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         if (user !=  null){
-            startActivity(new Intent(LoginActivity.this, ModifyProfile.class));
+            startActivity(new Intent(LoginActivity.this, CreateOrJoinCompetition.class));
             LoginActivity.this.finish();
         }
 
@@ -315,9 +315,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }*/
 
             if (isAdmin) {
-                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+                startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
             } else {
-                startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+                startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
             }
 
         }

@@ -42,13 +42,15 @@
             android:theme="@style/FullscreenTheme"></activity>
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignUpEmailActivity">
+
+        </activity>
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashScreenActivity" />
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>

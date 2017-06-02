@@ -1,6 +1,5 @@
 package com.example.mathieu.parissportifs;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +11,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,23 +28,17 @@ import java.util.List;
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private EditText inputEmail, inputPassword, verifyPassword, inputUserName;
-    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private ProgressDialog progress;
-    private TextView mStatusTextView, mDetailTextView;
-    private FirebaseDatabase database;
     private DatabaseReference mDatabase;
-    private FirebaseDatabase userDatabase;
     private Spinner favoriteTeamSelector;
     private String favoriteTeam;
-    private String userPseudo;
-    private UserProfileChangeRequest profileUpdates;
     private ProgressDialog progressDialog;
     private String email;
     private String password;
     private String userName;
+    private String verify;
     private UserModel mUser;
     private static String idUser;
 
@@ -59,7 +49,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
-
 
 
         favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
@@ -140,13 +129,32 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         email = inputEmail.getText().toString().trim();
         password  = inputPassword.getText().toString().trim();
         userName = inputUserName .getText().toString().trim();
+        verify = verifyPassword.getText().toString().trim();
+        password = inputPassword.getText().toString().trim();
 
-
-
-        if (!validateForm()) {
+        if (TextUtils.isEmpty(userName)) {
+            inputUserName.setError("Required.");
+            return;
+        }
+        if (TextUtils.isEmpty(email)) {
+            inputEmail.setError("Required.");
             return;
         }
 
+        if (TextUtils.isEmpty(password)) {
+            inputPassword.setError("Required.");
+            return;
+        }
+
+        if (TextUtils.isEmpty(verify)) {
+            verifyPassword.setError("One does not simply don't check his password");
+            return;
+        }
+        if (!password.equals(verify)) {
+            verifyPassword.setError("Your pass does not match");
+            inputPassword.setError("Your pass does not match");
+            return;
+        }
 
         progressDialog.setMessage("Wait");
         progressDialog.show();
@@ -170,7 +178,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Log.d("TAG", "User profile update.");
-
+                                        SignUpEmailActivity.this.finish();
+                                        startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
 
 
                                     }
@@ -181,16 +190,11 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                             mUser = new UserModel (idUser,userName,null,0,favoriteTeam);
                             mDatabase.child(idUser).setValue(mUser);
 
-                            startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
-                            SignUpEmailActivity.this.finish();
+
 
 
 
                         } else{
-                            //display some message here
-                            //Log.e(TAG, "Sign-in Failed: " + task.getException().getMessage());
-                            // If the connection keeps failing un comment this :
-                            //Toast.makeText(NewAccountActivity.this,"Sign-in Failed: " + task.getException().getMessage(),Toast.LENGTH_LONG).show();
 
                             Toast.makeText(SignUpEmailActivity.this,"NO",Toast.LENGTH_LONG).show();
                         }
@@ -199,65 +203,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                 });
 
     }
-
-    private boolean validateForm() {
-        boolean valid = true;
-
-        String userPseudo = inputUserName.getText().toString();
-        if (TextUtils.isEmpty(userPseudo)) {
-            inputUserName.setError("Required.");
-            valid = false;
-        } else {
-            inputUserName.setError(null);
-        }
-
-        String email = inputEmail.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            inputEmail.setError("Required.");
-            valid = false;
-        } else {
-            inputEmail.setError(null);
-        }
-        String verify = verifyPassword.getText().toString();
-        if (TextUtils.isEmpty(verify)) {
-            verifyPassword.setError("One does not simply don't check his password");
-            valid = false;
-        }
-        if (verifyPassword == inputPassword) {
-            verifyPassword.setError("Your pass does not match");
-            inputPassword.setError("Your pass does not match");
-            valid = false;
-        } else {
-            verifyPassword.setError(null);
-        }
-
-        String password = inputPassword.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            inputPassword.setError("Required.");
-            valid = false;
-        } else {
-            inputPassword.setError(null);
-        }
-
-        return valid;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.buttonSignUp) {
-
-
-            createAccount();
-
-        }
-        if (i == R.id.buttonBack) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-
-        }
-    }
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -269,6 +214,20 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.buttonSignUp) {
+
+            createAccount();
+
+        }
+        if (i == R.id.buttonBack) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+        }
     }
 }
 
