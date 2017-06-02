@@ -2,6 +2,7 @@ package com.example.mathieu.parissportifs;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -29,6 +31,7 @@ public class AdminGames extends AppCompatActivity {
         setContentView(R.layout.activity_admin_games);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ImageButton firebase_notif = (ImageButton)findViewById(R.id.firebase_notif);
         setSupportActionBar(toolbar);
 
         /** end after 1 month from now */
@@ -72,6 +75,19 @@ public class AdminGames extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), NewGameActivity.class));
+            }
+        });
+
+        firebase_notif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://console.firebase.google.com/project/parissportifs-d74e4/notification/compose?campaignId=8388219356442312473"));
+                startActivity(intent);
+
+
             }
         });
 
