@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +30,7 @@ import java.util.Locale;
 public class NewGameActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private TextView hour;
-    private TextView date;
+    private TextView dateView;
     private Calendar dateCalendar;
     private Calendar timeCalendar;
     private DateFormat formatDateTime;
@@ -51,6 +53,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private int mMinute;
     private String date_time;
     private Date date_time_object;
+    private Date date;
 
 
     @Override
@@ -61,9 +64,9 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         hour = (TextView) findViewById(R.id.textViewChangeHour);
-        date = (TextView) findViewById(R.id.textViewDate);
+        dateView = (TextView) findViewById(R.id.textViewDate);
         hour.setOnClickListener(this);
-        date.setOnClickListener(this);
+        dateView.setOnClickListener(this);
 
         teamHome = (Spinner) findViewById(R.id.spinnerHome);
         teamHome.setOnItemSelectedListener(this);
@@ -94,15 +97,17 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
+                        int date = view.getDayOfMonth();
+                        int month = view.getMonth()+1;
+                        int years = view.getYear();
 
-                        date_time = dayOfMonth + "-" + monthOfYear + "-" + year;
-                        //date_time_object = new Date (datePickerDialog.get);
-                        Toast.makeText(NewGameActivity.this, DateFormat.getDateInstance().format(date_time) + " is selected!", Toast.LENGTH_SHORT).show();
+                        date_time = date + "/" + month + "/" + years;
+                        date_time_object = new Date(years, view.getMonth(), date);
 
-                        date.setText(date_time);
+                        dateView.setText(date_time);
                         //*************Call Time Picker Here ********************
                         updateTime();
-                    }
+                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();    }
 
@@ -114,7 +119,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
+                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,int minute) {
@@ -132,7 +137,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void updateTextLabelDate(){
-        date.setText(formatDateTime.format(dateCalendar.getTime()));
+        dateView.setText(formatDateTime.format(dateCalendar.getTime()));
     }
 
     private void updateTextLabelTime(){
@@ -202,7 +207,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
              updateTime();
         }
 
-        if(v==date){
+        if(v==dateView){
             updateDate();
         }
 
