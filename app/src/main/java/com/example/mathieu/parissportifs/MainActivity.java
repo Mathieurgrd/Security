@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ImageView imageViewPhotoFacebook;
+    private Button buttonNotif;
 
 
     @Override
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button button4;
         button4 = (Button) findViewById(R.id.button4);
+        buttonNotif = (Button) findViewById(R.id.buttonNotif);
 
         imageViewPhotoFacebook = (ImageView) findViewById(R.id.imageViewPhotoFacebook);
 
@@ -68,6 +70,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 logout(v);
             }
+        });
+
+        buttonNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://console.firebase.google.com/project/parissportifs-d74e4/notification/compose?campaignId=8388219356442312473"));
+                startActivity(intent);
+            }
+
+
         });
 
 
@@ -87,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.finish();
 
     }
+
+
 
 
 }
