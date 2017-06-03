@@ -32,6 +32,7 @@ dependencies {
 
 
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'biz.kasual:materialnumberpicker:1.2.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'devs.mulham.horizontalcalendar:horizontalcalendar:1.1.5'
     compile 'com.android.support:appcompat-v7:25.3.1'

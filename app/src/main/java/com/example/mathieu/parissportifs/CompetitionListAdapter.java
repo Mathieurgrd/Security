@@ -28,7 +28,7 @@ public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
 
         CompetitionName = (TextView) view.findViewById(R.id.eTextCompetitionName);
 
-        CompetitionName.setText(String.valueOf(mCompetition.getCompetitionName()));
+        CompetitionName.setText(mCompetition.getCompetitionName());
 
         ChampionshipName = (TextView) view.findViewById(R.id.eTextChampionnatName);
 

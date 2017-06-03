@@ -11,9 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,6 +28,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendarListener;
 public class AdminGames extends AppCompatActivity {
 
     private HorizontalCalendar horizontalCalendar;
+    private ListView mGameListView;
+    private DatabaseReference mDatabaseGameRef;
 
 
     @Override
@@ -33,6 +40,7 @@ public class AdminGames extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageButton firebase_notif = (ImageButton)findViewById(R.id.firebase_notif);
         setSupportActionBar(toolbar);
+        mGameListView = (ListView) findViewById(R.id.gameList);
 
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
@@ -64,6 +72,17 @@ public class AdminGames extends AppCompatActivity {
             @Override
             public void onDateSelected(Date date, int position) {
                 Toast.makeText(AdminGames.this, DateFormat.getDateInstance().format(date) + " is selected!", Toast.LENGTH_SHORT).show();
+
+                DateFormat df = new SimpleDateFormat("yyMMdd");
+                String reportDate = df.format(date);
+
+                mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
+
+                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,AdminGames.this, R.layout.game_list_items); // APPELLE L'ADAPTER
+
+                mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
+
+                mGameListAdapter.notifyDataSetChanged();
             }
 
         });

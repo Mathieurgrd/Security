@@ -16,12 +16,12 @@ public class NewGame {
     private Date mDate;
     private int mHour;
     private int mMinute;
+    private int mMatchWeek;
 
     private NewGame () {
     }
 
-
-    public NewGame (String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute){
+    public NewGame (String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek){
         mHomeTeam = homeTeam;
         mAwayTeam = awayTeam;
         mScoreHomeTeam = scoreHomeTeam;
@@ -29,6 +29,8 @@ public class NewGame {
         mDate = date;
         mHour = hour;
         mMinute = minute;
+        mMatchWeek =  matchWeek;
+
 
     }
 
@@ -85,5 +87,12 @@ public class NewGame {
 
     public void setmMinute(int mMinute) {
         this.mMinute = mMinute;
+    }
+    public int getmMatchWeek() {
+        return mMatchWeek;
+    }
+
+    public void setmMatchWeek(int mMatchWeek) {
+        this.mMatchWeek = mMatchWeek;
     }
 }

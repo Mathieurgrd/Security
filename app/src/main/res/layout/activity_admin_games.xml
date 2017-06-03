@@ -50,4 +50,12 @@
         android:layout_alignRight="@+id/fab"
         app:srcCompat="@drawable/firebase" />
 
+    <ListView
+        android:id="@+id/gameList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appBar" />
+
 </RelativeLayout>

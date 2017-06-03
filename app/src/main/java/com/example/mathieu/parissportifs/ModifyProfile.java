@@ -434,11 +434,11 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
                     })
                     .show();
         }
-        if (v == modifyPassword || v == civProfilePic){
+        if (v == modifyPassword){
             finish();
             startActivity(new Intent(ModifyProfile.this,ResetPasswordActivity.class));
         }
-        if (v == modifyPicture) {
+        if (v == modifyPicture || v == civProfilePic) {
 
 
             new SweetAlertDialog(this)
