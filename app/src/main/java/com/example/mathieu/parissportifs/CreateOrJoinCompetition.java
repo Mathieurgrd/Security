@@ -64,7 +64,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         findViewById(R.id.button_join_competition).setOnClickListener(this);
         goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
         goModifyProfil.setOnClickListener(this);
-        mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
         final EditText input = new EditText(CreateOrJoinCompetition.this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -133,10 +132,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                             final String competitionPassword = input.getText().toString();
                             Query competitionQuery = mDatabaseCompetitionRef;
-                            Query userQuery = mDatabaseUserRef.child(userId);
+//                            Query userQuery = mDatabaseUserRef.child(userId);
 
 
-                            userQuery.addValueEventListener(new ValueEventListener() {
+                         /**   userQuery.addValueEventListener(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -150,7 +149,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                                 }
                             });
-
+*/
                             pass = "";
 
                             competitionQuery.addValueEventListener(new ValueEventListener() {
