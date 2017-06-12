@@ -5,30 +5,20 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.facebook.CallbackManager;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
-import com.facebook.login.widget.ProfilePictureView;
-
-import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -38,34 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.facebook.Profile;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static android.R.attr.name;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private EditText editTextModifyPseudo;
@@ -78,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog progressDialog;
     private String userName;
     private FirebaseUser user;
+    private  DatabaseReference myRef;
+
 
     private static String email;
     private static final String TAG = "TAG";
@@ -99,9 +66,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Button
         findViewById(R.id.buttonGo).setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
-        userName = editTextModifyPseudo.getText().toString().trim();
+        userName = editTextModifyPseudo.getText().toString();
         //pseudo = user.getDisplayName();
         addItemFavoriteTeamSelector();
+        userDatabase = FirebaseDatabase.getInstance();
 
 
         // [START auth_state_listener]
@@ -125,6 +93,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         // [END auth_state_listener]
+
+         myRef = this.userDatabase.getReference("users/");
+
+        final Query userInformation = myRef.child(user.getUid());
+
+        userInformation.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    UserModel userActuel = dataSnapshot.getValue(UserModel.class);
+                    email = userActuel.getEmail();
+                    editTextModifyPseudo.setText(userActuel.getUserName());
+                    if (userName.equals(userActuel.getUserName()) || userName.length() != 0 ){
+
+                        userName = editTextModifyPseudo.getText().toString();
+                    }
+
+
+                    // Get back all competitions where the playrer is actually occuring .
+
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
     }
 
     public void changeProfil() {
@@ -239,33 +242,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "You must enter an Username", Toast.LENGTH_SHORT).show();
             }
 
+            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
 
-            Query userInformation = userDatabase.getReference("users/").child(user.getUid());
-
-            userInformation.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        UserModel userActuel = dataSnapshot.getValue(UserModel.class);
-                        email = userActuel.getEmail();
-
-                    }
-                }
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
 
                     /** FirebaseDatabase database = FirebaseDatabase.getInstance();
                      DatabaseReference myRef = database.getReference("Competitions");*/
-                    String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-            this.userDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
-            DatabaseReference myRef = this.userDatabase.getReference("users/");
             UserModel user = new UserModel(UserId, userName, null, 0, favoriteTeam, email);
             myRef.child(UserId).setValue(user);
 
