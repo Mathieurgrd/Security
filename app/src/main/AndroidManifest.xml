@@ -34,7 +34,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".SplashScreenActivity" />
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -44,7 +44,7 @@
         <activity android:name=".SignUpEmailActivity">
 
         </activity>
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
