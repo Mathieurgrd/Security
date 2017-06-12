@@ -1,5 +1,6 @@
 package com.example.mathieu.parissportifs;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by apprenti on 31/05/17.
  */
 
-public class NewGame {
+public class NewGame implements Serializable {
 
     private String mHomeTeam;
     private String mAwayTeam;
@@ -17,11 +18,12 @@ public class NewGame {
     private int mHour;
     private int mMinute;
     private int mMatchWeek;
+    private String mIdGame;
 
     private NewGame () {
     }
 
-    public NewGame (String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek){
+    public NewGame (String idGame, String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek){
         mHomeTeam = homeTeam;
         mAwayTeam = awayTeam;
         mScoreHomeTeam = scoreHomeTeam;
@@ -30,6 +32,7 @@ public class NewGame {
         mHour = hour;
         mMinute = minute;
         mMatchWeek =  matchWeek;
+        mIdGame = idGame;
 
 
     }
@@ -94,5 +97,13 @@ public class NewGame {
 
     public void setmMatchWeek(int mMatchWeek) {
         this.mMatchWeek = mMatchWeek;
+    }
+
+    public String getmIdGame() {
+        return mIdGame;
+    }
+
+    public void setmIdGame(String mIdGame) {
+        this.mIdGame = mIdGame;
     }
 }

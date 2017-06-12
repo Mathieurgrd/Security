@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import java.util.Date;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarListener;
 
-public class AdminGames extends AppCompatActivity {
+public class AdminGames extends AppCompatActivity  {
 
     private HorizontalCalendar horizontalCalendar;
     private ListView mGameListView;
@@ -83,6 +84,7 @@ public class AdminGames extends AppCompatActivity {
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
                 mGameListAdapter.notifyDataSetChanged();
+
             }
 
         });
@@ -110,6 +112,19 @@ public class AdminGames extends AppCompatActivity {
             }
         });
 
+        mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                NewGame newGame = (NewGame) parent.getItemAtPosition(position);
+
+                Intent i = new Intent(AdminGames.this, EnterScore.class);
+                i.putExtra("newGame", newGame);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -133,5 +148,7 @@ public class AdminGames extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

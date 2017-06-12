@@ -41,8 +41,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private String homeTeam;
     private String awayTeam;
     private Button saveGame;
-    private int scoreHome = 0;
-    private int scoreAway = 0;
+    private int scoreHome = -1;
+    private int scoreAway = -1;
     private DatabaseReference mDatabase;
     private int mYear;
     private int mMonth;
@@ -54,6 +54,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private List<String> ligue1List;
     private MaterialNumberPicker numberPicker;
     private int matchWeek;
+    private String uploadId;
 
 
     @Override
@@ -117,7 +118,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         ligue1List.add("ASSE");
         ligue1List.add("TFC");
 
-        updateTextLabelTime();
         updateTextLabelDate();
         addItemTeamAwaySelector();
         addItemTeamHomeSelector();
@@ -176,9 +176,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         dateView.setText(formatDateTime.format(dateCalendar.getTime()));
     }
 
-    private void updateTextLabelTime(){
-        hour.setText(time);
-    }
 
     public void addItemTeamAwaySelector() {
         ArrayAdapter<String> dataAdapterAway = new ArrayAdapter<String>(this,
@@ -213,10 +210,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void updateGame(){
-        NewGame newGame = new NewGame(homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek);
+
         DateFormat df = new SimpleDateFormat("yyMMdd");
         String reportDate = df.format(date_time_object);
-        mDatabase.child(reportDate).push().setValue(newGame);
+
+        uploadId = mDatabase.child(reportDate).push().getKey();
+        NewGame newGame = new NewGame(uploadId, homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek);
+
+        mDatabase.child(reportDate).child(uploadId).setValue(newGame);
     }
 
     public void openDialogJourney (){
