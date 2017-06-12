@@ -179,15 +179,15 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                                     if(task.isSuccessful()){
                                         Log.d("TAG", "User profile update.");
                                         SignUpEmailActivity.this.finish();
-                                        startActivity(new Intent(getApplicationContext(), ModifyProfile.class));
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
 
                                     }
                                 }
                             });
-                            mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+                            mDatabase = FirebaseDatabase.getInstance().getReference("users");
                             idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            mUser = new UserModel (idUser,userName,null,0,favoriteTeam);
+                            mUser = new UserModel (idUser,userName,null,0,favoriteTeam, email);
                             mDatabase.child(idUser).setValue(mUser);
 
 

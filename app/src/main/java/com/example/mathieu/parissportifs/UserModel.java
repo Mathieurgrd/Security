@@ -11,23 +11,30 @@ import java.util.ArrayList;
 public class UserModel {
 
 
-    String userId;
-    String userName;
-    ArrayList<CompetitionModel> userCompetitions;
-    float userScorePerCompetition;
-    String favoriteTeam;
+    private String userId;
+    private String userName;
+    private ArrayList<CompetitionModel> userCompetitions;
+    private float userScorePerCompetition;
+    private String favoriteTeam;
+    private String email;
 
     private UserModel() {
     }
 
 
-    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, float userScorePerCompetition, @Nullable String favoriteTeam) {
+    public String getEmail() {
+        return email;
+    }
+
+    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, float userScorePerCompetition, @Nullable String favoriteTeam, String email) {
         this.userId = userId;
         this.userName = userName;
         this.userCompetitions = userCompetitions;
         this.userScorePerCompetition = userScorePerCompetition;
         this.favoriteTeam = favoriteTeam;
+        this.email = email;
     }
+
 
     public String getUserId() {
 
