@@ -190,6 +190,7 @@
                 String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
                 competitionDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
+
                 competitionRef = competitionDatabase.getReference("Competitions");
 
                 CompetitionModel userCompetition = new CompetitionModel(competitionName, championHShipName, UserId, userfornewCompetitionList,

@@ -140,15 +140,12 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         userDatabase = FirebaseDatabase.getInstance();
        DatabaseReference myRef = userDatabase.getReference("users/" + user.getUid());
 
-
         FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         String UserId = currentuser.getUid();
 
-
-        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam);
-        myRef.push().setValue(user);
+        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam, email );
+        myRef.setValue(user);
     }
 
     public void changeProfil() {

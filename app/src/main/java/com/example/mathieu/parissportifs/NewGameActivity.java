@@ -177,7 +177,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updateTextLabelTime(){
-        hour.setText(time);
+        hour.setText(date_time);
     }
 
     public void addItemTeamAwaySelector() {
