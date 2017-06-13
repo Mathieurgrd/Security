@@ -3,7 +3,6 @@ package com.example.mathieu.parissportifs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener {
@@ -40,8 +39,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private List<UserModel> userList;
+    private ArrayList<CompetitionModel> competitionsList;
     private Button goModifyProfil;
     private String uId;
+    private  CompetitionListAdapter mCompetitionResultAdapter;
     private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
@@ -75,7 +76,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
 
-        CompetitionListAdapter mCompetitionResultAdapter = new CompetitionListAdapter(mDatabaseCompetitionRef, this, R.layout.competitions_list_items); // APPELLE L'ADAPTER
+        mCompetitionResultAdapter = new CompetitionListAdapter(mDatabaseCompetitionRef, this, R.layout.competitions_list_items); // APPELLE L'ADAPTER
 
         mCompetitionListView.setAdapter(mCompetitionResultAdapter); //FUSION LIST ET ADAPTER
 
@@ -132,6 +133,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                             final String competitionPassword = input.getText().toString();
                             Query competitionQuery = mDatabaseCompetitionRef;
+                            final Query userQuery = database.getReference("users/").child(userId);
 //                            Query userQuery = mDatabaseUserRef.child(userId);
 
 
@@ -163,15 +165,33 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                                            CompetitionModel competitionToJoin = dataSnapshot.getValue(CompetitionModel.class);
+                                            final CompetitionModel competitionToJoin = dataSnapshot.getValue(CompetitionModel.class);
                                             pass = postSnapshot.getKey();
 
                                             if (competitionPassword.length() != 0 ) {
                                                 if (pass.equals(competitionPassword)) {
-                                                    setTitle("Succesful I DID IT !");
+
+
                                                     userList = competitionToJoin.getUserList();
-                                                    Toast.makeText(getApplicationContext(),
-                                                            "Password Matched", Toast.LENGTH_SHORT).show();
+
+                                                    userQuery.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            UserModel userToAdd = dataSnapshot.getValue(UserModel.class);
+                                                            userList.add(userToAdd);
+                                                            competitionsList = userToAdd.getUserCompetitions();
+                                                            competitionsList.add(competitionToJoin);
+                                                            mCompetitionResultAdapter.notifyDataSetChanged();
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+
                                                     return;
                                                 } else {
 

@@ -17,6 +17,9 @@ public class CompetitionModel {
     List<UserModel> userList;
     int ratingMatchScore;
     int ratingMatchResult;
+
+
+
     String competitionIdReedeemCode;
 
     private CompetitionModel() {}
@@ -58,6 +61,10 @@ public class CompetitionModel {
 
     public String getCompetitionIdReedeemCode() {
         return competitionIdReedeemCode;
+    }
+
+    public void setCompetitionIdReedeemCode(String competitionIdReedeemCode) {
+        this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
 
 
