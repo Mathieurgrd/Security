@@ -36,15 +36,14 @@
 
         <activity android:name=".SplashScreenActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:label="@string/title_activity_fullscreen"></activity>
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignUpEmailActivity">
 
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

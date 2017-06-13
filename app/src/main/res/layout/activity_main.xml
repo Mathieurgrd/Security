@@ -19,7 +19,10 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp" />
+        android:layout_marginTop="206dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextModifyPseudo"
+        app:layout_constraintVertical_bias="0.294" />
 
     <EditText
         android:id="@+id/editTextModifyPseudo"
@@ -33,7 +36,8 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        tools:layout_editor_absoluteY="254dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="323dp" />
 
     <Button
         android:id="@+id/buttonGo"
@@ -42,12 +46,27 @@
         android:layout_marginBottom="61dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Lancement du match !"
+        android:text="Rejoin ton équipe !"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteX="3dp"
         tools:layout_editor_absoluteY="399dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="125dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="@string/derni_re_ligne_droite_avant_de_rejoindre_la_comp_tition_nous_aimerions_savoir_votre_quipe_favorite_n_oublie_pas_de_choisir_un_pseudo_avant_de_rejoindre_ton_groupe_merci_et_amusez_vous_bien"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.437" />
 
 
 </android.support.constraint.ConstraintLayout>
