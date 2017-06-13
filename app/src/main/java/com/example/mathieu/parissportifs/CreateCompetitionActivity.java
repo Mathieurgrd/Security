@@ -43,6 +43,7 @@ import java.util.List;
         private FirebaseAuth.AuthStateListener mAuthListener;
         private String competitionName, championHShipName, mGroupId;
         public final static String COMPET = "compet";
+        private FirebaseUser user;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,7 @@ import java.util.List;
 
             mAuth = FirebaseAuth.getInstance();
 
-
-            FirebaseUser user = mAuth.getCurrentUser();
+             user = mAuth.getCurrentUser();
 
             if (mAuth.getCurrentUser() != null) {
                 Toast.makeText(CreateCompetitionActivity.this, "Yay you're logged !", Toast.LENGTH_LONG).show();
@@ -185,13 +185,14 @@ import java.util.List;
                 competitionRef = database.getReference("Competitions");
 
 
-                /** FirebaseDatabase database = FirebaseDatabase.getInstance();
-                 DatabaseReference myRef = database.getReference("Competitions");*/
+
                 FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
                 competitionDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
+
                 competitionRef = competitionDatabase.getReference("Competitions");
+
 
 
 
@@ -211,6 +212,46 @@ import java.util.List;
                         mGroupId = dataSnapshot.getKey();
                         userCompetition.setCompetitionIdReedeemCode(mGroupId);
                         competitionRef.child(mGroupId).setValue(userCompetition);
+
+
+                        // -----------------------------------------------------------------------------
+
+                        competitionRef.child(mGroupId).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                                e
+
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
+
+
+                        // -----------------------------------------------------------------------------
 
                         Intent intent = new Intent(CreateCompetitionActivity.this, PickContactActivity.class);
                         intent.putExtra("oui", mGroupId);

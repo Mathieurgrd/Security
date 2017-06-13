@@ -71,6 +71,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
         database = FirebaseDatabase.getInstance();
+        // CHeck if user is in competition ArrayList, for(datasnap) ;
         mDatabaseCompetitionRef = database.getReference("Competitions");
         mDatabaseUserRef = database.getReference("users");
 
