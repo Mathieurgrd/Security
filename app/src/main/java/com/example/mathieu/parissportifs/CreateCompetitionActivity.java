@@ -27,7 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-    public class CreateCompetitionActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+    public class CreateCompetitionActivity extends AppCompatActivity implements
+            View.OnClickListener, AdapterView.OnItemSelectedListener {
 
         private FirebaseDatabase database;
         private DatabaseReference competitionRef;
@@ -36,7 +37,7 @@ import java.util.List;
         private ImageView frenchFlag;
         private List<String> championshipList;
         private EditText etnameCompetition;
-        private DatabaseReference myRef;
+        private DatabaseReference myRef, finalPush;
         private List<UserModel> userfornewCompetitionList;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
@@ -56,7 +57,8 @@ import java.util.List;
              user = mAuth.getCurrentUser();
 
             if (mAuth.getCurrentUser() != null) {
-                Toast.makeText(CreateCompetitionActivity.this, "Yay you're logged !", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateCompetitionActivity.this,
+                        "Yay you're logged !", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(CreateCompetitionActivity.this, "FAIL !", Toast.LENGTH_LONG).show();
 
@@ -174,7 +176,8 @@ import java.util.List;
                 String competitionName = etnameCompetition.getText().toString();
 
                 if (competitionName.length() == 0) {
-                    Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name",
+                            Toast.LENGTH_SHORT).show();
                 }
 
                 // Write a message to the database
@@ -196,7 +199,8 @@ import java.util.List;
 
 
 
-                final CompetitionModel userCompetition = new CompetitionModel(competitionName, championHShipName, UserId, userfornewCompetitionList,
+                final CompetitionModel userCompetition = new CompetitionModel(competitionName,
+                        championHShipName, UserId, userfornewCompetitionList,
                         scaleScore, scaleVictory, null);
 
 
@@ -205,6 +209,9 @@ import java.util.List;
 
 
 
+                //Demander a Edward !
+
+                //Récupération de la Key() pour indexation dans la Database. Le Noeud competitionRef renvoie à Competition
                 competitionRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -216,11 +223,26 @@ import java.util.List;
 
                         // -----------------------------------------------------------------------------
 
-                        competitionRef.child(mGroupId).addChildEventListener(new ChildEventListener() {
+                        competitionRef.child(mGroupId)
+                                .addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                                e
+                                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+                                        finalPush = competitionRef.child(mGroupId).child("Members :/")
+                                                .child(currentUser.getUserId());
+
+                                        finalPush.setValue(currentUser);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
 
                             }
 
@@ -253,7 +275,8 @@ import java.util.List;
 
                         // -----------------------------------------------------------------------------
 
-                        Intent intent = new Intent(CreateCompetitionActivity.this, PickContactActivity.class);
+                        Intent intent = new Intent(CreateCompetitionActivity.this,
+                                PickContactActivity.class);
                         intent.putExtra("oui", mGroupId);
 
 
