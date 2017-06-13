@@ -25,14 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText inputEmail, inputPassword, verifyPassword, inputUserName;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
-    private Spinner favoriteTeamSelector;
     private String favoriteTeam;
     private ProgressDialog progressDialog;
     private String email;
@@ -51,8 +50,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         mAuth = FirebaseAuth.getInstance();
 
 
-        favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
-        favoriteTeamSelector.setOnItemSelectedListener(this);
+
 
 
         //EditText et ProgressBar
@@ -69,7 +67,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.buttonSignUp).setOnClickListener(this);
         findViewById(R.id.buttonBack).setOnClickListener(this);
 
-        addItemFavoriteTeamSelector();
+
 
         // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -92,38 +90,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         // [END auth_state_listener]
     }
 
-    public void addItemFavoriteTeamSelector() {
-
-
-        List<String> ligue1List = new ArrayList<String>();
-        ligue1List.add("Select your Favorite Team !");
-        ligue1List.add("Angers SCO");
-        ligue1List.add("AC Bastia");
-        ligue1List.add("Girondins Bordeaux");
-        ligue1List.add("Caen");
-        ligue1List.add("Dijon FC");
-        ligue1List.add("EA Guingamp");
-        ligue1List.add("Lorient");
-        ligue1List.add("Lille");
-        ligue1List.add("Lyon");
-        ligue1List.add("Marseille");
-        ligue1List.add("Monaco");
-        ligue1List.add("Metz");
-        ligue1List.add("Montpellier");
-        ligue1List.add("Nancy");
-        ligue1List.add("Nantes");
-        ligue1List.add("OGC Nice");
-        ligue1List.add("PSG");
-        ligue1List.add("Rennes");
-        ligue1List.add("ASSE");
-        ligue1List.add("TFC");
-
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, ligue1List);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        favoriteTeamSelector.setAdapter(dataAdapter);
-    }
 
     private void createAccount() {
         email = inputEmail.getText().toString().trim();
@@ -191,9 +157,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                             mDatabase.child(idUser).setValue(mUser);
 
 
-
-
-
                         } else{
 
                             Toast.makeText(SignUpEmailActivity.this,"NO",Toast.LENGTH_LONG).show();
@@ -204,17 +167,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        favoriteTeam = parent.getItemAtPosition(position).toString();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     @Override
     public void onClick(View v) {
