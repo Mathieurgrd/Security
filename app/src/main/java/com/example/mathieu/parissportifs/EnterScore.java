@@ -32,8 +32,13 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private NewGame newGame;
     private DatabaseReference mDatabase;
     private String date_firebase;
+    private String winnerHome = "HOME";
+    private String winnerAway = "AWAY";
+    private String winnerNull= "NULL";
     private DateFormat dff;
     private String uploadId;
+    private int compareScoreHome;
+    private int compareScoreAway;
 
 
     @Override
@@ -138,6 +143,29 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 .show();
 
     }
+    private void checkWinnerGame(){
+
+        compareScoreAway = newGame.getmScoreAwayTeam();
+        compareScoreHome = newGame.getmScoreHomeTeam();
+        if (compareScoreHome > compareScoreAway){
+            newGame.setmWinner(winnerHome);
+        } else if (compareScoreAway > compareScoreHome){
+            newGame.setmWinner(winnerAway);
+        } else
+         {
+            newGame.setmWinner(winnerNull);
+        }
+        uploadId = newGame.getmIdGame();
+        dff = new SimpleDateFormat("yyMMdd");
+        date_firebase = dff.format(newGame.getmDate());
+        newGame.setmStatus("TERMINE");
+        mDatabase.child(date_firebase).child(uploadId).setValue(newGame);
+
+
+
+
+
+    }
 
     public void onClick (View v) {
         if (v == homeScore) {
@@ -153,11 +181,9 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         }
 
         if (v == buttonUpload) {
-            uploadId = newGame.getmIdGame();
-            dff = new SimpleDateFormat("yyMMdd");
-            date_firebase = dff.format(newGame.getmDate());
-            newGame.setmStatus("TERMINE");
-            mDatabase.child(date_firebase).child(uploadId).setValue(newGame);
+
+            checkWinnerGame();
+
         }
     }
 
