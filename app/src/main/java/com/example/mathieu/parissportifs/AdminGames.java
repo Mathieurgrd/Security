@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import java.util.Date;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarListener;
 
-public class AdminGames extends AppCompatActivity {
+public class AdminGames extends AppCompatActivity  {
 
     private HorizontalCalendar horizontalCalendar;
     private ListView mGameListView;
@@ -54,7 +55,7 @@ public class AdminGames extends AppCompatActivity {
         defaultDate.add(Calendar.MONTH, -1);
         defaultDate.add(Calendar.DAY_OF_WEEK, +5);
 
-        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarViewUser)
                 .startDate(startDate.getTime())
                 .endDate(endDate.getTime())
                 .datesNumberOnScreen(5)
@@ -83,6 +84,7 @@ public class AdminGames extends AppCompatActivity {
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
                 mGameListAdapter.notifyDataSetChanged();
+
             }
 
         });
@@ -110,6 +112,21 @@ public class AdminGames extends AppCompatActivity {
             }
         });
 
+        mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                NewGame newGame = (NewGame) parent.getItemAtPosition(position);
+
+                Intent i = new Intent(AdminGames.this, EnterScore.class);
+                i.putExtra("newGame", newGame);
+                startActivity(i);
+            }
+        });
+
+        Toast.makeText(AdminGames.this, String.valueOf(System.currentTimeMillis()), Toast.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -133,5 +150,7 @@ public class AdminGames extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
