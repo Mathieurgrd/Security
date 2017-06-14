@@ -24,6 +24,8 @@ import java.util.TimerTask;
 public class GameListAdapter extends Firebaseadapter <NewGame> {
 
     TextView homeTeam;
+    TextView scoreHomeTeam;
+    TextView scoreAwayTeam;
     TextView awayTeam;
     TextView hour;
     public DatabaseReference mDatabaseref;
@@ -47,6 +49,8 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
         hour = (TextView) view.findViewById(R.id.textViewHour);
         homeTeam = (TextView) view.findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) view.findViewById(R.id.textViewAwayTeam);
+        scoreHomeTeam = (TextView) view.findViewById(R.id.textViewScoreHome);
+        scoreAwayTeam = (TextView) view.findViewById(R.id.textViewScoreAway);
 
 
         if (mNewGame.getmStatus().equals("OUVERT")){
@@ -62,9 +66,12 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
             hour.setText("MATCH EN COURS");
 
+
         } else {
 
             hour.setText("TERMINE");
+            scoreHomeTeam.setText(String.valueOf(mNewGame.getmScoreHomeTeam()));
+            scoreAwayTeam.setText(String.valueOf(mNewGame.getmScoreAwayTeam() ));
         }
 
         homeTeam.setText(String.valueOf(mNewGame.getmHomeTeam()));

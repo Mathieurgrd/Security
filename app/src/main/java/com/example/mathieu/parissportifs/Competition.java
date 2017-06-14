@@ -104,7 +104,7 @@ public class Competition extends Fragment {
                 NewGame newGame = (NewGame) parent.getItemAtPosition(position);
 
                 if(newGame.getmStatus().equals("OUVERT")){
-                    Intent i = new Intent(getActivity(), EnterScore.class);
+                    Intent i = new Intent(getActivity(), BetGame.class);
                     i.putExtra("newGame", newGame);
                     startActivity(i);
                 } else {
