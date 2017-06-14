@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         if (user !=  null){
-            startActivity(new Intent(LoginActivity.this, CreateOrJoinCompetition.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             LoginActivity.this.finish();
         }
 
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void goMainScreen() {
-        Intent intent = new Intent(this, ModifyProfile.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -325,7 +325,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    }
+}
 
 
 

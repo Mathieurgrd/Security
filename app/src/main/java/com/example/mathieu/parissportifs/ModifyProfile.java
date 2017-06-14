@@ -26,8 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,13 +49,13 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
-    private EditText userEmail, userName;
+    private EditText etEmail, etName;
     private CircleImageView civProfilePic;
     private TextView modifyPicture, modifyPassword, removeAccount, logOut;
     private Button save;
     private FirebaseUser user;
     private String pseudo;
-    private String email;
+    private String email, favoriteTeam;
     private Uri photoUrl;
     private FirebaseDatabase userDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -73,8 +77,8 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         user = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("users_avatar");
 
-        userEmail = (EditText) findViewById(R.id.editTextModifyEmail);
-        userName = (EditText) findViewById(R.id.editTextModifyPseudo);
+        etEmail = (EditText) findViewById(R.id.editTextModifyEmail);
+        etName = (EditText) findViewById(R.id.editTextModifyPseudo);
 
         civProfilePic = (CircleImageView)findViewById(R.id.profile_image);
         civProfilePic.setOnClickListener(this);
@@ -84,8 +88,8 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         email = user.getEmail();
         photoUrl = user.getPhotoUrl();
 
-        userEmail.setText(email);
-        userName.setText(pseudo);
+        etEmail.setText(email);
+        etName.setText(pseudo);
         civProfilePic.setImageURI(photoUrl);
 
         modifyPicture = (TextView) findViewById(R.id.textViewModifyPicture);
@@ -135,20 +139,51 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
     public void pushUserOnFirebase() {
 
         Intent intent = getIntent();
-        String favoriteTeam = intent.getStringExtra("TAG");
 
         userDatabase = FirebaseDatabase.getInstance();
        DatabaseReference myRef = userDatabase.getReference("users/" + user.getUid());
 
 
-        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    UserModel userActuel = dataSnapshot.getValue(UserModel.class);
+                    email = userActuel.getEmail();
+                    etEmail.setText(userActuel.getEmail());
+                    favoriteTeam = userActuel.getFavoriteTeam();
+                    if (email.equals(userActuel.getUserName()) || email.length() != 0 ){
+
+                        email = etName.getText().toString();
+                    }
+                    etName.setText(userActuel.getUserName());
+                    if (pseudo.equals(userActuel.getUserName()) || pseudo.length() != 0 ){
+
+                        pseudo = etName.getText().toString();
+                    }
+
+
+
+
+                    // Get back all competitions where the playrer is actually occuring .
+
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
 
         String UserId = currentuser.getUid();
 
-
-        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam);
-        myRef.push().setValue(user);
+        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam, email );
+        myRef.setValue(user);
     }
 
     public void changeProfil() {
@@ -156,8 +191,8 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        String newEmail = userEmail.getText().toString().trim();
-        String newPseudo = userName.getText().toString().trim();
+        String newEmail = etEmail.getText().toString().trim();
+        String newPseudo = etName.getText().toString().trim();
 
         //Uri newPhoto = userImg.
 

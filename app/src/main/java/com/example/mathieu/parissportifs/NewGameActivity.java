@@ -187,6 +187,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
+
     public void addItemTeamAwaySelector() {
         ArrayAdapter<String> dataAdapterAway = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ligue1List);
