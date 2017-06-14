@@ -22,11 +22,12 @@ public class NewGame implements Serializable {
     private Date mOurDate;
     private String mReportDate;
     private String mStatus;
+    private String mWinner;
 
     private NewGame () {
     }
 
-    public NewGame (String idGame, String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek, Date ourDate, String reportDate, String status){
+    public NewGame (String idGame, String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek, Date ourDate, String reportDate, String status,String winner){
         mHomeTeam = homeTeam;
         mAwayTeam = awayTeam;
         mScoreHomeTeam = scoreHomeTeam;
@@ -39,6 +40,7 @@ public class NewGame implements Serializable {
         mOurDate = ourDate;
         mReportDate = reportDate;
         mStatus = status;
+        mWinner = winner;
 
 
     }
@@ -135,5 +137,13 @@ public class NewGame implements Serializable {
 
     public void setmStatus(String mStatus) {
         this.mStatus = mStatus;
+    }
+
+    public String getmWinner() {
+        return mWinner;
+    }
+
+    public void setmWinner(String mWinner) {
+        this.mWinner = mWinner;
     }
 }
