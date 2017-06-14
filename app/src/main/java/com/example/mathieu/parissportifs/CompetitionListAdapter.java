@@ -12,7 +12,6 @@ public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
 
     TextView CompetitionName;
     TextView ChampionshipName;
-    ImageView CaptainBrassard;
 
 
 
@@ -34,9 +33,8 @@ public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
 
         ChampionshipName.setText(String.valueOf(mCompetition.getChamionshipName()));
 
-
-
     }
+
 }
 
 

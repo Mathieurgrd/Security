@@ -154,9 +154,9 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
         if (v == buttonUpload) {
             uploadId = newGame.getmIdGame();
-            NewGame updateGame = new NewGame(uploadId,newGame.getmHomeTeam(),newGame.getmAwayTeam(),newGame.getmScoreHomeTeam(),newGame.getmScoreAwayTeam(),newGame.getmDate(),newGame.getmHour(),newGame.getmMinute(),newGame.getmMatchWeek());
             dff = new SimpleDateFormat("yyMMdd");
             date_firebase = dff.format(newGame.getmDate());
+            newGame.setmStatus("TERMINE");
             mDatabase.child(date_firebase).child(uploadId).setValue(newGame);
         }
     }

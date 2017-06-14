@@ -55,7 +55,7 @@ public class AdminGames extends AppCompatActivity  {
         defaultDate.add(Calendar.MONTH, -1);
         defaultDate.add(Calendar.DAY_OF_WEEK, +5);
 
-        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarViewUser)
                 .startDate(startDate.getTime())
                 .endDate(endDate.getTime())
                 .datesNumberOnScreen(5)
@@ -124,6 +124,8 @@ public class AdminGames extends AppCompatActivity  {
                 startActivity(i);
             }
         });
+
+        Toast.makeText(AdminGames.this, String.valueOf(System.currentTimeMillis()), Toast.LENGTH_LONG).show();
 
     }
 

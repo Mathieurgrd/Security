@@ -19,11 +19,14 @@ public class NewGame implements Serializable {
     private int mMinute;
     private int mMatchWeek;
     private String mIdGame;
+    private Date mOurDate;
+    private String mReportDate;
+    private String mStatus;
 
     private NewGame () {
     }
 
-    public NewGame (String idGame, String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek){
+    public NewGame (String idGame, String homeTeam, String awayTeam, int scoreHomeTeam, int scoreAwayTeam, Date date, int hour, int minute, int matchWeek, Date ourDate, String reportDate, String status){
         mHomeTeam = homeTeam;
         mAwayTeam = awayTeam;
         mScoreHomeTeam = scoreHomeTeam;
@@ -33,6 +36,9 @@ public class NewGame implements Serializable {
         mMinute = minute;
         mMatchWeek =  matchWeek;
         mIdGame = idGame;
+        mOurDate = ourDate;
+        mReportDate = reportDate;
+        mStatus = status;
 
 
     }
@@ -105,5 +111,29 @@ public class NewGame implements Serializable {
 
     public void setmIdGame(String mIdGame) {
         this.mIdGame = mIdGame;
+    }
+
+    public Date getmOurDate() {
+        return mOurDate;
+    }
+
+    public void setmOurDate(Date mOurDate) {
+        this.mOurDate = mOurDate;
+    }
+
+    public String getmReportDate() {
+        return mReportDate;
+    }
+
+    public void setmReportDate(String mReportDate) {
+        this.mReportDate = mReportDate;
+    }
+
+    public String getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(String mStatus) {
+        this.mStatus = mStatus;
     }
 }

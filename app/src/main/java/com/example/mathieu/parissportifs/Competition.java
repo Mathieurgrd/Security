@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -93,6 +94,8 @@ public class Competition extends Fragment {
             }
         });
 
+
+
         mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -100,9 +103,13 @@ public class Competition extends Fragment {
 
                 NewGame newGame = (NewGame) parent.getItemAtPosition(position);
 
-                Intent i = new Intent(getActivity(), EnterScore.class);
-                i.putExtra("newGame", newGame);
-                startActivity(i);
+                if(newGame.getmStatus().equals("OUVERT")){
+                    Intent i = new Intent(getActivity(), EnterScore.class);
+                    i.putExtra("newGame", newGame);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getActivity(), "Tu ne peux plus pronostiquer cette rencontre !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
