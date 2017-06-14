@@ -32,11 +32,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.mathieu.parissportifs.Constants.TEAM;
+import static com.example.mathieu.parissportifs.Constants.USER;
+
 public class MainActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
 
-    public final static String USER = "users/";
-    public final static String TEAM = "favoriteTeam/";
-    private static final String TAG = "TAG";
+
 
     private EditText editTextModifyPseudo;
     private FirebaseAuth mAuth;

@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import static com.example.mathieu.parissportifs.Constants.ADMIN_USER;
+
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener {
 
     private ListView mCompetitionListView;
@@ -42,7 +44,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private List<UserModel> userList;
     private Button goModifyProfil;
     private String uId;
-    private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
     @Override

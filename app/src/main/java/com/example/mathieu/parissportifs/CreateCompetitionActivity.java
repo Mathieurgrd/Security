@@ -41,7 +41,7 @@
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
         private String competitionName, championHShipName;
-        public final static String COMPET = "compet";
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
