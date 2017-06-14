@@ -44,6 +44,7 @@ import java.util.List;
         private String competitionName, championHShipName, mGroupId, checkKey;
         public final static String COMPET = "compet";
         private FirebaseUser user;
+        private Intent intent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -247,10 +248,19 @@ import java.util.List;
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+
+
                                 finalPush = competitionRef.child(mGroupId).child("Members :/")
                                         .child(currentUser.getUserId());
 
                                 finalPush.setValue(currentUser);
+                                intent = new Intent(CreateCompetitionActivity.this,
+                                        PickContactActivity.class);
+
+                                intent.putExtra("oui", mGroupId);
+
+                                //competitionRef.removeEventListener(this);
+                                startActivity(intent);
                             }
 
                             @Override
@@ -276,68 +286,6 @@ import java.util.List;
 
 
 
-
-
-                //Demander a Edward !
-
-                //Récupération de la Key() pour indexion dans la Database. Le Noeud competitionRef renvoie à Competition
-                /** competitionRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                        mGroupId = dataSnapshot.getKey();
-                        //MgroupId renvoie au child qui correspond a l'ID de la competition qui vient d'être crée par l'user
-                        userCompetition.setCompetitionIdReedeemCode(mGroupId);
-                        competitionRef.child(mGroupId).setValue(userCompetition);
-
-                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-                                finalPush = competitionRef.child(mGroupId).child("Members :/")
-                                        .child(currentUser.getUserId());
-
-                                finalPush.setValue(currentUser);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                }); */
-
-                // -----------------------------------------------------------------------------
-
-                Intent intent = new Intent(CreateCompetitionActivity.this,
-                        PickContactActivity.class);
-                intent.putExtra("oui", mGroupId);
-
-
-                //competitionRef.removeEventListener(this);
-                startActivity(intent);
 
 
                 finish();
