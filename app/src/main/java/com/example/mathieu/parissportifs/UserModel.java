@@ -58,4 +58,28 @@ public class UserModel {
 
         return userScorePerCompetition;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserCompetitions(ArrayList<CompetitionModel> userCompetitions) {
+        this.userCompetitions = userCompetitions;
+    }
+
+    public void setUserScorePerCompetition(float userScorePerCompetition) {
+        this.userScorePerCompetition = userScorePerCompetition;
+    }
+
+    public void setFavoriteTeam(String favoriteTeam) {
+        this.favoriteTeam = favoriteTeam;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

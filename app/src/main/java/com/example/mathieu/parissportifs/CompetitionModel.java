@@ -11,16 +11,13 @@ import java.util.List;
 public class CompetitionModel {
 
 
-    String competitionName;
-    String chamionshipName;
-    String userAdmin;
-    List<UserModel> userList;
-    int ratingMatchScore;
-    int ratingMatchResult;
-
-
-
-    String competitionIdReedeemCode;
+   public String competitionName;
+   public String chamionshipName;
+   public String userAdmin;
+   public List<UserModel> userList;
+   public int ratingMatchScore;
+   public int ratingMatchResult;
+   public String competitionIdReedeemCode;
 
     private CompetitionModel() {}
 

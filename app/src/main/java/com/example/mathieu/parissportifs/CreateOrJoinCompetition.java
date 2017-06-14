@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -212,8 +211,111 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                                                     competitionRef = database.getReference("Competitions");
 
+                                                    DatabaseReference database = FirebaseDatabase
+                                                            .getInstance().getReference();
 
-                                                    competitionRef.child(pass)
+                                                    myRef = database.child("users/" + uId);
+
+
+                                                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                            UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+
+
+                                                            finalPush = competitionRef.child(pass).child("Members :")
+                                                                    .child(currentUser.getUserId());
+
+                                                            finalPush.setValue(currentUser);
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                    //  Query addUserQuery = competitionRef.child(pass);
+                                                           // .orderByChild("competitionIdReedeemCode").equalTo(pass);
+
+
+                                                   /** addUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                            CompetitionModel competitionModel = dataSnapshot.getValue(CompetitionModel.class);
+
+                                                            DatabaseReference database = FirebaseDatabase
+                                                                    .getInstance().getReference();
+
+                                                            myRef = database.child("users/" + uId);
+
+
+                                                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                                    UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+
+
+                                                                    finalPush = competitionRef.child(pass).child("Members :/")
+                                                                            .child(currentUser.getUserId());
+
+                                                                    finalPush.setValue(currentUser);
+
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    }); */
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                    /**   competitionRef.child(pass)
                                                             .addChildEventListener(new ChildEventListener() {
                                                                 @Override
                                                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -228,7 +330,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                                                                         @Override
                                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                                             UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-                                                                            finalPush = competitionRef.child(pass).child("Members :/")
+                                                                            finalPush = competitionRef.child(pass).child("Members :")
                                                                                     .child(currentUser.getUserId());
 
                                                                             finalPush.setValue(currentUser);
@@ -262,7 +364,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                                                                 public void onCancelled(DatabaseError databaseError) {
 
                                                                 }
-                                                            });
+                                                            }); */
 
 
                                                     return;
