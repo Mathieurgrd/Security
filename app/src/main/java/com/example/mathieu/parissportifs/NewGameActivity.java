@@ -40,6 +40,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner teamAway;
     private String homeTeam;
     private String awayTeam;
+    private String winner = "O";
     private Button saveGame;
     private int scoreHome = -1;
     private int scoreAway = -1;
@@ -226,7 +227,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         reportDate = df.format(date_time_object);
 
         uploadId = mDatabase.child(reportDate).push().getKey();
-        NewGame newGame = new NewGame(uploadId, homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek,mydate,reportDate,"OUVERT");
+        NewGame newGame = new NewGame(uploadId, homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek,mydate,reportDate,"OUVERT",winner);
 
         mDatabase.child(reportDate).child(uploadId).setValue(newGame);
     }

@@ -38,18 +38,15 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme" />
+            android:label="@string/title_activity_fullscreen" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignUpEmailActivity"></activity>
-        <activity android:name=".SplashScreenActivity">
 
-            android:label="@string/title_activity_fullscreen"></activity>
-        <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".SignUpEmailActivity">
+            android:label="@string/title_activity_fullscreen">
 
-        </activity>
-        <activity android:name=".LoginActivity">
+
+
+        <activity android:name=".AdminGames">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +71,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".AdminGames">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
