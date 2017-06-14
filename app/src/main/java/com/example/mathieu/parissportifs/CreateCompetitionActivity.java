@@ -17,8 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.ChildEventListener;
-    import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -42,7 +41,7 @@ import java.util.List;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
-        private String competitionName, championHShipName, mGroupId;
+        private String competitionName, championHShipName, mGroupId, checkKey;
         public final static String COMPET = "compet";
         private FirebaseUser user;
 
@@ -54,7 +53,7 @@ import java.util.List;
 
             mAuth = FirebaseAuth.getInstance();
 
-             user = mAuth.getCurrentUser();
+            user = mAuth.getCurrentUser();
 
             if (mAuth.getCurrentUser() != null) {
                 Toast.makeText(CreateCompetitionActivity.this,
@@ -165,7 +164,6 @@ import java.util.List;
         };
 
 
-
         @Override
         public void onClick(View v) {
             int i = v.getId();
@@ -173,7 +171,7 @@ import java.util.List;
             if (i == R.id.button_validate_mycompetition) {
 
 
-                String competitionName = etnameCompetition.getText().toString();
+                final String competitionName = etnameCompetition.getText().toString();
 
                 if (competitionName.length() == 0) {
                     Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name",
@@ -188,7 +186,6 @@ import java.util.List;
                 competitionRef = database.getReference("Competitions");
 
 
-
                 FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
@@ -197,69 +194,63 @@ import java.util.List;
                 competitionRef = competitionDatabase.getReference("Competitions");
 
 
-
-
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
                         championHShipName, UserId, userfornewCompetitionList,
                         scaleScore, scaleVictory, null);
 
 
-
                 competitionRef.push().setValue(userCompetition);
 
 
+                // ----------------------------------------------
 
-                //Demander a Edward !
 
-                //Récupération de la Key() pour indexation dans la Database. Le Noeud competitionRef renvoie à Competition
-                competitionRef.addChildEventListener(new ChildEventListener() {
+                competitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        mGroupId = dataSnapshot.getKey();
-                        userCompetition.setCompetitionIdReedeemCode(mGroupId);
-                        competitionRef.child(mGroupId).setValue(userCompetition);
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
 
 
-                        // -----------------------------------------------------------------------------
+                            mGroupId = child.getKey();
+                            DatabaseReference checkChild = competitionRef.child(mGroupId);
 
-                        competitionRef.child(mGroupId)
-                                .addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            checkChild.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-                                        finalPush = competitionRef.child(mGroupId).child("Members :/")
-                                                .child(currentUser.getUserId());
+                                    CompetitionModel competitionModel = dataSnapshot.getValue(CompetitionModel.class);
+                                    if (competitionModel.getCompetitionName().equals(competitionName)){
 
-                                        finalPush.setValue(currentUser);
-                                    }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                        //MgroupId renvoie au child qui correspond a l'ID de la competition qui vient d'être crée par l'user
+                                        userCompetition.setCompetitionIdReedeemCode(mGroupId);
+                                        competitionRef.child(mGroupId).setValue(userCompetition);
+
 
                                     }
-                                });
+                                }
 
-                            }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
+                                }
+                            });
+
+
+
+
+                        }
+
+
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+                                finalPush = competitionRef.child(mGroupId).child("Members :/")
+                                        .child(currentUser.getUserId());
 
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                                finalPush.setValue(currentUser);
                             }
 
                             @Override
@@ -271,27 +262,54 @@ import java.util.List;
 
 
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
 
 
-                        // -----------------------------------------------------------------------------
 
-                        Intent intent = new Intent(CreateCompetitionActivity.this,
-                                PickContactActivity.class);
-                        intent.putExtra("oui", mGroupId);
+                });
 
 
 
-                        competitionRef.removeEventListener(this);
-                        startActivity(intent);
 
 
-                        finish();
 
+                //Demander a Edward !
 
+                //Récupération de la Key() pour indexion dans la Database. Le Noeud competitionRef renvoie à Competition
+                /** competitionRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        mGroupId = dataSnapshot.getKey();
+                        //MgroupId renvoie au child qui correspond a l'ID de la competition qui vient d'être crée par l'user
+                        userCompetition.setCompetitionIdReedeemCode(mGroupId);
+                        competitionRef.child(mGroupId).setValue(userCompetition);
+
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+                                finalPush = competitionRef.child(mGroupId).child("Members :/")
+                                        .child(currentUser.getUserId());
+
+                                finalPush.setValue(currentUser);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
 
                     }
 
@@ -309,24 +327,25 @@ import java.util.List;
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                }); */
+
+                // -----------------------------------------------------------------------------
+
+                Intent intent = new Intent(CreateCompetitionActivity.this,
+                        PickContactActivity.class);
+                intent.putExtra("oui", mGroupId);
 
 
-
-                 /** mGroupId = competitionRef.push().getKey();
-
-                competitionRef.child(mGroupId).setValue(new CompetitionModel(competitionName, championHShipName, UserId, userfornewCompetitionList,
-                        scaleScore, scaleVictory, mGroupId));
-                competitionRef.push().setValue(userCompetition); */
+                //competitionRef.removeEventListener(this);
+                startActivity(intent);
 
 
-                }
+                finish();
+
+
             }
-
-
             // Spinners selection methods
-
-
         }
+    }
 
 
