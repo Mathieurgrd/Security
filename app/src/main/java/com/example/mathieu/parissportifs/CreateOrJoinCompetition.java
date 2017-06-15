@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener {
+public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView mCompetitionListView;
     private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
@@ -36,13 +36,14 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private Spinner championshipSelector;
     private String pass, userId, competitionKey;
     private FirebaseDatabase database;
-    private DatabaseReference competitionRef, myRef, finalPush;
+    private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private List<UserModel> userList;
     private ArrayList<CompetitionModel> competitionsList;
     private Button goModifyProfil;
     private String uId;
+
     private CompetitionListAdapter mCompetitionResultAdapter;
     private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
@@ -75,45 +76,13 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
         database = FirebaseDatabase.getInstance();
-        // CHeck if user is in competition ArrayList, for(datasnap) ;
-        /**
-        mDatabaseCompetitionRef = database.getReference("Competitions");
-        mDatabaseCompetitionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int childCount = (int) dataSnapshot.getChildrenCount();
-                for(int i = 0; i <= childCount; i++) {
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
-                     CompetitionModel usersCompetitionforList = dataSnapshot.getValue(CompetitionModel.class);
-                        competitionKey = usersCompetitionforList.getCompetitionIdReedeemCode();
-
-                        AdapterQuery = mDatabaseCompetitionRef.orderByChild("Members :").equalTo(uId);
-
-
-
-
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-         */
-
-
 
         mDatabaseCompetitionRef = database.getReference("Competitions");
 
         mDatabaseUserRef = database.getReference("users");
 
         mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
+
 
         mCompetitionResultAdapter = new CompetitionListAdapter(mDatabaseCompetitionRef, this,
                 R.layout.competitions_list_items); // APPELLE L'ADAPTER
@@ -122,18 +91,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         mCompetitionResultAdapter.notifyDataSetChanged();
 
-
-        mCompetitionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                startActivity(new Intent(CreateOrJoinCompetition.this, Navigation.class));
+        mCompetitionListView.setOnItemClickListener(this);
 
 
-            }
-        });
+
     }
 
 
@@ -171,23 +132,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                             final String competitionPassword = input.getText().toString();
                             final Query competitionQuery = mDatabaseCompetitionRef;
-                            // final Query userQuery = database.getReference("users/").child(userId);
-//                            Query userQuery = mDatabaseUserRef.child(userId);
 
-
-                            /**   userQuery.addValueEventListener(new ValueEventListener() {
-
-                            @Override public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-                            }
-
-                            @Override public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                            });
-                             */
                             pass = "";
 
                             competitionQuery.addValueEventListener(new ValueEventListener() {
@@ -238,135 +183,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                                                     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                    //  Query addUserQuery = competitionRef.child(pass);
-                                                           // .orderByChild("competitionIdReedeemCode").equalTo(pass);
-
-
-                                                   /** addUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                            CompetitionModel competitionModel = dataSnapshot.getValue(CompetitionModel.class);
-
-                                                            DatabaseReference database = FirebaseDatabase
-                                                                    .getInstance().getReference();
-
-                                                            myRef = database.child("users/" + uId);
-
-
-                                                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                                    UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-
-
-                                                                    finalPush = competitionRef.child(pass).child("Members :/")
-                                                                            .child(currentUser.getUserId());
-
-                                                                    finalPush.setValue(currentUser);
-
-                                                                }
-
-                                                                @Override
-                                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                                }
-                                                            });
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                        }
-                                                    }); */
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                    /**   competitionRef.child(pass)
-                                                            .addChildEventListener(new ChildEventListener() {
-                                                                @Override
-                                                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                                                                    DatabaseReference database = FirebaseDatabase
-                                                                            .getInstance().getReference();
-
-                                                                    myRef = database.child("users/" + uId);
-
-
-                                                                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                            UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-                                                                            finalPush = competitionRef.child(pass).child("Members :")
-                                                                                    .child(currentUser.getUserId());
-
-                                                                            finalPush.setValue(currentUser);
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                                        }
-                                                                    });
-
-                                                                }
-
-                                                                @Override
-                                                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-
-                                                                }
-
-                                                                @Override
-                                                                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                                }
-                                                            }); */
-
-
                                                     return;
                                                 } else {
 
@@ -399,6 +215,31 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
             alertDialog.show();
         }
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //goToCompetition = mCompetitionResultAdapter.getItem(position);
+        //String key = mCompetitionResultAdapter.getRef(position).getKey();
+        //String postKey = competitionModel.get(position).getKey();
+        //String postKey = mCompetitionResultAdapter.getItemId(position);
+
+        String postKey = mCompetitionResultAdapter.getmKey(position);
+
+       /** Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
+        intent.putExtra(postKey, "postkey"); */
+
+
+                Toast toast = Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT);
+        toast.show();
+
+        //startActivity(intent);
+        //CreateOrJoinCompetition.this.finish();
+
+        // startActivity(new Intent(CreateOrJoinCompetition.this, Navigation.class));
+
     }
 }
 
