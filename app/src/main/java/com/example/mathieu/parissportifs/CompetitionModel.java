@@ -11,13 +11,13 @@ import java.util.List;
 public class CompetitionModel {
 
 
-    String competitionName;
-    String chamionshipName;
-    String userAdmin;
-    List<UserModel> userList;
-    int ratingMatchScore;
-    int ratingMatchResult;
-    String competitionIdReedeemCode;
+   public String competitionName;
+   public String chamionshipName;
+   public String userAdmin;
+   public List<UserModel> userList;
+   public int ratingMatchScore;
+   public int ratingMatchResult;
+   public String competitionIdReedeemCode;
 
     private CompetitionModel() {}
 
@@ -52,12 +52,40 @@ public class CompetitionModel {
         return ratingMatchScore;
     }
 
+    public void setCompetitionName(String competitionName) {
+        this.competitionName = competitionName;
+    }
+
+    public void setChamionshipName(String chamionshipName) {
+        this.chamionshipName = chamionshipName;
+    }
+
+    public void setUserAdmin(String userAdmin) {
+        this.userAdmin = userAdmin;
+    }
+
+    public void setUserList(List<UserModel> userList) {
+        this.userList = userList;
+    }
+
+    public void setRatingMatchScore(int ratingMatchScore) {
+        this.ratingMatchScore = ratingMatchScore;
+    }
+
+    public void setRatingMatchResult(int ratingMatchResult) {
+        this.ratingMatchResult = ratingMatchResult;
+    }
+
     public int getRatingMatchResult() {
         return ratingMatchResult;
     }
 
     public String getCompetitionIdReedeemCode() {
         return competitionIdReedeemCode;
+    }
+
+    public void setCompetitionIdReedeemCode(String competitionIdReedeemCode) {
+        this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
 
 
