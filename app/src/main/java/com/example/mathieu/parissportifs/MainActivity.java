@@ -13,10 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,22 +32,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
+
+    public final static String USER = "users/";
+    public final static String TEAM = "favoriteTeam/";
+    private static final String TAG = "TAG";
+
     private EditText editTextModifyPseudo;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
-    private FirebaseDatabase userDatabase;
     private Spinner favoriteTeamSelector;
     private String equipefavorite, favoriteTeam;
     private ProgressDialog progressDialog;
-    private String userName;
     private FirebaseUser user;
-    private  DatabaseReference myRef;
+    private Button buttonGo;
 
 
     private static String email;
-    private static final String TAG = "TAG";
 
 
     @Override
@@ -58,63 +60,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid());
+        isOnFirebase();
         // Spinner
         favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
         favoriteTeamSelector.setOnItemSelectedListener(this);
         // Nickname
         editTextModifyPseudo = (EditText) findViewById(R.id.editTextModifyPseudo);
         // Button
-        findViewById(R.id.buttonGo).setOnClickListener(this);
+        buttonGo = (Button) findViewById(R.id.buttonGo);
         progressDialog = new ProgressDialog(this);
-        userName = editTextModifyPseudo.getText().toString();
         //pseudo = user.getDisplayName();
         addItemFavoriteTeamSelector();
-        userDatabase = FirebaseDatabase.getInstance();
 
 
-        // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    String name = user.getDisplayName();
-                    String email = user.getEmail();
-                    String uid = user.getUid();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+        email= user.getEmail();
 
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
-            }
-        };
-        // [END auth_state_listener]
-
-         myRef = this.userDatabase.getReference("users/");
-
-        final Query userInformation = myRef.child(user.getUid());
-
-        userInformation.addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
 
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     UserModel userActuel = dataSnapshot.getValue(UserModel.class);
-                    email = userActuel.getEmail();
                     editTextModifyPseudo.setText(userActuel.getUserName());
-                    if (userName.equals(userActuel.getUserName()) || userName.length() != 0 ){
-
-                        userName = editTextModifyPseudo.getText().toString();
-                    }
-
-
-                    // Get back all competitions where the playrer is actually occuring .
-
                 }
+
+
             }
 
 
@@ -125,10 +96,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
+        buttonGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                conditionItent();
+            }
+        });
+
+
+
+
 
 
 
     }
+
 
     public void changeProfil() {
 
@@ -150,8 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-
-
     }
 
     public void addItemFavoriteTeamSelector() {
@@ -187,21 +167,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         Toast.makeText(parent.getContext(),
                 "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
                 Toast.LENGTH_SHORT).show();
-
         favoriteTeam = parent.getItemAtPosition(position).toString();
+
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+
     }
+
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -232,30 +215,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
 
-        if (i == R.id.buttonGo) {
-            userName = editTextModifyPseudo.getText().toString();
-            if (editTextModifyPseudo.length() == 0) {
-                Toast.makeText(MainActivity.this, "You must enter an Username", Toast.LENGTH_SHORT).show();
-            }
+    public void conditionItent() {
+
+        if (editTextModifyPseudo.getText().length() == 0 || favoriteTeam.equals("Select your Favorite Team !")) {
+            Toast.makeText(MainActivity.this, favoriteTeam, Toast.LENGTH_LONG).show();
+            return;
+        }
+        else{
+
+
+
+            /** FirebaseDatabase database = FirebaseDatabase.getInstance();
+             DatabaseReference myRef = database.getReference("Competitions");*/
 
             String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
-
-
-                    /** FirebaseDatabase database = FirebaseDatabase.getInstance();
-                     DatabaseReference myRef = database.getReference("Competitions");*/
+            String userName = editTextModifyPseudo.getText().toString();
             UserModel user = new UserModel(UserId, userName, null, 0, favoriteTeam, email);
-            myRef.child(UserId).setValue(user);
+            mDatabase.setValue(user);
 
             Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
             startActivity(intent);
             finish();
         }
-
-        }
     }
+
+    void isOnFirebase(){
+        mDatabase.child(TEAM).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null){
+                    Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
 

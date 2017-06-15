@@ -26,7 +26,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <string name="ForgotPassword">Mot de passe oublié ?</string>
     <string name="CreateNewAccount">Créer un nouveau compte !</string>
     <string name="cancel_login">L\'operation c\'est stoppé !</string>
@@ -36,4 +35,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string>
+    <string name="derni_re_ligne_droite_avant_de_rejoindre_la_comp_tition_nous_aimerions_savoir_votre_quipe_favorite_n_oublie_pas_de_choisir_un_pseudo_avant_de_rejoindre_ton_groupe_merci_et_amusez_vous_bien">Dernière ligne droite avant de rejoindre la compétition, nous aimerions savoir votre équipe favorite, n\'oublie pas de choisir un pseudo avant de rejoindre ton groupe, merci et amusez vous bien !</string>
 </resources>

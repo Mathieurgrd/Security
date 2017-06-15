@@ -40,9 +40,10 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner teamAway;
     private String homeTeam;
     private String awayTeam;
+    private String winner = "O";
     private Button saveGame;
-    private int scoreHome = 0;
-    private int scoreAway = 0;
+    private int scoreHome = -1;
+    private int scoreAway = -1;
     private DatabaseReference mDatabase;
     private int mYear;
     private int mMonth;
@@ -54,6 +55,13 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private List<String> ligue1List;
     private MaterialNumberPicker numberPicker;
     private int matchWeek;
+    private String uploadId;
+    private int date;
+    private int month;
+    private int years;
+    private Date ourDate;
+    private String reportDate;
+    private Date mydate;
 
 
     @Override
@@ -117,7 +125,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         ligue1List.add("ASSE");
         ligue1List.add("TFC");
 
-        updateTextLabelTime();
         updateTextLabelDate();
         addItemTeamAwaySelector();
         addItemTeamHomeSelector();
@@ -135,13 +142,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
-                        int date = view.getDayOfMonth();
-                        int month = view.getMonth()+1;
-                        int years = view.getYear();
+                        date = view.getDayOfMonth();
+                        month = view.getMonth();
 
-                        date_time = date + "/" + month + "/" + years;
+                        years = view.getYear();
+                        String displayMonth = String.valueOf(view.getMonth()+1);
+
+                        date_time = date + "/" + displayMonth + "/" + years;
                         date_time_object = new Date(years, view.getMonth(), date);
-
                         dateView.setText(date_time);
                         //*************Call Time Picker Here ********************
                         updateTime();
@@ -170,15 +178,16 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
+        ourDate = new Date (years-1900, month, date, mHour,mMinute);
+        long prout = ourDate.getTime();
+        mydate = new Date (prout);
     }
 
     private void updateTextLabelDate(){
         dateView.setText(formatDateTime.format(dateCalendar.getTime()));
     }
 
-    private void updateTextLabelTime(){
-        hour.setText(date_time);
-    }
+
 
     public void addItemTeamAwaySelector() {
         ArrayAdapter<String> dataAdapterAway = new ArrayAdapter<String>(this,
@@ -213,10 +222,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void updateGame(){
-        NewGame newGame = new NewGame(homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek);
+
         DateFormat df = new SimpleDateFormat("yyMMdd");
-        String reportDate = df.format(date_time_object);
-        mDatabase.child(reportDate).push().setValue(newGame);
+        reportDate = df.format(date_time_object);
+
+        uploadId = mDatabase.child(reportDate).push().getKey();
+        NewGame newGame = new NewGame(uploadId, homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek,mydate,reportDate,"OUVERT",winner);
+
+        mDatabase.child(reportDate).child(uploadId).setValue(newGame);
     }
 
     public void openDialogJourney (){

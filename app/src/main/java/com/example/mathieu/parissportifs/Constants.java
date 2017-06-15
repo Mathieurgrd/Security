@@ -7,4 +7,5 @@ package com.example.mathieu.parissportifs;
 public class Constants {
 
     public static final String DATABASE_PATH_GAMES = "Games";
+    public static final String DATABASE_PATH_BET = "Bet";
 }
