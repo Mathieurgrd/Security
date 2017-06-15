@@ -29,6 +29,7 @@ import java.util.List;
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView mCompetitionListView;
+    public static final String REC_DATA = "REC_DATA";
     private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
     private FirebaseUser user;
     private Button createCompetition;
@@ -228,17 +229,22 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         String postKey = mCompetitionResultAdapter.getmKey(position);
 
-       /** Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
-        intent.putExtra(postKey, "postkey"); */
+
+        Bundle bundle = new Bundle();
+        bundle.putString("edttext", postKey);
+         /**HomeCompetition fragobj = new HomeCompetition();
+        fragobj.setArguments(bundle);*/
 
 
-                Toast toast = Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT);
-        toast.show();
 
-        //startActivity(intent);
-        //CreateOrJoinCompetition.this.finish();
 
-        // startActivity(new Intent(CreateOrJoinCompetition.this, Navigation.class));
+        Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
+        intent.putExtra("key", bundle);
+        startActivity(intent);
+
+        CreateOrJoinCompetition.this.finish();
 
     }
 }
