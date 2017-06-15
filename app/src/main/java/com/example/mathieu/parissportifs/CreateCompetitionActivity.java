@@ -1,32 +1,33 @@
     package com.example.mathieu.parissportifs;
 
     import android.app.Activity;
-    import android.content.BroadcastReceiver;
-    import android.content.Context;
-    import android.content.Intent;
-    import android.os.Bundle;
-    import android.support.v7.app.AppCompatActivity;
-    import android.telephony.SmsManager;
-    import android.view.View;
-    import android.widget.AdapterView;
-    import android.widget.ArrayAdapter;
-    import android.widget.EditText;
-    import android.widget.ImageView;
-    import android.widget.Spinner;
-    import android.widget.Toast;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-    import com.google.firebase.auth.FirebaseAuth;
-    import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.DataSnapshot;
-    import com.google.firebase.database.DatabaseError;
-    import com.google.firebase.database.DatabaseReference;
-    import com.google.firebase.database.FirebaseDatabase;
-    import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-    import java.util.ArrayList;
-    import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-    public class CreateCompetitionActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+    public class CreateCompetitionActivity extends AppCompatActivity implements
+            View.OnClickListener, AdapterView.OnItemSelectedListener {
 
         private FirebaseDatabase database;
         private DatabaseReference competitionRef;
@@ -35,13 +36,15 @@
         private ImageView frenchFlag;
         private List<String> championshipList;
         private EditText etnameCompetition;
-        private DatabaseReference myRef;
+        private DatabaseReference myRef, finalPush;
         private List<UserModel> userfornewCompetitionList;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
-        private String competitionName, championHShipName;
+        private String competitionName, championHShipName, mGroupId, checkKey;
         public final static String COMPET = "compet";
+        private FirebaseUser user;
+        private Intent intent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +54,11 @@
 
             mAuth = FirebaseAuth.getInstance();
 
-
-            FirebaseUser user = mAuth.getCurrentUser();
+            user = mAuth.getCurrentUser();
 
             if (mAuth.getCurrentUser() != null) {
-                Toast.makeText(CreateCompetitionActivity.this, "Yay you're logged !", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateCompetitionActivity.this,
+                        "Yay you're logged !", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(CreateCompetitionActivity.this, "FAIL !", Toast.LENGTH_LONG).show();
 
@@ -162,7 +165,6 @@
         };
 
 
-
         @Override
         public void onClick(View v) {
             int i = v.getId();
@@ -170,10 +172,11 @@
             if (i == R.id.button_validate_mycompetition) {
 
 
-                String competitionName = etnameCompetition.getText().toString();
+                final String competitionName = etnameCompetition.getText().toString();
 
                 if (competitionName.length() == 0) {
-                    Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name",
+                            Toast.LENGTH_SHORT).show();
                 }
 
                 // Write a message to the database
@@ -184,8 +187,6 @@
                 competitionRef = database.getReference("Competitions");
 
 
-                /** FirebaseDatabase database = FirebaseDatabase.getInstance();
-                 DatabaseReference myRef = database.getReference("Competitions");*/
                 FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
@@ -193,31 +194,106 @@
 
                 competitionRef = competitionDatabase.getReference("Competitions");
 
-                CompetitionModel userCompetition = new CompetitionModel(competitionName, championHShipName, UserId, userfornewCompetitionList,
+
+                final CompetitionModel userCompetition = new CompetitionModel(competitionName,
+                        championHShipName, UserId, userfornewCompetitionList,
                         scaleScore, scaleVictory, null);
 
-                String mGroupId = competitionRef.push().getKey();
-                competitionRef.child(mGroupId).setValue(new CompetitionModel(competitionName, championHShipName, UserId, userfornewCompetitionList,
-                        scaleScore, scaleVictory, mGroupId));
+
                 competitionRef.push().setValue(userCompetition);
 
-                Intent intent = new Intent(CreateCompetitionActivity.this, PickContactActivity.class);
-                intent.putExtra("oui", mGroupId);
+
+                // ----------------------------------------------
+
+
+                competitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+
+                            mGroupId = child.getKey();
+                            DatabaseReference checkChild = competitionRef.child(mGroupId);
+
+                            checkChild.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    CompetitionModel competitionModel = dataSnapshot.getValue(CompetitionModel.class);
+                                    if (competitionModel.getCompetitionName().equals(competitionName)){
+
+
+                                        //MgroupId renvoie au child qui correspond a l'ID de la competition qui vient d'être crée par l'user
+                                        userCompetition.setCompetitionIdReedeemCode(mGroupId);
+                                        competitionRef.child(mGroupId).setValue(userCompetition);
+
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
 
 
 
 
-                    startActivity(intent);
+                        }
 
 
-                    finish();
-                }
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                UserModel currentUser = dataSnapshot.getValue(UserModel.class);
+
+
+                                finalPush = competitionRef.child(mGroupId).child("Members :/")
+                                        .child(currentUser.getUserId());
+
+                                finalPush.setValue(currentUser);
+                                intent = new Intent(CreateCompetitionActivity.this,
+                                        PickContactActivity.class);
+
+                                intent.putExtra("oui", mGroupId);
+
+                                //competitionRef.removeEventListener(this);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+
+                });
+
+
+
+
+
+
+                finish();
+
+
             }
-
-
             // Spinners selection methods
-
-
         }
+    }
 
 

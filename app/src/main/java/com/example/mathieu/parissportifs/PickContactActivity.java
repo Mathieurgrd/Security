@@ -73,7 +73,6 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICK_CONTACT_REQUEST){
@@ -96,7 +95,9 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
 
     public void getCompetitionIdCode() {
 
-        competitionRef.addValueEventListener(new ValueEventListener() {
+        competitionRef = database.getReference("Competitions");
+
+        competitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -148,6 +149,8 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
             startActivityForResult(intent, 1);
         }
         if (i == R.id.buttonfinishpickcontacts){
+
+
 
             String[] contactArray = listItems.toArray(new String[listItems.size()]);
             String message = "Voici le code " + CompetitionId;
