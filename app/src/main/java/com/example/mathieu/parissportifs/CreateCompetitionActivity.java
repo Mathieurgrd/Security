@@ -41,6 +41,7 @@ import java.util.List;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
+
         private String competitionName, championHShipName, mGroupId, checkKey;
         public final static String COMPET = "compet";
         private FirebaseUser user;

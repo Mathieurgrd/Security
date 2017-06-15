@@ -18,6 +18,10 @@ import java.text.SimpleDateFormat;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
+import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
+import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
+import static com.example.mathieu.parissportifs.Constants.WINNER_NULL;
+
 public class EnterScore extends AppCompatActivity implements View.OnClickListener {
 
     private TextView date;
@@ -32,9 +36,6 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private NewGame newGame;
     private DatabaseReference mDatabase;
     private String date_firebase;
-    private String winnerHome = "HOME";
-    private String winnerAway = "AWAY";
-    private String winnerNull= "NULL";
     private DateFormat dff;
     private String uploadId;
     private int compareScoreHome;
@@ -148,12 +149,12 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         compareScoreAway = newGame.getmScoreAwayTeam();
         compareScoreHome = newGame.getmScoreHomeTeam();
         if (compareScoreHome > compareScoreAway){
-            newGame.setmWinner(winnerHome);
+            newGame.setmWinner(WINNER_HOME);
         } else if (compareScoreAway > compareScoreHome){
-            newGame.setmWinner(winnerAway);
+            newGame.setmWinner(WINNER_AWAY);
         } else
          {
-            newGame.setmWinner(winnerNull);
+            newGame.setmWinner(WINNER_NULL);
         }
         uploadId = newGame.getmIdGame();
         dff = new SimpleDateFormat("yyMMdd");
