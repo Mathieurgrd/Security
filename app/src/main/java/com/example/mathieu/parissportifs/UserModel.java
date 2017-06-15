@@ -14,7 +14,7 @@ public class UserModel {
     private String userId;
     private String userName;
     private ArrayList<CompetitionModel> userCompetitions;
-    private float userScorePerCompetition;
+    private int userScorePerCompetition;
     private String favoriteTeam;
     private String email;
 
@@ -26,7 +26,7 @@ public class UserModel {
         return email;
     }
 
-    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, float userScorePerCompetition, @Nullable String favoriteTeam, String email) {
+    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, int userScorePerCompetition, @Nullable String favoriteTeam, String email) {
         this.userId = userId;
         this.userName = userName;
         this.userCompetitions = userCompetitions;
@@ -71,7 +71,7 @@ public class UserModel {
         this.userCompetitions = userCompetitions;
     }
 
-    public void setUserScorePerCompetition(float userScorePerCompetition) {
+    public void setUserScorePerCompetition(int userScorePerCompetition) {
         this.userScorePerCompetition = userScorePerCompetition;
     }
 
