@@ -9,12 +9,17 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import biz.borealis.numberpicker.NumberPicker;
 import biz.borealis.numberpicker.OnValueChangeListener;
 
+import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
+import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
 import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class BetGame extends AppCompatActivity implements View.OnClickListener {
@@ -30,7 +35,8 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private int mScoreHome;
     private int mScoreAway;
     private String mWinner;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseGame;
+    private DatabaseReference mDatabaseUserBet;
     private FirebaseUser mUser;
 
     @Override
@@ -38,11 +44,22 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_game);
 
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference(USER).child(mUser.getUid()).child(Constants.DATABASE_PATH_BET);
-
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseGame = FirebaseDatabase.getInstance()
+                .getReference(Constants.DATABASE_PATH_GAMES)
+                .child(newGame.getmReportDate())
+                .child(newGame.getmIdGame())
+                .child(DATABASE_PATH_BET);
+        mDatabaseUserBet = FirebaseDatabase.getInstance()
+                .getReference(USER)
+                .child(mUser.getUid())
+                .child(Constants.DATABASE_PATH_BET)
+                .child(DATABASE_PATH_GAMES + " : " + newGame.getmIdGame());
+
+
 
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
@@ -101,7 +118,26 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     mWinner,
                     newGame.getmReportDate()
             );
-            mDatabase.push().setValue(newGame);
+            mDatabaseUserBet.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        for (DataSnapshot child : dataSnapshot.getChildren())
+                            mDatabaseUserBet.child(child.getKey()).setValue(betGameModel);
+                        return;
+                    }
+                    DatabaseReference postedRef = mDatabaseUserBet.push();
+                    postedRef.setValue(betGameModel);
+                    mDatabaseGame.push().setValue(postedRef.getKey());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
 
         }
 
