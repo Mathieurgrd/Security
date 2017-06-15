@@ -7,11 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import biz.borealis.numberpicker.NumberPicker;
 import biz.borealis.numberpicker.OnValueChangeListener;
+
+import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,13 +31,15 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private int mScoreAway;
     private String mWinner;
     private DatabaseReference mDatabase;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_game);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_BET);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference(USER).child(mUser.getUid()).child(Constants.DATABASE_PATH_BET);
 
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
@@ -85,8 +91,17 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
         if (view == buttonSaveBet){
             checkWinnerBet();
-            betGameModel = new BetGameModel(newGame.getmIdGame(),newGame.getmHomeTeam(),newGame.getmAwayTeam(),mScoreHome,mScoreAway,newGame.getmMatchWeek(),mWinner);
-            mDatabase.child(String.valueOf(newGame.getmMatchWeek())).child(newGame.getmIdGame()).setValue(newGame);
+            betGameModel = new BetGameModel(
+                    newGame.getmIdGame(),
+                    newGame.getmHomeTeam(),
+                    newGame.getmAwayTeam(),
+                    mScoreHome,
+                    mScoreAway,
+                    newGame.getmMatchWeek(),
+                    mWinner,
+                    newGame.getmReportDate()
+            );
+            mDatabase.push().setValue(newGame);
 
         }
 

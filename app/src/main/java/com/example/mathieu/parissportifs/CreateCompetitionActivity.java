@@ -17,7 +17,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
+    import com.google.firebase.database.ChildEventListener;
+    import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,12 +27,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+    import static com.example.mathieu.parissportifs.Constants.COMPET;
+    import static com.example.mathieu.parissportifs.Constants.USER;
+
     public class CreateCompetitionActivity extends AppCompatActivity implements
             View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+        private FirebaseUser mUser;
         private FirebaseDatabase database;
+        private DatabaseReference mUserRef;
         private DatabaseReference competitionRef;
-        private FirebaseDatabase competitionDatabase;
         private Spinner championShipSelector;
         private ImageView frenchFlag;
         private List<String> championshipList;
@@ -43,8 +48,6 @@ import java.util.List;
         private FirebaseAuth.AuthStateListener mAuthListener;
 
         private String competitionName, championHShipName, mGroupId, checkKey;
-        public final static String COMPET = "compet";
-        private FirebaseUser user;
         private Intent intent;
 
         @Override
@@ -54,8 +57,11 @@ import java.util.List;
 
 
             mAuth = FirebaseAuth.getInstance();
+            mUser = mAuth.getCurrentUser();
+            database = FirebaseDatabase.getInstance();
+            competitionRef = database.getReference("Competitions");
+            mUserRef = database.getReference(USER).child(mUser.getUid());
 
-            user = mAuth.getCurrentUser();
 
             if (mAuth.getCurrentUser() != null) {
                 Toast.makeText(CreateCompetitionActivity.this,
@@ -182,18 +188,9 @@ import java.util.List;
 
                 // Write a message to the database
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference mRef = database.getReference("users");
-                database = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
-                competitionRef = database.getReference("Competitions");
 
 
-                FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
-                competitionDatabase = FirebaseDatabase.getInstance(); //APPELLE LA BASE DE DONNEES
-
-                competitionRef = competitionDatabase.getReference("Competitions");
+                String UserId = mUser.getUid().toString();
 
 
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
@@ -201,7 +198,10 @@ import java.util.List;
                         scaleScore, scaleVictory, null);
 
 
-                competitionRef.push().setValue(userCompetition);
+                DatabaseReference pushedPostRf = competitionRef.push();
+                pushedPostRf.setValue(userCompetition);
+                mUserRef.child(COMPET).push().setValue(pushedPostRf.getKey());
+
 
 
                 // ----------------------------------------------
