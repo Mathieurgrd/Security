@@ -35,7 +35,20 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
 
         playerName.setText(model.getUserName());
         playerScore.setText(String.valueOf(model.getUserScorePerCompetition()));
-        playerRank.setText("Makumé");
+
+        if (model.getUserScorePerCompetition() < 5) {
+            playerRank.setText("Polisseur de banc");
+        }else if (model.getUserScorePerCompetition() < 10){
+            playerRank.setText("Presseur d'orange");
+        }else if (model.getUserScorePerCompetition() < 15){
+            playerRank.setText("Porteur de gourde");
+        }else if (model.getUserScorePerCompetition() < 20){
+            playerRank.setText("Ventre mou");
+        }else if (model.getUserScorePerCompetition() < 25){
+            playerRank.setText("Jeune talent");
+        }else if (model.getUserScorePerCompetition() < 30){
+            playerRank.setText("Zlatan");
+        }
 
     }
 }

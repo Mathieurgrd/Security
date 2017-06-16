@@ -26,7 +26,7 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private String uId, postKey, competitionTitle, competitionKey;
+    private String uId, postKey, competitionTitle, competitionKey, strtext;
     private PlayersListAdapter aPlayersListAdapter;
 
 
@@ -62,7 +62,7 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
 
          test = (TextView) view.findViewById(R.id.test);
 
-        String strtext = ((Navigation)getActivity()).getKey();
+        strtext = ((Navigation)getActivity()).getKey();
 
         test.setText(strtext);
 
@@ -81,11 +81,11 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
 
 
         playersRef = database.getReference("Competitions")
-                .child("-KmkI1GOZgPhUK3GwY_7").child("Members :/");
+                .child(strtext).child("Members :/");
         playerListQuery = playersRef;
 
         Query competitionQuery = database.getReference("Competitions")
-                .child("-KmkI1GOZgPhUK3GwY_7");
+                .child(strtext);
         competitionQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
