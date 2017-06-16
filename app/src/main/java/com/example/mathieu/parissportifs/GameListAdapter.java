@@ -31,10 +31,6 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     public DatabaseReference mDatabaseref;
 
 
-
-
-
-
     public GameListAdapter(Query ref, Activity activity, int layout) {
         super(ref, NewGame.class, layout, activity);
 
