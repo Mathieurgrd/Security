@@ -118,27 +118,7 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     mWinner,
                     newGame.getmReportDate()
             );
-            mDatabaseUserBet.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()){
-                        for (DataSnapshot child : dataSnapshot.getChildren())
-                            mDatabaseUserBet.child(child.getKey()).setValue(betGameModel);
-                        return;
-                    }
-                    DatabaseReference postedRef = mDatabaseUserBet.push();
-                    postedRef.setValue(betGameModel);
-                    mDatabaseGame.push().setValue(postedRef.getKey());
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-
+            mDatabaseUserBet.setValue(betGameModel);
         }
 
     }
