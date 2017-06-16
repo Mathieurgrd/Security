@@ -16,6 +16,7 @@ public class BetGameModel {
     private int mMatchWeek;
     private String mWinner;
     private String mDateGame;
+    private Integer mBetResult;
 
     public BetGameModel(String mGameId, String mHomeTeam, String mAwayTeam, int mHomeScore, int mAwayScore, int mMatchWeek, String mWinner, String mDateGame) {
         this.mGameId = mGameId;
@@ -26,6 +27,9 @@ public class BetGameModel {
         this.mMatchWeek = mMatchWeek;
         this.mWinner = mWinner;
         this.mDateGame = mDateGame;
+    }
+    public  BetGameModel(){
+
     }
 
     public String getmGameId() {
@@ -90,5 +94,13 @@ public class BetGameModel {
 
     public void setmDateGame(String mDateGame) {
         this.mDateGame = mDateGame;
+    }
+
+    public Integer getmBetResult() {
+        return mBetResult;
+    }
+
+    public void setmBetResult(Integer mBetResult) {
+        this.mBetResult = mBetResult;
     }
 }

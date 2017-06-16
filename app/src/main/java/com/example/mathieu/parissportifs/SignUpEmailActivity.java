@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener {
@@ -153,7 +154,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
                             });
                             mDatabase = FirebaseDatabase.getInstance().getReference("users");
                             idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            mUser = new UserModel (idUser,userName,null,0,favoriteTeam, email);
+                            mUser = new UserModel (idUser,userName, null,0,favoriteTeam, email, null);
                             mDatabase.child(idUser).setValue(mUser);
 
 

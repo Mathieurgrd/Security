@@ -13,12 +13,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+
+import java.util.HashMap;
 
 import biz.borealis.numberpicker.NumberPicker;
 import biz.borealis.numberpicker.OnValueChangeListener;
 
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
 import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
 import static com.example.mathieu.parissportifs.Constants.USER;
 
@@ -35,8 +37,7 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private int mScoreHome;
     private int mScoreAway;
     private String mWinner;
-    private DatabaseReference mDatabaseGame;
-    private DatabaseReference mDatabaseUserBet;
+    private DatabaseReference mDatabaseUser;
     private FirebaseUser mUser;
 
     @Override
@@ -48,16 +49,9 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
         newGame = (NewGame) i.getSerializableExtra("newGame");
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseGame = FirebaseDatabase.getInstance()
-                .getReference(Constants.DATABASE_PATH_GAMES)
-                .child(newGame.getmReportDate())
-                .child(newGame.getmIdGame())
-                .child(DATABASE_PATH_BET);
-        mDatabaseUserBet = FirebaseDatabase.getInstance()
+        mDatabaseUser = FirebaseDatabase.getInstance()
                 .getReference(USER)
-                .child(mUser.getUid())
-                .child(Constants.DATABASE_PATH_BET)
-                .child(DATABASE_PATH_GAMES + " : " + newGame.getmIdGame());
+                .child(mUser.getUid());
 
 
 
@@ -118,7 +112,25 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     mWinner,
                     newGame.getmReportDate()
             );
-            mDatabaseUserBet.setValue(betGameModel);
+            mDatabaseUser.runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    UserModel currentUser = mutableData.getValue(UserModel.class);
+                    HashMap<String, BetGameModel> newBetList = currentUser.getUsersBets();
+                    if(newBetList == null){
+                        newBetList = new HashMap<String, BetGameModel>();
+                    }
+                    newBetList.put(newGame.getmIdGame(), betGameModel);
+                    currentUser.setUsersBets(newBetList);
+                    mutableData.setValue(currentUser);
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                }
+            });
         }
 
     }
