@@ -15,69 +15,57 @@ public class CompetitionModel {
    public String chamionshipName;
    public String userAdmin;
    public List<UserModel> userList;
-   public int ratingMatchScore;
-   public int ratingMatchResult;
+   public int competitionScore;
    public String competitionIdReedeemCode;
 
     private CompetitionModel() {}
 
-    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, List<UserModel> userList, int ratingMatchScore, int ratingMatchResult,  @Nullable String competitionIdReedeemCode) {
+    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, List<UserModel> userList,  @Nullable String competitionIdReedeemCode) {
         this.competitionName = competitionName;
         this.chamionshipName = chamionshipName;
         this.userAdmin = userAdmin;
         this.userList = userList;
-        this.ratingMatchScore = 3;
-        this.ratingMatchResult = 1;
         this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
 
-
     public String getCompetitionName() {
         return competitionName;
-    }
-
-    public String getUserAdmin() {
-        return userAdmin;
-    }
-
-    public List<UserModel> getUserList() {
-        return userList;
-    }
-
-    public String getChamionshipName() {
-        return chamionshipName;
-    }
-
-    public int getRatingMatchScore() {
-        return ratingMatchScore;
     }
 
     public void setCompetitionName(String competitionName) {
         this.competitionName = competitionName;
     }
 
+    public String getChamionshipName() {
+        return chamionshipName;
+    }
+
     public void setChamionshipName(String chamionshipName) {
         this.chamionshipName = chamionshipName;
+    }
+
+    public String getUserAdmin() {
+        return userAdmin;
     }
 
     public void setUserAdmin(String userAdmin) {
         this.userAdmin = userAdmin;
     }
 
+    public List<UserModel> getUserList() {
+        return userList;
+    }
+
     public void setUserList(List<UserModel> userList) {
         this.userList = userList;
     }
 
-    public void setRatingMatchScore(int ratingMatchScore) {
-        this.ratingMatchScore = ratingMatchScore;
+    public int getCompetitionScore() {
+        return competitionScore;
     }
 
-    public void setRatingMatchResult(int ratingMatchResult) {
-        this.ratingMatchResult = ratingMatchResult;
-    }
-
-    public int getRatingMatchResult() {
-        return ratingMatchResult;
+    public void setCompetitionScore(int competitionScore) {
+        this.competitionScore = competitionScore;
     }
 
     public String getCompetitionIdReedeemCode() {
@@ -87,10 +75,4 @@ public class CompetitionModel {
     public void setCompetitionIdReedeemCode(String competitionIdReedeemCode) {
         this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
-
-
-
-
-
-
 }

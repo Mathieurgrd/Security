@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+    import com.google.firebase.database.MutableData;
+    import com.google.firebase.database.Transaction;
+    import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ import java.util.List;
             mAuth = FirebaseAuth.getInstance();
             mUser = mAuth.getCurrentUser();
             database = FirebaseDatabase.getInstance();
-            competitionRef = database.getReference("Competitions");
+            competitionRef = database.getReference(COMPET);
             mUserRef = database.getReference(USER).child(mUser.getUid());
 
 
@@ -194,13 +196,30 @@ import java.util.List;
 
 
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
-                        championHShipName, UserId, userfornewCompetitionList,
-                        scaleScore, scaleVictory, null);
+                        championHShipName, UserId, userfornewCompetitionList, null);
 
 
-                DatabaseReference pushedPostRf = competitionRef.push();
+                final DatabaseReference pushedPostRf = competitionRef.push();
                 pushedPostRf.setValue(userCompetition);
                 mUserRef.child(COMPET).push().setValue(pushedPostRf.getKey());
+                mUserRef.runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
+                        UserModel currentUser = mutableData.getValue(UserModel.class);
+                        ArrayList<String> newList = currentUser.getUserCompetitions();
+                        if (newList == null){
+                            newList = new ArrayList<>();
+                        }
+                        newList.add(pushedPostRf.getKey());
+                        mutableData.setValue(currentUser);
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                    }
+                });
 
 
 

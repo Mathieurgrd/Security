@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
@@ -49,7 +51,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private NewGame newGame;
     private DatabaseReference mDatabaseGame;
     private DatabaseReference mDatabaseUser;
-    DatabaseReference mDatabaseCompet;
+    private DatabaseReference mDatabaseCompet;
     private String date_firebase;
     private DateFormat dff;
     private String uploadId;
@@ -223,42 +225,25 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
     private void setBetScore(DataSnapshot user){
         final DatabaseReference currentUserRef = mDatabaseUser.child(user.getKey());
-        final DatabaseReference currentUserBetRef = currentUserRef.child(DATABASE_PATH_BET).child(DATABASE_PATH_GAMES + " : " + newGame.getmIdGame());
-        currentUserBetRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int score = 0;
-                BetGameModel currentBet = dataSnapshot.getValue(BetGameModel.class);
-                if (currentBet.getmAwayScore() == compareScoreAway && currentBet.getmHomeScore() == compareScoreHome){
-                    score = 3;
-                }
-                else if(newGame.getmWinner().equals(currentBet.getmWinner())) {
-                    score = 1;
-                }
-                currentUserBetRef.child(BET_SCORE).setValue(score);
-                setUserScore(currentUserRef, score);
-                setCompetScore(currentUserRef, score);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, databaseError.getMessage());
-            }
-        });
-    }
-
-    private void setUserScore(DatabaseReference currentUserRef, final int score){
-        currentUserRef.child(USER_SCORE).runTransaction(new Transaction.Handler() {
+        currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
-                Integer currentScore = mutableData.getValue(Integer.class);
-                if (currentScore == null){
-                    mutableData.setValue(score);
-                    return Transaction.success(mutableData);
+                UserModel currentUser = mutableData.getValue(UserModel.class);
+                HashMap<String, BetGameModel> betsList = currentUser.getUsersBets();
+                if (betsList.containsKey(uploadId)){
+                    BetGameModel currentBet = betsList.get(uploadId);
+                    int score = 0;
+                    if (currentBet.getmHomeScore() == compareScoreHome && currentBet.getmAwayScore() == compareScoreAway) {
+                        score = 3;
+                    } else if(currentBet.getmWinner().equals(newGame.getmWinner())){
+                        score = 1;
+                    }
+                    currentBet.setmBetResult(score);
+                    mutableData.setValue(currentUser);
+                    setUserScore(currentUserRef, score);
+                    setCompetScore(currentUser.getUserCompetitions(), score);
                 }
-                currentScore += score;
-                mutableData.setValue(currentScore);
-                return null;
+                return Transaction.success(mutableData);
             }
 
             @Override
@@ -268,40 +253,42 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    private void setCompetScore(DatabaseReference currentUserRef, final int score){
-        currentUserRef.child(COMPET_SCORE).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void setUserScore(DatabaseReference currentUserRef, final int score){
+        currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot compet : dataSnapshot.getChildren()){
-                     String competId = compet.getValue(String.class);
-                    DatabaseReference currentCompetRef = mDatabaseCompet.child(competId).child(COMPET_SCORE);
-                    currentCompetRef.runTransaction(new Transaction.Handler() {
-                        @Override
-                        public Transaction.Result doTransaction(MutableData mutableData) {
-                            Integer currentScore = mutableData.getValue(Integer.class);
-                            if (currentScore == null){
-                                mutableData.setValue(score);
-                                return Transaction.success(mutableData);
-                            }
-                            currentScore += score;
-                            mutableData.setValue(currentScore);
-                            return Transaction.success(mutableData);
-                        }
-
-                        @Override
-                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                        }
-                    });
-
-                }
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                UserModel currentUser = mutableData.getValue(UserModel.class);
+                int newScore = (int) currentUser.getUserScorePerCompetition() + score;
+                currentUser.setUserScorePerCompetition(newScore);
+                mutableData.setValue(currentUser);
+                return Transaction.success(mutableData);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
             }
         });
+    }
+
+    private void setCompetScore(ArrayList<String> competList, final int score){
+       for (String compet : competList){
+           mDatabaseCompet.child(compet).runTransaction(new Transaction.Handler() {
+               @Override
+               public Transaction.Result doTransaction(MutableData mutableData) {
+                   CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
+                   int newScore = currentCompetition.getCompetitionScore() + score;
+                   currentCompetition.setCompetitionScore(newScore);
+                   mutableData.setValue(currentCompetition);
+                   return Transaction.success(mutableData);
+               }
+
+               @Override
+               public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+               }
+           });
+       }
     }
 
 }

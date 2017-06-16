@@ -40,7 +40,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -182,7 +184,7 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
         String UserId = currentuser.getUid();
 
-        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam, email );
+        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam, email, null);
         myRef.setValue(user);
     }
 
