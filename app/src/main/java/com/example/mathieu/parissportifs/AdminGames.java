@@ -125,8 +125,6 @@ public class AdminGames extends AppCompatActivity  {
             }
         });
 
-        Toast.makeText(AdminGames.this, String.valueOf(System.currentTimeMillis()), Toast.LENGTH_LONG).show();
-
     }
 
     @Override
