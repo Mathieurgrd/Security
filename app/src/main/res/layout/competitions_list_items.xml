@@ -9,6 +9,7 @@
 
     <ImageView
         android:id="@+id/imageView3"
+        android:focusable="false"
         android:layout_width="70dp"
         android:layout_height="67dp"
         app:srcCompat="@drawable/drapeaufr"
@@ -23,6 +24,7 @@
     <TextView
         android:id="@+id/eTextChampionnatName"
         android:layout_width="wrap_content"
+        android:focusable="false"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
@@ -42,6 +44,7 @@
         android:id="@+id/eTextCompetitionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:focusable="false"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hintedittextcompetitionname"
@@ -60,6 +63,7 @@
         android:id="@+id/ivCaptain"
         android:layout_width="61dp"
         android:layout_height="58dp"
+        android:focusable="false"
         app:srcCompat="@drawable/brassardcaptain"
         app:layout_constraintLeft_toRightOf="@+id/eTextCompetitionName"
         android:layout_marginLeft="8dp"
