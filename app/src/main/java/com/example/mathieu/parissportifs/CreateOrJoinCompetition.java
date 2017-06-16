@@ -219,6 +219,8 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     }
 
 
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -231,9 +233,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
         Bundle bundle = new Bundle();
-        bundle.putString("edttext", postKey);
-         /**HomeCompetition fragobj = new HomeCompetition();
-        fragobj.setArguments(bundle);*/
+        bundle.putString("key", postKey);
 
 
 

@@ -1,5 +1,6 @@
 package com.example.mathieu.parissportifs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ public class Navigation extends AppCompatActivity {
 
     private BottomBar bottomBar;
     private TextView keytv;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,7 @@ public class Navigation extends AppCompatActivity {
 
 
 
-        //keytv = (TextView) findViewById(R.id.keytv);
+        keytv = (TextView) findViewById(R.id.keytv);
 
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
@@ -43,15 +45,14 @@ public class Navigation extends AppCompatActivity {
                 } else if (tabId == R.id.tab_chat) {
                     selectedFragment = Chat.newInstance();
                 }
+                Intent intent = getIntent();
+                Bundle bundle = intent.getBundleExtra("key");
+                key = bundle.getString("key");
+                keytv.setText(key);
 
-               /** Bundle bundle = getIntent().getExtras();
 
-//Extract the data…
-                String competitionKey = bundle.getString("key");
 
-                Intent a = new Intent (Navigation.this, HomeCompetition.class);
-                a.putExtra( "key", competitionKey);
-                setIntent(a); */
+
 
 
 
@@ -60,5 +61,9 @@ public class Navigation extends AppCompatActivity {
                 transaction.commit();
             }
         });
+    }
+
+    public String getKey() {
+        return key;
     }
 }

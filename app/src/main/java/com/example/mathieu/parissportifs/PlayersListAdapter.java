@@ -15,6 +15,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
     private TextView playerName;
     private TextView playerRank;
     private TextView playerScore;
+    private de.hdodenhof.circleimageview.CircleImageView playerPic;
 
 
 
@@ -30,6 +31,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
         playerName = (TextView) v.findViewById(R.id.playerName);
         playerRank = (TextView) v.findViewById(R.id.playerRank);
         playerScore = (TextView) v.findViewById(R.id.playerScore);
+        //playerPic = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.playerpic);
 
         playerName.setText(model.getUserName());
         playerScore.setText(String.valueOf(model.getUserScorePerCompetition()));

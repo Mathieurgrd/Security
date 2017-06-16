@@ -19,14 +19,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class HomeCompetition extends Fragment implements AdapterView.OnItemClickListener {
+public class HomeCompetition extends Fragment implements  AdapterView.OnItemClickListener {
 
     private ListView playersList;
     private TextView test, competitionNametv;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private String uId, postKey, competitionTitle;
+    private String uId, postKey, competitionTitle, competitionKey;
     private PlayersListAdapter aPlayersListAdapter;
 
 
@@ -55,22 +55,18 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
         View view = inflater.inflate(R.layout.fragment_home_competition, container, false);
 
 
-        /** test = (TextView) view.findViewById(R.id.test);
 
-         Navigation activity = (Navigation) getActivity();
-         Intent b= activity.getIntent();
-         if (b.hasExtra("key")){
-         String Uid = b.getStringExtra("key");
 
-         /**  Bundle bundle = getActivity().getIntent().getExtras().getBundle("key");
 
-         String competitionKey = bundle.getString("key");
 
-         test.setText(Uid);
-         }else{
-         Toast.makeText(HomeCompetition.this.getContext(), "Empty", Toast.LENGTH_SHORT).show();
-         test.setText("empty");
-         } */
+
+         test = (TextView) view.findViewById(R.id.test);
+
+        String strtext = ((Navigation)getActivity()).getKey();
+
+        test.setText(strtext);
+
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -85,11 +81,11 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
 
 
         playersRef = database.getReference("Competitions")
-                .child("-KmahMv5hd5zxjsmH5Mj").child("Members :/");
+                .child("-KmkI1GOZgPhUK3GwY_7").child("Members :/");
         playerListQuery = playersRef;
 
         Query competitionQuery = database.getReference("Competitions")
-                .child("-KmahMv5hd5zxjsmH5Mj");
+                .child("-KmkI1GOZgPhUK3GwY_7");
         competitionQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,7 +102,8 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
 
 
         competitionNametv.setText(competitionTitle);
-        aPlayersListAdapter = new PlayersListAdapter(playerListQuery,
+        aPlayersListAdapter = new PlayersListAdapter(playerListQuery.
+                orderByChild("userScorePerCompetition").limitToFirst(25),
                 HomeCompetition.this.getActivity(), R.layout.players_items_list);
 
         playersList.setAdapter(aPlayersListAdapter);
@@ -122,4 +119,11 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-}
+
+
+
+
+
+
+
+    }
