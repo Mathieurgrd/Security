@@ -7,11 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+
+import java.util.HashMap;
 
 import biz.borealis.numberpicker.NumberPicker;
 import biz.borealis.numberpicker.OnValueChangeListener;
+
+import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
+import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,17 +37,23 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private int mScoreHome;
     private int mScoreAway;
     private String mWinner;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseUser;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_game);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_BET);
-
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseUser = FirebaseDatabase.getInstance()
+                .getReference(USER)
+                .child(mUser.getUid());
+
+
 
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
@@ -85,9 +102,35 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
         if (view == buttonSaveBet){
             checkWinnerBet();
-            betGameModel = new BetGameModel(newGame.getmIdGame(),newGame.getmHomeTeam(),newGame.getmAwayTeam(),mScoreHome,mScoreAway,newGame.getmMatchWeek(),mWinner);
-            mDatabase.child(String.valueOf(newGame.getmMatchWeek())).child(newGame.getmIdGame()).setValue(newGame);
+            betGameModel = new BetGameModel(
+                    newGame.getmIdGame(),
+                    newGame.getmHomeTeam(),
+                    newGame.getmAwayTeam(),
+                    mScoreHome,
+                    mScoreAway,
+                    newGame.getmMatchWeek(),
+                    mWinner,
+                    newGame.getmReportDate()
+            );
+            mDatabaseUser.runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    UserModel currentUser = mutableData.getValue(UserModel.class);
+                    HashMap<String, BetGameModel> newBetList = currentUser.getUsersBets();
+                    if(newBetList == null){
+                        newBetList = new HashMap<String, BetGameModel>();
+                    }
+                    newBetList.put(newGame.getmIdGame(), betGameModel);
+                    currentUser.setUsersBets(newBetList);
+                    mutableData.setValue(currentUser);
+                    return Transaction.success(mutableData);
+                }
 
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                }
+            });
         }
 
     }

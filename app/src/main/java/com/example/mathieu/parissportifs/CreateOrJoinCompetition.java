@@ -26,7 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.mathieu.parissportifs.Constants.ADMIN_USER;
+
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+
 
     private ListView mCompetitionListView;
     public static final String REC_DATA = "REC_DATA";

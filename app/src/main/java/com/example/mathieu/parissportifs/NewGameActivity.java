@@ -178,12 +178,12 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
-        ourDate = new Date (years-1900, month, date, mHour,mMinute);
-        long prout = ourDate.getTime();
-        mydate = new Date (prout);
+
     }
 
     private void updateTextLabelDate(){
+
+
         dateView.setText(formatDateTime.format(dateCalendar.getTime()));
     }
 
@@ -222,6 +222,10 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void updateGame(){
+
+        ourDate = new Date (years-1900, month, date, mHour,mMinute);
+        long prout = ourDate.getTime();
+        mydate = new Date (prout);
 
         DateFormat df = new SimpleDateFormat("yyMMdd");
         reportDate = df.format(date_time_object);

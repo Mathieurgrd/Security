@@ -50,6 +50,10 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter></activity>
         <activity android:name=".CreateCompetitionActivity" />
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".AdminGames">
+         
+        </activity>
         <activity android:name=".PickContactActivity" />
         <activity android:name=".CreateOrJoinCompetition" />
 
@@ -58,6 +62,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".Navigation">
+        <activity android:name=".CreateCompetitionActivity">
 
         </activity>
         <activity android:name=".ModifyProfile" />
@@ -66,7 +71,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".AdminGames">
+        <activity android:name=".Navigation">
 
         </activity>
         <activity android:name=".NewGameActivity" />

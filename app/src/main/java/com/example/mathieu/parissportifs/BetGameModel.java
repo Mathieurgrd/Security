@@ -15,15 +15,21 @@ public class BetGameModel {
     private int mAwayScore;
     private int mMatchWeek;
     private String mWinner;
+    private String mDateGame;
+    private Integer mBetResult;
 
-    public BetGameModel(String gameId, String homeTeam, String awayTeam, int homeScore, int awayScore, int matchWeek, String winner){
-        mGameId = gameId;
-        mHomeTeam = homeTeam;
-        mAwayTeam = awayTeam;
-        mHomeScore = homeScore;
-        mAwayScore = awayScore;
-        mMatchWeek = matchWeek;
-        mWinner = winner;
+    public BetGameModel(String mGameId, String mHomeTeam, String mAwayTeam, int mHomeScore, int mAwayScore, int mMatchWeek, String mWinner, String mDateGame) {
+        this.mGameId = mGameId;
+        this.mHomeTeam = mHomeTeam;
+        this.mAwayTeam = mAwayTeam;
+        this.mHomeScore = mHomeScore;
+        this.mAwayScore = mAwayScore;
+        this.mMatchWeek = mMatchWeek;
+        this.mWinner = mWinner;
+        this.mDateGame = mDateGame;
+    }
+    public  BetGameModel(){
+
     }
 
     public String getmGameId() {
@@ -80,5 +86,21 @@ public class BetGameModel {
 
     public void setmWinner(String mWinner) {
         this.mWinner = mWinner;
+    }
+
+    public String getmDateGame() {
+        return mDateGame;
+    }
+
+    public void setmDateGame(String mDateGame) {
+        this.mDateGame = mDateGame;
+    }
+
+    public Integer getmBetResult() {
+        return mBetResult;
+    }
+
+    public void setmBetResult(Integer mBetResult) {
+        this.mBetResult = mBetResult;
     }
 }

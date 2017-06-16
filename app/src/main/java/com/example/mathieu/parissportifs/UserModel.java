@@ -3,6 +3,7 @@ package com.example.mathieu.parissportifs;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by mathieu on 22/05/17.
@@ -13,10 +14,11 @@ public class UserModel {
 
     private String userId;
     private String userName;
-    private ArrayList<CompetitionModel> userCompetitions;
     private int userScorePerCompetition;
+    private ArrayList<String> userCompetitions;
     private String favoriteTeam;
     private String email;
+    private HashMap<String, BetGameModel> usersBets;
 
     private UserModel() {
     }
@@ -26,13 +28,18 @@ public class UserModel {
         return email;
     }
 
-    public UserModel(String userId, String userName, @Nullable ArrayList<CompetitionModel> userCompetitions, int userScorePerCompetition, @Nullable String favoriteTeam, String email) {
+    public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, float userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
         this.userId = userId;
         this.userName = userName;
         this.userCompetitions = userCompetitions;
         this.userScorePerCompetition = userScorePerCompetition;
         this.favoriteTeam = favoriteTeam;
         this.email = email;
+        this.usersBets = usersBets;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
 
@@ -46,7 +53,7 @@ public class UserModel {
         return userName;
     }
 
-    public ArrayList<CompetitionModel> getUserCompetitions() {
+    public ArrayList<String> getUserCompetitions() {
         return userCompetitions;
     }
 
@@ -67,7 +74,7 @@ public class UserModel {
         this.userName = userName;
     }
 
-    public void setUserCompetitions(ArrayList<CompetitionModel> userCompetitions) {
+    public void setUserCompetitions(ArrayList<String> userCompetitions) {
         this.userCompetitions = userCompetitions;
     }
 
@@ -81,5 +88,13 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public HashMap<String, BetGameModel> getUsersBets() {
+        return usersBets;
+    }
+
+    public void setUsersBets(HashMap<String, BetGameModel> usersBets) {
+        this.usersBets = usersBets;
     }
 }

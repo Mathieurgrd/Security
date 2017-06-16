@@ -6,19 +6,38 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
+import static com.example.mathieu.parissportifs.Constants.BET_SCORE;
+import static com.example.mathieu.parissportifs.Constants.COMPET_SCORE;
+import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
+import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
+import static com.example.mathieu.parissportifs.Constants.USER_SCORE;
+import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
+import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
+import static com.example.mathieu.parissportifs.Constants.WINNER_NULL;
+
 public class EnterScore extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "enterScore";
 
     private TextView date;
     private TextView hour;
@@ -30,11 +49,10 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private MaterialNumberPicker numberPickerHome;
     private MaterialNumberPicker numberPickerAway;
     private NewGame newGame;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseGame;
+    private DatabaseReference mDatabaseUser;
+    private DatabaseReference mDatabaseCompet;
     private String date_firebase;
-    private String winnerHome = "HOME";
-    private String winnerAway = "AWAY";
-    private String winnerNull= "NULL";
     private DateFormat dff;
     private String uploadId;
     private int compareScoreHome;
@@ -46,9 +64,12 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_score);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES);
+        mDatabaseGame = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES);
+        mDatabaseUser = FirebaseDatabase.getInstance().getReference(Constants.USER);
+        mDatabaseCompet = FirebaseDatabase.getInstance().getReference(Constants.COMPET);
 
-        date = (TextView) findViewById(R.id.textViewDate);
+
+                date = (TextView) findViewById(R.id.textViewDate);
         hour = (TextView) findViewById(R.id.textViewHour);
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
@@ -148,22 +169,18 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         compareScoreAway = newGame.getmScoreAwayTeam();
         compareScoreHome = newGame.getmScoreHomeTeam();
         if (compareScoreHome > compareScoreAway){
-            newGame.setmWinner(winnerHome);
+            newGame.setmWinner(WINNER_HOME);
         } else if (compareScoreAway > compareScoreHome){
-            newGame.setmWinner(winnerAway);
+            newGame.setmWinner(WINNER_AWAY);
         } else
          {
-            newGame.setmWinner(winnerNull);
+            newGame.setmWinner(WINNER_NULL);
         }
         uploadId = newGame.getmIdGame();
         dff = new SimpleDateFormat("yyMMdd");
         date_firebase = dff.format(newGame.getmDate());
         newGame.setmStatus("TERMINE");
-        mDatabase.child(date_firebase).child(uploadId).setValue(newGame);
-
-
-
-
+        mDatabaseGame.child(date_firebase).child(uploadId).setValue(newGame);
 
     }
 
@@ -183,9 +200,95 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         if (v == buttonUpload) {
 
             checkWinnerGame();
+            checkUsersBet();
 
         }
     }
 
+    private void checkUsersBet(){
+        mDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot user : dataSnapshot.getChildren()){
+                    setBetScore(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void setBetScore(DataSnapshot user){
+        final DatabaseReference currentUserRef = mDatabaseUser.child(user.getKey());
+        currentUserRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                UserModel currentUser = mutableData.getValue(UserModel.class);
+                HashMap<String, BetGameModel> betsList = currentUser.getUsersBets();
+                if (betsList.containsKey(uploadId)){
+                    BetGameModel currentBet = betsList.get(uploadId);
+                    int score = 0;
+                    if (currentBet.getmHomeScore() == compareScoreHome && currentBet.getmAwayScore() == compareScoreAway) {
+                        score = 3;
+                    } else if(currentBet.getmWinner().equals(newGame.getmWinner())){
+                        score = 1;
+                    }
+                    currentBet.setmBetResult(score);
+                    mutableData.setValue(currentUser);
+                    setUserScore(currentUserRef, score);
+                    setCompetScore(currentUser.getUserCompetitions(), score);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+    }
+
+    private void setUserScore(DatabaseReference currentUserRef, final int score){
+        currentUserRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                UserModel currentUser = mutableData.getValue(UserModel.class);
+                int newScore = (int) currentUser.getUserScorePerCompetition() + score;
+                currentUser.setUserScorePerCompetition(newScore);
+                mutableData.setValue(currentUser);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+    }
+
+    private void setCompetScore(ArrayList<String> competList, final int score){
+       for (String compet : competList){
+           mDatabaseCompet.child(compet).runTransaction(new Transaction.Handler() {
+               @Override
+               public Transaction.Result doTransaction(MutableData mutableData) {
+                   CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
+                   int newScore = currentCompetition.getCompetitionScore() + score;
+                   currentCompetition.setCompetitionScore(newScore);
+                   mutableData.setValue(currentCompetition);
+                   return Transaction.success(mutableData);
+               }
+
+               @Override
+               public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+               }
+           });
+       }
+    }
 
 }

@@ -30,13 +30,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.example.mathieu.parissportifs.Constants.TEAM;
+import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class MainActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
 
-    public final static String USER = "users/";
-    public final static String TEAM = "favoriteTeam/";
-    private static final String TAG = "TAG";
+
 
     private EditText editTextModifyPseudo;
     private FirebaseAuth mAuth;
@@ -232,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
             String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
             String userName = editTextModifyPseudo.getText().toString();
-            UserModel user = new UserModel(UserId, userName, null, 0, favoriteTeam, email);
+            UserModel user = new UserModel(UserId, userName, null, 0, favoriteTeam, email, null);
             mDatabase.setValue(user);
 
             Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);

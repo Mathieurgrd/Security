@@ -38,6 +38,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.net.URL;
 
+import static com.example.mathieu.parissportifs.Constants.RC_SIGN_IN;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText inputEmail, inputPassword;
@@ -50,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseUser user;
     private boolean isAdmin = false;
     private SignInButton loginGoogle;
-    private final static int RC_SIGN_IN = 1;
     private final static String TAG = "LOGIN_ACTIVITY";
     private GoogleApiClient mGoogleApiClient;
     private String uId;
