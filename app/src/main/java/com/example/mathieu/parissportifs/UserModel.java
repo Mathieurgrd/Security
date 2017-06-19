@@ -23,12 +23,7 @@ public class UserModel {
     private UserModel() {
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, float userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
+    public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, int userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
         this.userId = userId;
         this.userName = userName;
         this.userCompetitions = userCompetitions;

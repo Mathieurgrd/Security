@@ -141,8 +141,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         newGame.setmScoreHomeTeam(numberPickerHome.getValue());
 
                     }
-                })
-                .show();
+                }).show();
 
     }
 
