@@ -14,8 +14,7 @@ public class UserModel {
 
     private String userId;
     private String userName;
-    private int userScorePerCompetition;
-    private ArrayList<String> userCompetitions;
+    private HashMap<String, Integer> userScorePerCompetition;
     private String favoriteTeam;
     private String email;
     private HashMap<String, BetGameModel> usersBets;
@@ -23,62 +22,49 @@ public class UserModel {
     private UserModel() {
     }
 
-    public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, int userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
+    public UserModel(String userId, String userName, @Nullable HashMap userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
         this.userId = userId;
         this.userName = userName;
-        this.userCompetitions = userCompetitions;
         this.userScorePerCompetition = userScorePerCompetition;
         this.favoriteTeam = favoriteTeam;
         this.email = email;
         this.usersBets = usersBets;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-
     public String getUserId() {
-
         return userId;
-    }
-
-    public String getUserName() {
-
-        return userName;
-    }
-
-    public ArrayList<String> getUserCompetitions() {
-        return userCompetitions;
-    }
-
-    public String getFavoriteTeam() {
-        return favoriteTeam;
-    }
-
-    public float getUserScorePerCompetition() {
-
-        return userScorePerCompetition;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setUserCompetitions(ArrayList<String> userCompetitions) {
-        this.userCompetitions = userCompetitions;
+    public HashMap<String, Integer> getUserScorePerCompetition() {
+        return userScorePerCompetition;
     }
 
-    public void setUserScorePerCompetition(int userScorePerCompetition) {
+    public void setUserScorePerCompetition(HashMap<String, Integer> userScorePerCompetition) {
         this.userScorePerCompetition = userScorePerCompetition;
+    }
+
+    public String getFavoriteTeam() {
+        return favoriteTeam;
     }
 
     public void setFavoriteTeam(String favoriteTeam) {
         this.favoriteTeam = favoriteTeam;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {

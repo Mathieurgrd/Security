@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
-import android.view.View;
+    import android.util.Log;
+    import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -27,13 +28,16 @@ import com.google.firebase.database.FirebaseDatabase;
     import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+    import java.util.HashMap;
+    import java.util.List;
 
     import static com.example.mathieu.parissportifs.Constants.COMPET;
     import static com.example.mathieu.parissportifs.Constants.USER;
 
     public class CreateCompetitionActivity extends AppCompatActivity implements
             View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+        private static final String TAG = "CreateCompetitionActy";
 
         private FirebaseUser mUser;
         private FirebaseDatabase database;
@@ -201,23 +205,25 @@ import java.util.List;
 
                 final DatabaseReference pushedPostRf = competitionRef.push();
                 pushedPostRf.setValue(userCompetition);
-                mUserRef.child(COMPET).push().setValue(pushedPostRf.getKey());
                 mUserRef.runTransaction(new Transaction.Handler() {
                     @Override
                     public Transaction.Result doTransaction(MutableData mutableData) {
                         UserModel currentUser = mutableData.getValue(UserModel.class);
-                        ArrayList<String> newList = currentUser.getUserCompetitions();
-                        if (newList == null){
-                            newList = new ArrayList<>();
+                        HashMap<String, Integer> newHash = currentUser.getUserScorePerCompetition();
+                        if (newHash == null){
+                            newHash = new HashMap<String, Integer>();
                         }
-                        newList.add(pushedPostRf.getKey());
+                        newHash.put(pushedPostRf.getKey(), 0);
+                        currentUser.setUserScorePerCompetition(newHash);
                         mutableData.setValue(currentUser);
                         return Transaction.success(mutableData);
                     }
 
                     @Override
                     public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
+                        if (databaseError != null) {
+                            Log.d(TAG, databaseError.getMessage());
+                        }
                     }
                 });
 

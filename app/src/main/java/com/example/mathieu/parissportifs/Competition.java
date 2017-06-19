@@ -28,15 +28,22 @@ public class Competition extends Fragment {
     private HorizontalCalendar horizontalCalendar;
     private ListView mGameListView;
     private DatabaseReference mDatabaseGameRef;
+    private String mCompetitionId;
 
-    public static Competition newInstance () {
+    public static Competition newInstance (String competitonId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(CreateOrJoinCompetition.COMPETITION_ID, competitonId);
         Competition fragment = new Competition();
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mCompetitionId = getArguments().getString(CreateOrJoinCompetition.COMPETITION_ID);
+        }
     }
 
     @Override
@@ -106,6 +113,7 @@ public class Competition extends Fragment {
                 if(newGame.getmStatus().equals("OUVERT")){
                     Intent i = new Intent(getActivity(), BetGame.class);
                     i.putExtra("newGame", newGame);
+                    i.putExtra(CreateOrJoinCompetition.COMPETITION_ID, mCompetitionId);
                     startActivity(i);
                 } else {
                     Toast.makeText(getActivity(), "Tu ne peux plus pronostiquer cette rencontre !", Toast.LENGTH_SHORT).show();

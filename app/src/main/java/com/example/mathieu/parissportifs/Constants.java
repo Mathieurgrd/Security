@@ -19,8 +19,6 @@ public class Constants {
     public static final String BET_SCORE = "betScore";
     public static final String USER_SCORE = "userScore";
     public static final String COMPET_SCORE = "competScore";
-    private static final String TAG = "TAG";
-
 
 
 

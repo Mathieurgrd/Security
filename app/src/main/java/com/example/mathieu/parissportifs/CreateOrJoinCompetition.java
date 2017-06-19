@@ -30,10 +30,12 @@ import static com.example.mathieu.parissportifs.Constants.ADMIN_USER;
 
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final String REC_DATA = "REC_DATA";
+    public static final String COMPETITION_ID = "competitionId";
+
 
 
     private ListView mCompetitionListView;
-    public static final String REC_DATA = "REC_DATA";
     private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
     private FirebaseUser user;
     private Button createCompetition;
@@ -237,7 +239,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
         Bundle bundle = new Bundle();
-        bundle.putString("key", postKey);
+        bundle.putString(COMPETITION_ID, postKey);
 
 
 
@@ -245,7 +247,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
-        intent.putExtra("key", bundle);
+        intent.putExtra(COMPETITION_ID, bundle);
         startActivity(intent);
 
         CreateOrJoinCompetition.this.finish();

@@ -184,7 +184,7 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
         String UserId = currentuser.getUid();
 
-        UserModel user = new UserModel(UserId, pseudo, null, 0, favoriteTeam, email, null);
+        UserModel user = new UserModel(UserId, pseudo, null, favoriteTeam, email, null);
         myRef.setValue(user);
     }
 

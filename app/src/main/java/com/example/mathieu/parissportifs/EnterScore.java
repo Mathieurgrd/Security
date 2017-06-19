@@ -25,12 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
-
-import static com.example.mathieu.parissportifs.Constants.BET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.COMPET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
-import static com.example.mathieu.parissportifs.Constants.USER_SCORE;
 import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
 import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
 import static com.example.mathieu.parissportifs.Constants.WINNER_NULL;
@@ -239,8 +233,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                     }
                     currentBet.setmBetResult(score);
                     mutableData.setValue(currentUser);
-                    setUserScore(currentUserRef, score);
-                    setCompetScore(currentUser.getUserCompetitions(), score);
+                    setUserScore(currentUserRef,currentBet.getmCompetitionId() , score);
+                    setCompetScore(currentUser.getUserScorePerCompetition(), score);
                 }
                 return Transaction.success(mutableData);
             }
@@ -252,13 +246,15 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    private void setUserScore(DatabaseReference currentUserRef, final int score){
+    private void setUserScore(DatabaseReference currentUserRef, final String competiitionID, final int score){
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 UserModel currentUser = mutableData.getValue(UserModel.class);
-                int newScore = (int) currentUser.getUserScorePerCompetition() + score;
-                currentUser.setUserScorePerCompetition(newScore);
+                HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
+                int newScore = competitionMap.get(competiitionID) + score;
+                competitionMap.put(competiitionID, newScore);
+                currentUser.setUserScorePerCompetition(competitionMap);
                 mutableData.setValue(currentUser);
                 return Transaction.success(mutableData);
             }
@@ -270,8 +266,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    private void setCompetScore(ArrayList<String> competList, final int score){
-       for (String compet : competList){
+    private void setCompetScore(HashMap<String, Integer> competHashMap, final int score){
+       for (String compet : competHashMap.keySet()){
            mDatabaseCompet.child(compet).runTransaction(new Transaction.Handler() {
                @Override
                public Transaction.Result doTransaction(MutableData mutableData) {
