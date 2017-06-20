@@ -19,6 +19,7 @@ public class UserModel {
     private String email;
     private HashMap<String, BetGameModel> usersBets;
 
+
     private UserModel() {
     }
 
