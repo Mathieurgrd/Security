@@ -14,13 +14,18 @@ public class UserModel {
 
     private String userId;
     private String userName;
+    private int userScorePerCompetition;
     private ArrayList<String> userCompetitions;
-    private float userScorePerCompetition;
     private String favoriteTeam;
     private String email;
     private HashMap<String, BetGameModel> usersBets;
 
     private UserModel() {
+    }
+
+
+    public String getEmail() {
+        return email;
     }
 
     public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, float userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
@@ -73,7 +78,7 @@ public class UserModel {
         this.userCompetitions = userCompetitions;
     }
 
-    public void setUserScorePerCompetition(float userScorePerCompetition) {
+    public void setUserScorePerCompetition(int userScorePerCompetition) {
         this.userScorePerCompetition = userScorePerCompetition;
     }
 
