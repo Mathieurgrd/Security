@@ -20,6 +20,8 @@ public class UserModel {
     private HashMap<String, BetGameModel> usersBets;
 
 
+
+
     private UserModel() {
     }
 

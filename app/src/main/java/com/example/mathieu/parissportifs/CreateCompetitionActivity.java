@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.ChildEventListener;
     import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,8 +46,8 @@ import java.util.ArrayList;
         private ImageView frenchFlag;
         private List<String> championshipList;
         private EditText etnameCompetition;
-        private DatabaseReference myRef, finalPush;
-        private List<UserModel> userfornewCompetitionList;
+        private DatabaseReference finalPush;
+        private HashMap<String, UserModel> members;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
@@ -85,15 +84,7 @@ import java.util.ArrayList;
 
             etnameCompetition = (EditText) findViewById(R.id.eTextNameYourCompetition);
 
-            FirebaseAuth.getInstance().getCurrentUser();
-            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
-
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            myRef = database.child("users/" + UserId);
-
-
-            myRef.addValueEventListener(new ValueEventListener() {
+            mUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -102,8 +93,8 @@ import java.util.ArrayList;
 
 
                     //ArrayList To create the Competition Object
-                    List<UserModel> userfornewCompetitionList = new ArrayList<>();
-                    userfornewCompetitionList.add(userProfile);
+                    members = new HashMap<String, UserModel>();
+                    members.put(userProfile.getUserId(), userProfile);
 
                 }
 
@@ -200,7 +191,7 @@ import java.util.ArrayList;
 
 
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
-                        championHShipName, UserId, userfornewCompetitionList, null);
+                        championHShipName, UserId, members, null);
 
 
                 final DatabaseReference pushedPostRf = competitionRef.push();
@@ -270,7 +261,7 @@ import java.util.ArrayList;
                         }
 
 
-                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 UserModel currentUser = dataSnapshot.getValue(UserModel.class);
