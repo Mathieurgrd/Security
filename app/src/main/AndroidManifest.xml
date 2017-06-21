@@ -44,13 +44,18 @@
         <activity android:name=".SplashScreenActivity">
             android:label="@string/title_activity_fullscreen">
         </activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity">
+
+        </activity>
         <activity android:name=".AdminGames">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity android:name=".PickContactActivity" />
         <activity android:name=".CreateOrJoinCompetition" />
@@ -62,7 +67,9 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".ModifyProfile" />
+        <activity android:name=".ModifyProfile" >
+
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

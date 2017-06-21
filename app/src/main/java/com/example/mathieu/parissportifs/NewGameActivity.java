@@ -144,7 +144,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                     public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
                         date = view.getDayOfMonth();
                         month = view.getMonth();
-
                         years = view.getYear();
                         String displayMonth = String.valueOf(view.getMonth()+1);
 
@@ -166,7 +165,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                 new TimePickerDialog.OnTimeSetListener() {
+                new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,int minute) {
