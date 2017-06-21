@@ -1,5 +1,7 @@
 package com.example.mathieu.parissportifs;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
@@ -39,7 +45,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
     private static final String TAG = "enterScore";
 
-    private TextView date;
+    private TextView textViewDate;
     private TextView hour;
     private TextView homeTeam;
     private TextView awayTeam;
@@ -57,6 +63,22 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private String uploadId;
     private int compareScoreHome;
     private int compareScoreAway;
+    private Button buttonChangeTimeTable;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private int mHour;
+    private int mMinute;
+    private  Calendar dateCalendar;
+    private int date_of_month;
+    private int month;
+    private int years;
+    private Calendar timeCalendar;
+    private Date date_time_object;
+    private String winner = "O";
+    private String status_open = "OUVERT";
+    private Date ourDate;
+    private String update_date_firebase;
 
 
     @Override
@@ -69,7 +91,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         mDatabaseCompet = FirebaseDatabase.getInstance().getReference(Constants.COMPET);
 
 
-                date = (TextView) findViewById(R.id.textViewDate);
+        textViewDate = (TextView) findViewById(R.id.textViewDate);
         hour = (TextView) findViewById(R.id.textViewHour);
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
@@ -79,6 +101,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         awayScore.setOnClickListener(this);
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         buttonUpload.setOnClickListener(this);
+        buttonChangeTimeTable = (Button) findViewById(R.id.buttonChangeHoraire);
+        buttonChangeTimeTable.setOnClickListener(this);
 
         numberPickerHome = new MaterialNumberPicker.Builder(this)
                 .minValue(0)
@@ -112,7 +136,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
         String hourGame = String.valueOf(newGame.getmHour())+" : "+String.valueOf(newGame.getmMinute());
 
-        date.setText(reportDate);
+        textViewDate.setText(reportDate);
         hour.setText(hourGame);
         homeTeam.setText(newGame.getmHomeTeam());
         awayTeam.setText(newGame.getmAwayTeam());
@@ -170,10 +194,9 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         compareScoreHome = newGame.getmScoreHomeTeam();
         if (compareScoreHome > compareScoreAway){
             newGame.setmWinner(WINNER_HOME);
-        } else if (compareScoreAway > compareScoreHome){
+        } else if (compareScoreAway > compareScoreHome) {
             newGame.setmWinner(WINNER_AWAY);
-        } else
-         {
+        } else {
             newGame.setmWinner(WINNER_NULL);
         }
         uploadId = newGame.getmIdGame();
@@ -184,23 +207,86 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    private void updateDate(){
+        // Get Current Date
+        dateCalendar = Calendar.getInstance();
+        mYear = dateCalendar.get(Calendar.YEAR);
+        mMonth = dateCalendar.get(Calendar.MONTH);
+        mDay = dateCalendar.get(Calendar.DAY_OF_MONTH);
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(EnterScore.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        date_of_month = view.getDayOfMonth();
+                        month = view.getMonth();
+                        years = view.getYear();
+                        String displayMonth = String.valueOf(view.getMonth()+1);
+
+                        String date_time = date_of_month + "/" + displayMonth + "/" + years;
+                        date_time_object = new Date(years, month, date_of_month);
+                        textViewDate.setText(date_time);
+                        ourDate = new Date (years-1900, month, date_of_month, mHour,mMinute);
+
+                        updateTime();
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+    private void updateTime(){
+        // Get Current Time
+        timeCalendar = Calendar.getInstance();
+        mHour = timeCalendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = timeCalendar.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(EnterScore.this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        mHour = hourOfDay;
+                        mMinute = minute;
+
+                        hour.setText(hourOfDay + ":" + minute);
+                        updateGame();
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
+
+    }
+
+    private void updateGame (){
+        NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object, mHour, mMinute, newGame.getmMatchWeek(), ourDate, newGame.getmReportDate(), status_open, winner);
+        dff = new SimpleDateFormat("yyMMdd");
+        update_date_firebase = dff.format(date_time_object);
+        mDatabaseGame.child(update_date_firebase).child(uploadId).setValue(newGameTimeTable);
+    }
+
     public void onClick (View v) {
         if (v == homeScore) {
-
             changeScoreHomeTeam();
-
         }
-
         if (v == awayScore) {
-
             changeScoreAwayTeam();
-
         }
-
         if (v == buttonUpload) {
-
             checkWinnerGame();
             checkUsersBet();
+        }
+        if (v == buttonChangeTimeTable){
+            if (newGame != null) {
+                uploadId = newGame.getmIdGame();
+                dff = new SimpleDateFormat("yyMMdd");
+                date_firebase = dff.format(newGame.getmDate());
+                mDatabaseGame.child(date_firebase).child(uploadId).removeValue();
+
+                updateDate();
+
+            }
 
         }
     }

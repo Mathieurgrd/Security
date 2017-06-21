@@ -89,7 +89,7 @@ public class AdminGames extends AppCompatActivity  {
 
         });
 
-        horizontalCalendar.goToday(false);
+        horizontalCalendar.goToday(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

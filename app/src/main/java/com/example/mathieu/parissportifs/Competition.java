@@ -113,7 +113,7 @@ public class Competition extends Fragment {
             }
         });
 
-        horizontalCalendar.goToday(false);
+        horizontalCalendar.goToday(true);
 
         return view;
     }
