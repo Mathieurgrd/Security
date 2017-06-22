@@ -1,17 +1,16 @@
 package com.example.mathieu.parissportifs;
 
+
+
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
+import com.example.mathieu.parissportifs.UserModel;
+
+
 import java.util.HashMap;
-
 /**
- * Created by mathieu on 22/05/17.
- */
-
+ Created by mathieu on 22/05/17. */
 public class CompetitionModel {
-
-
     private String competitionName;
     private String chamionshipName;
     private String userAdmin;

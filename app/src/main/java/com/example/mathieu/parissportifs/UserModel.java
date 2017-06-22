@@ -5,9 +5,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by mathieu on 22/05/17.
- */
+
 
 public class UserModel {
 

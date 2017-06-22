@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.example.mathieu.parissportifs.Constants.ADMIN_USER;
+import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
@@ -143,12 +144,14 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
                             addUserToCompetition(input);
+                            addCompetitionToUSer(input);
                             final String competitionPassword = input.getText().toString();
                             final Query competitionQuery = mDatabaseCompetitionRef;
 
                             pass = "";
 
-                            /*competitionQuery.addValueEventListener(new ValueEventListener() {
+                            /*
+                            competitionQuery.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -270,6 +273,34 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
             }
         });
+    }
+
+    private void addCompetitionToUSer(EditText input){
+        final String competitionPassword = input.getText().toString();
+        if (mAuth.getCurrentUser() != null) {
+            database.getReference(USER).child(mAuth.getCurrentUser().getUid()).runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    if (mutableData.getValue() == null) {
+                        return Transaction.success(mutableData);
+                    }
+                    UserModel currentUser = mutableData.getValue(UserModel.class);
+                    HashMap<String, Integer> newHash = currentUser.getUserScorePerCompetition();
+                    if (newHash == null){
+                        newHash = new HashMap<String, Integer>();
+                    }
+                    newHash.put(competitionPassword, 0);
+                    currentUser.setUserScorePerCompetition(newHash);
+                    mutableData.setValue(currentUser);
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                }
+            });
+        }
     }
 
 

@@ -187,11 +187,12 @@ import java.util.ArrayList;
 
 
 
-                String UserId = mUser.getUid().toString();
+                String userId = mUser.getUid().toString();
+
 
 
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
-                        championHShipName, UserId, members, null);
+                        championHShipName, userId,members, null);
 
 
                 final DatabaseReference pushedPostRf = competitionRef.push();

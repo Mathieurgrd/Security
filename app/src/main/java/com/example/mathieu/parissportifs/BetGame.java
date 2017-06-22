@@ -40,11 +40,15 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private String mWinner;
     private DatabaseReference mDatabaseUser;
     private FirebaseUser mUser;
+    private DatabaseReference mDatabaseCompet;
+    private DatabaseReference currentCompetitionRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_game);
+
+        mDatabaseCompet = FirebaseDatabase.getInstance().getReference(Constants.COMPET);
 
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
@@ -116,8 +120,8 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     newGame.getmReportDate()
             );
 
-
-            mDatabaseUser.runTransaction(new Transaction.Handler() {
+            currentCompetitionRef = mDatabaseCompet.child(mCompetitonId).child("membersMap").child(mUser.getUid());
+            currentCompetitionRef.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
                     if (mutableData.getValue() == null){

@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,6 +54,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private DatabaseReference mDatabaseGame;
     private DatabaseReference mDatabaseUser;
     private DatabaseReference mDatabaseCompet;
+    private DatabaseReference currentCompetitionRef;
     private String date_firebase;
     private DateFormat dff;
     private String uploadId;
@@ -73,6 +76,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private String status_open = "OUVERT";
     private Date ourDate;
     private String update_date_firebase;
+    private FirebaseUser user;
 
 
     @Override
@@ -97,6 +101,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         buttonUpload.setOnClickListener(this);
         buttonChangeTimeTable = (Button) findViewById(R.id.buttonChangeHoraire);
         buttonChangeTimeTable.setOnClickListener(this);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         numberPickerHome = new MaterialNumberPicker.Builder(this)
                 .minValue(0)
@@ -268,7 +274,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         }
         if (v == buttonUpload) {
             checkWinnerGame();
-            checkUsersBet();
+            checkCompetitionBet();
         }
         if (v == buttonChangeTimeTable){
             if (newGame != null) {
@@ -284,8 +290,25 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void checkUsersBet(){
-        mDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void checkCompetitionBet(){
+        mDatabaseCompet.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot competition : dataSnapshot.getChildren()){
+                    checkUsersBet(competition);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkUsersBet(DataSnapshot competition){
+        currentCompetitionRef = mDatabaseCompet.child(competition.getKey()).child("membersMap");
+        currentCompetitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot user : dataSnapshot.getChildren()){
@@ -301,9 +324,12 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
 
     }
+    // methode de calcul de score
+    private void setBetScore(DataSnapshot competition){
 
-    private void setBetScore(DataSnapshot user){
-        final DatabaseReference currentUserRef = mDatabaseUser.child(user.getKey());
+
+        final DatabaseReference currentUserRef = mDatabaseCompet.child(competition.getKey()).child("membersMap").child(user.getUid()).
+                child("userBets");
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -333,8 +359,9 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-
-    private void setUserScore(DatabaseReference currentUserRef, final String competiitionID, final int score){
+        // Crée l serscorecompetitions d'un user.
+    private void setUserScore(DatabaseReference currentUserRef, final String competitionID, final int score){
+        final DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference("Competitions").child(competitionID).child(user.getUid()).child("userScore");
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -343,11 +370,13 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
                 HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
-                int newScore = competitionMap.get(competiitionID) + score;
-                competitionMap.put(competiitionID, newScore);
-                currentUser.setUserScorePerCompetition(competitionMap);
-                mutableData.setValue(currentUser);
-                updateCompetition(competiitionID, score, currentUser);
+                if (currentUser.getUserScorePerCompetition().containsKey(competitionID)) {
+                    int newScore = competitionMap.get(competitionID) + score;
+                    competitionMap.put(competitionID, newScore);
+                    currentUser.setUserScorePerCompetition(competitionMap);
+                    mutableData.setValue(currentUser);
+                    updateCompetition(competitionID, score, currentUser);
+                }
                 return Transaction.success(mutableData);
             }
 
@@ -357,7 +386,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-
+         // Score de la compétition et addition des userscorecompetitionperuser :D :' :) :/ :P :O
     private void updateCompetition(final String competitionId, final int score, final UserModel currentUser){
        mDatabaseCompet.child(competitionId).runTransaction(new Transaction.Handler() {
            @Override
