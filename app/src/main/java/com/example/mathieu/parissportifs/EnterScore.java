@@ -257,11 +257,13 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
                 HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
-                int newScore = competitionMap.get(competiitionID) + score;
-                competitionMap.put(competiitionID, newScore);
-                currentUser.setUserScorePerCompetition(competitionMap);
-                mutableData.setValue(currentUser);
-                updateCompetition(competiitionID, score, currentUser);
+                if (currentUser.getUserScorePerCompetition().containsKey(competiitionID)) {
+                    int newScore = competitionMap.get(competiitionID) + score;
+                    competitionMap.put(competiitionID, newScore);
+                    currentUser.setUserScorePerCompetition(competitionMap);
+                    mutableData.setValue(currentUser);
+                    updateCompetition(competiitionID, score, currentUser);
+                }
                 return Transaction.success(mutableData);
             }
 

@@ -120,6 +120,9 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
             mDatabaseUser.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
+                    if (mutableData.getValue() == null){
+                        return Transaction.success(mutableData);
+                    }
                     UserModel currentUser = mutableData.getValue(UserModel.class);
                     HashMap<String, BetGameModel> newBetList = currentUser.getUsersBets();
                     if(newBetList == null){
