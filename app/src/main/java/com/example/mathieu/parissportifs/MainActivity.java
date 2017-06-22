@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
             String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
             String userName = editTextModifyPseudo.getText().toString();
-            UserModel user = new UserModel(UserId, userName, null, 0, favoriteTeam, email, null);
+            UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
             mDatabase.setValue(user);
 
             Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);

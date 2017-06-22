@@ -206,10 +206,10 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()){
             case R.id.spinnerHome:
-                awayTeam = parent.getItemAtPosition(position).toString();
+                homeTeam = parent.getItemAtPosition(position).toString();
                 break;
             case R.id.spinnerAway:
-                homeTeam = parent.getItemAtPosition(position).toString();
+                awayTeam = parent.getItemAtPosition(position).toString();
                 break;
         }
     }
@@ -233,6 +233,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         NewGame newGame = new NewGame(uploadId, homeTeam, awayTeam, scoreHome, scoreAway, date_time_object, mHour, mMinute, matchWeek,mydate,reportDate,"OUVERT",winner);
 
         mDatabase.child(reportDate).child(uploadId).setValue(newGame);
+        finish();
     }
 
     public void openDialogJourney (){

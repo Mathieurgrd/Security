@@ -1,13 +1,20 @@
 package com.example.mathieu.parissportifs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,37 +29,36 @@ import java.util.Date;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarListener;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class Competition extends Fragment {
+
+public class SuperUserCalendar extends Fragment {
 
     private HorizontalCalendar horizontalCalendar;
     private ListView mGameListView;
     private DatabaseReference mDatabaseGameRef;
-    private String mCompetitionId;
 
-    public static Competition newInstance (String competitonId) {
-        Bundle bundle = new Bundle();
-        bundle.putString(CreateOrJoinCompetition.COMPETITION_ID, competitonId);
-        Competition fragment = new Competition();
-        fragment.setArguments(bundle);
+
+    public static SuperUserCalendar newInstance () {
+        SuperUserCalendar fragment = new SuperUserCalendar();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mCompetitionId = getArguments().getString(CreateOrJoinCompetition.COMPETITION_ID);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_competition, container, false);
+        View view = inflater.inflate(R.layout.fragment_super_user_calendar, container, false);
 
-        mGameListView = (ListView) view.findViewById(R.id.gameListUser);
+
+        ImageButton firebase_notif = (ImageButton) view.findViewById(R.id.firebase_notif);
+
+        mGameListView = (ListView) view.findViewById(R.id.gameListSuperUser);
 
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
@@ -66,9 +72,7 @@ public class Competition extends Fragment {
         defaultDate.add(Calendar.MONTH, -1);
         defaultDate.add(Calendar.DAY_OF_WEEK, +5);
 
-
-
-         horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarViewUser)
+        horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.superUserCalendar)
                 .startDate(startDate.getTime())
                 .endDate(endDate.getTime())
                 .datesNumberOnScreen(5)
@@ -82,10 +86,10 @@ public class Competition extends Fragment {
                 .selectedDateBackground(Color.TRANSPARENT)
                 .build();
 
-
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Date date, int position) {
+                Toast.makeText(getActivity(), DateFormat.getDateInstance().format(date) + " is selected!", Toast.LENGTH_SHORT).show();
 
                 DateFormat df = new SimpleDateFormat("yyMMdd");
                 String reportDate = df.format(date);
@@ -99,9 +103,31 @@ public class Competition extends Fragment {
                 mGameListAdapter.notifyDataSetChanged();
 
             }
+
         });
 
+        horizontalCalendar.goToday(true);
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), NewGameActivity.class));
+            }
+        });
+
+        /*firebase_notif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://console.firebase.google.com/project/parissportifs-d74e4/notification/compose?campaignId=8388219356442312473"));
+                startActivity(intent);
+
+
+            }
+        });*/
 
         mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -110,18 +136,12 @@ public class Competition extends Fragment {
 
                 NewGame newGame = (NewGame) parent.getItemAtPosition(position);
 
-                if(newGame.getmStatus().equals("OUVERT")){
-                    Intent i = new Intent(getActivity(), BetGame.class);
-                    i.putExtra("newGame", newGame);
-                    i.putExtra(CreateOrJoinCompetition.COMPETITION_ID, mCompetitionId);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getActivity(), "Tu ne peux plus pronostiquer cette rencontre !", Toast.LENGTH_SHORT).show();
-                }
+                Intent i = new Intent(getActivity(), EnterScore.class);
+                i.putExtra("newGame", newGame);
+                startActivity(i);
             }
         });
 
-        horizontalCalendar.goToday(true);
 
         return view;
     }

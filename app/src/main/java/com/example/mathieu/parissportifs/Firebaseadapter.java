@@ -140,6 +140,11 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
         });
     }
 
+    public String getmKey(int i) {
+
+        return mKeys.get(i);
+    }
+
     public void cleanup() {
         // We're being destroyed, let go of our mListener and forget about all of the mModels
         mRef.removeEventListener(mListener);

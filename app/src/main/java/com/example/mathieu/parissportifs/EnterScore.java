@@ -31,12 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
-
-import static com.example.mathieu.parissportifs.Constants.BET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.COMPET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
-import static com.example.mathieu.parissportifs.Constants.USER_SCORE;
 import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
 import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
 import static com.example.mathieu.parissportifs.Constants.WINNER_NULL;
@@ -165,8 +159,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         newGame.setmScoreHomeTeam(numberPickerHome.getValue());
 
                     }
-                })
-                .show();
+                }).show();
 
     }
 
@@ -314,6 +307,9 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getValue() == null){
+                    return Transaction.success(mutableData);
+                }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
                 HashMap<String, BetGameModel> betsList = currentUser.getUsersBets();
                 if (betsList.containsKey(uploadId)){
@@ -326,8 +322,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                     }
                     currentBet.setmBetResult(score);
                     mutableData.setValue(currentUser);
-                    setUserScore(currentUserRef, score);
-                    setCompetScore(currentUser.getUserCompetitions(), score);
+                    setUserScore(currentUserRef,currentBet.getmCompetitionId() , score);
                 }
                 return Transaction.success(mutableData);
             }
@@ -339,14 +334,20 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    private void setUserScore(DatabaseReference currentUserRef, final int score){
+    private void setUserScore(DatabaseReference currentUserRef, final String competiitionID, final int score){
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getValue() == null){
+                    return Transaction.success(mutableData);
+                }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
-                int newScore = (int) currentUser.getUserScorePerCompetition() + score;
-                currentUser.setUserScorePerCompetition(newScore);
+                HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
+                int newScore = competitionMap.get(competiitionID) + score;
+                competitionMap.put(competiitionID, newScore);
+                currentUser.setUserScorePerCompetition(competitionMap);
                 mutableData.setValue(currentUser);
+                updateCompetition(competiitionID, score, currentUser);
                 return Transaction.success(mutableData);
             }
 
@@ -357,24 +358,37 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    private void setCompetScore(ArrayList<String> competList, final int score){
-       for (String compet : competList){
-           mDatabaseCompet.child(compet).runTransaction(new Transaction.Handler() {
-               @Override
-               public Transaction.Result doTransaction(MutableData mutableData) {
-                   CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
-                   int newScore = currentCompetition.getCompetitionScore() + score;
-                   currentCompetition.setCompetitionScore(newScore);
-                   mutableData.setValue(currentCompetition);
+    private void updateCompetition(final String competitionId, final int score, final UserModel currentUser){
+       mDatabaseCompet.child(competitionId).runTransaction(new Transaction.Handler() {
+           @Override
+           public Transaction.Result doTransaction(MutableData mutableData) {
+               if (mutableData.getValue() == null){
                    return Transaction.success(mutableData);
                }
 
-               @Override
-               public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+               // Getting the competition
+               CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
 
-               }
-           });
-       }
+               // Update score of the compet
+               int newScore = currentCompetition.getCompetitionScore() + score;
+               currentCompetition.setCompetitionScore(newScore);
+
+               //Update members in the competition
+               HashMap<String, UserModel> membersMap = currentCompetition.getMembersMap();
+               membersMap.put(currentUser.getUserId(), currentUser);
+               currentCompetition.setMembersMap(membersMap);
+
+               //send the new data
+               mutableData.setValue(currentCompetition);
+               return Transaction.success(mutableData);
+           }
+
+           @Override
+           public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+           }
+       });
+
     }
 
 }

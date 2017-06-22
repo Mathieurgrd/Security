@@ -104,7 +104,7 @@ public class PickContactActivity extends ListActivity implements View.OnClickLis
 
                 CompetitionModel model = dataSnapshot.getValue(CompetitionModel.class);
 
-                 CompareCompetId = model.competitionIdReedeemCode;
+                 CompareCompetId = model.getCompetitionIdReedeemCode();
 
 
 
