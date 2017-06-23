@@ -37,7 +37,6 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-
             android:label="@string/title_activity_fullscreen" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SignUpEmailActivity" />
@@ -46,11 +45,13 @@
         </activity>
         <activity android:name=".LoginActivity">
 
+
         </activity>
-        <activity android:name=".AdminGames">
+        <activity android:name=".AdminGames"> <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-
-
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
 
         </activity>
         <activity android:name=".PickContactActivity" />
@@ -63,7 +64,7 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".ModifyProfile" >
+        <activity android:name=".ModifyProfile">
 
         </activity>
 
@@ -76,7 +77,10 @@
         </activity>
         <activity android:name=".NewGameActivity" />
         <activity android:name=".EnterScore" />
-        <activity android:name=".BetGame"></activity>
+        <activity android:name=".BetGame" />
+        <activity android:name=".SuperUserNavigation">
+
+        </activity>
     </application>
 
 </manifest>

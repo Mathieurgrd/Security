@@ -1,30 +1,30 @@
 package com.example.mathieu.parissportifs;
 
+
+
 import android.support.annotation.Nullable;
 
-import java.util.List;
+import com.example.mathieu.parissportifs.UserModel;
 
+
+import java.util.HashMap;
 /**
- * Created by mathieu on 22/05/17.
- */
-
+ Created by mathieu on 22/05/17. */
 public class CompetitionModel {
-
-
-   public String competitionName;
-   public String chamionshipName;
-   public String userAdmin;
-   public List<UserModel> userList;
-   public int competitionScore;
-   public String competitionIdReedeemCode;
+    private String competitionName;
+    private String chamionshipName;
+    private String userAdmin;
+    private HashMap<String, UserModel> membersMap;
+    private int competitionScore;
+    private String competitionIdReedeemCode;
 
     private CompetitionModel() {}
 
-    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, List<UserModel> userList,  @Nullable String competitionIdReedeemCode) {
+    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, HashMap<String, UserModel> userList,  @Nullable String competitionIdReedeemCode) {
         this.competitionName = competitionName;
         this.chamionshipName = chamionshipName;
         this.userAdmin = userAdmin;
-        this.userList = userList;
+        this.membersMap = userList;
         this.competitionIdReedeemCode = competitionIdReedeemCode;
     }
 
@@ -52,12 +52,12 @@ public class CompetitionModel {
         this.userAdmin = userAdmin;
     }
 
-    public List<UserModel> getUserList() {
-        return userList;
+    public HashMap<String, UserModel> getMembersMap() {
+        return membersMap;
     }
 
-    public void setUserList(List<UserModel> userList) {
-        this.userList = userList;
+    public void setMembersMap(HashMap<String, UserModel> membersMap) {
+        this.membersMap = membersMap;
     }
 
     public int getCompetitionScore() {

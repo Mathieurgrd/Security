@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mathieu.parissportifs.Navigation">
+    tools:context="com.example.mathieu.parissportifs.SuperUserNavigation">
 
     <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+        android:id="@+id/bottomBarSuperUser"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:bb_tabXmlResource="@xml/bottombar_tabs_color_changing"
+        app:bb_tabXmlResource="@xml/bottombar_superuser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-        <!--app:bb_behavior="shifting" -->
+    <!--app:bb_behavior="shifting" -->
 
     <FrameLayout
-        android:id="@+id/frame_layout"
+        android:id="@+id/frame_layout_super_user"
         android:layout_width="398dp"
         android:layout_height="458dp"
         android:layout_alignParentTop="true"
@@ -35,12 +36,5 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="0dp"
         app:layout_constraintVertical_bias="0.0"></FrameLayout>
-
-    <TextView
-        android:id="@+id/keytv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
 
 </android.support.constraint.ConstraintLayout>

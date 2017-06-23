@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,12 +33,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
-
-import static com.example.mathieu.parissportifs.Constants.BET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.COMPET_SCORE;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_BET;
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
-import static com.example.mathieu.parissportifs.Constants.USER_SCORE;
 import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
 import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
 import static com.example.mathieu.parissportifs.Constants.WINNER_NULL;
@@ -58,6 +54,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private DatabaseReference mDatabaseGame;
     private DatabaseReference mDatabaseUser;
     private DatabaseReference mDatabaseCompet;
+    private DatabaseReference currentCompetitionRef;
     private String date_firebase;
     private DateFormat dff;
     private String uploadId;
@@ -79,6 +76,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private String status_open = "OUVERT";
     private Date ourDate;
     private String update_date_firebase;
+    private FirebaseUser user;
 
 
     @Override
@@ -103,6 +101,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         buttonUpload.setOnClickListener(this);
         buttonChangeTimeTable = (Button) findViewById(R.id.buttonChangeHoraire);
         buttonChangeTimeTable.setOnClickListener(this);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         numberPickerHome = new MaterialNumberPicker.Builder(this)
                 .minValue(0)
@@ -165,8 +165,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         newGame.setmScoreHomeTeam(numberPickerHome.getValue());
 
                     }
-                })
-                .show();
+                }).show();
 
     }
 
@@ -275,7 +274,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         }
         if (v == buttonUpload) {
             checkWinnerGame();
-            checkUsersBet();
+            checkCompetitionBet();
         }
         if (v == buttonChangeTimeTable){
             if (newGame != null) {
@@ -291,8 +290,25 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void checkUsersBet(){
-        mDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void checkCompetitionBet(){
+        mDatabaseCompet.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot competition : dataSnapshot.getChildren()){
+                    checkUsersBet(competition);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkUsersBet(DataSnapshot competition){
+        currentCompetitionRef = mDatabaseCompet.child(competition.getKey()).child("membersMap");
+        currentCompetitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot user : dataSnapshot.getChildren()){
@@ -308,12 +324,18 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
 
     }
+    // methode de calcul de score
+    private void setBetScore(DataSnapshot competition){
 
-    private void setBetScore(DataSnapshot user){
-        final DatabaseReference currentUserRef = mDatabaseUser.child(user.getKey());
+
+        final DatabaseReference currentUserRef = mDatabaseCompet.child(competition.getKey()).child("membersMap").child(user.getUid()).
+                child("userBets");
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getValue() == null){
+                    return Transaction.success(mutableData);
+                }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
                 HashMap<String, BetGameModel> betsList = currentUser.getUsersBets();
                 if (betsList.containsKey(uploadId)){
@@ -326,8 +348,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                     }
                     currentBet.setmBetResult(score);
                     mutableData.setValue(currentUser);
-                    setUserScore(currentUserRef, score);
-                    setCompetScore(currentUser.getUserCompetitions(), score);
+                    setUserScore(currentUserRef,currentBet.getmCompetitionId() , score);
                 }
                 return Transaction.success(mutableData);
             }
@@ -338,15 +359,24 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-
-    private void setUserScore(DatabaseReference currentUserRef, final int score){
+        // Crée l serscorecompetitions d'un user.
+    private void setUserScore(DatabaseReference currentUserRef, final String competitionID, final int score){
+        final DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference("Competitions").child(competitionID).child(user.getUid()).child("userScore");
         currentUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getValue() == null){
+                    return Transaction.success(mutableData);
+                }
                 UserModel currentUser = mutableData.getValue(UserModel.class);
-                int newScore = (int) currentUser.getUserScorePerCompetition() + score;
-                currentUser.setUserScorePerCompetition(newScore);
-                mutableData.setValue(currentUser);
+                HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
+                if (currentUser.getUserScorePerCompetition().containsKey(competitionID)) {
+                    int newScore = competitionMap.get(competitionID) + score;
+                    competitionMap.put(competitionID, newScore);
+                    currentUser.setUserScorePerCompetition(competitionMap);
+                    mutableData.setValue(currentUser);
+                    updateCompetition(competitionID, score, currentUser);
+                }
                 return Transaction.success(mutableData);
             }
 
@@ -356,25 +386,38 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-
-    private void setCompetScore(ArrayList<String> competList, final int score){
-       for (String compet : competList){
-           mDatabaseCompet.child(compet).runTransaction(new Transaction.Handler() {
-               @Override
-               public Transaction.Result doTransaction(MutableData mutableData) {
-                   CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
-                   int newScore = currentCompetition.getCompetitionScore() + score;
-                   currentCompetition.setCompetitionScore(newScore);
-                   mutableData.setValue(currentCompetition);
+         // Score de la compétition et addition des userscorecompetitionperuser :D :' :) :/ :P :O
+    private void updateCompetition(final String competitionId, final int score, final UserModel currentUser){
+       mDatabaseCompet.child(competitionId).runTransaction(new Transaction.Handler() {
+           @Override
+           public Transaction.Result doTransaction(MutableData mutableData) {
+               if (mutableData.getValue() == null){
                    return Transaction.success(mutableData);
                }
 
-               @Override
-               public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+               // Getting the competition
+               CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
 
-               }
-           });
-       }
+               // Update score of the compet
+               int newScore = currentCompetition.getCompetitionScore() + score;
+               currentCompetition.setCompetitionScore(newScore);
+
+               //Update members in the competition
+               HashMap<String, UserModel> membersMap = currentCompetition.getMembersMap();
+               membersMap.put(currentUser.getUserId(), currentUser);
+               currentCompetition.setMembersMap(membersMap);
+
+               //send the new data
+               mutableData.setValue(currentCompetition);
+               return Transaction.success(mutableData);
+           }
+
+           @Override
+           public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+           }
+       });
+
     }
 
 }

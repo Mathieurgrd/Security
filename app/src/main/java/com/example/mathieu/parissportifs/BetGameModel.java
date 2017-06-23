@@ -9,6 +9,7 @@ import java.util.Date;
 public class BetGameModel {
 
     private String mGameId;
+    private String mCompetitionId;
     private String mHomeTeam;
     private String mAwayTeam;
     private int mHomeScore;
@@ -18,8 +19,14 @@ public class BetGameModel {
     private String mDateGame;
     private Integer mBetResult;
 
-    public BetGameModel(String mGameId, String mHomeTeam, String mAwayTeam, int mHomeScore, int mAwayScore, int mMatchWeek, String mWinner, String mDateGame) {
+
+    public  BetGameModel(){
+
+    }
+
+    public BetGameModel(String mGameId, String mCompetitionId, String mHomeTeam, String mAwayTeam, int mHomeScore, int mAwayScore, int mMatchWeek, String mWinner, String mDateGame) {
         this.mGameId = mGameId;
+        this.mCompetitionId = mCompetitionId;
         this.mHomeTeam = mHomeTeam;
         this.mAwayTeam = mAwayTeam;
         this.mHomeScore = mHomeScore;
@@ -28,9 +35,6 @@ public class BetGameModel {
         this.mWinner = mWinner;
         this.mDateGame = mDateGame;
     }
-    public  BetGameModel(){
-
-    }
 
     public String getmGameId() {
         return mGameId;
@@ -38,6 +42,14 @@ public class BetGameModel {
 
     public void setmGameId(String mGameId) {
         this.mGameId = mGameId;
+    }
+
+    public String getmCompetitionId() {
+        return mCompetitionId;
+    }
+
+    public void setmCompetitionId(String mCompetitionId) {
+        this.mCompetitionId = mCompetitionId;
     }
 
     public String getmHomeTeam() {

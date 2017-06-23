@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Chat extends Fragment {
 
-    public static Chat newInstance () {
-        Chat fragment = new Chat();
+public class SuperUserRanking extends Fragment {
+
+    public static SuperUserRanking newInstance () {
+        SuperUserRanking fragment = new SuperUserRanking();
         return fragment;
     }
 
@@ -24,7 +25,7 @@ public class Chat extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_super_user_ranking, container, false);
 
         return view;
     }

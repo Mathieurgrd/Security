@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_calendar"
+        icon="@drawable/ic_home"
+        title="Calendrier"
+        barColorWhenSelected="#F9A02E" />
+    <tab
+        id="@+id/tab_notifications"
+        icon="@drawable/ic_flux"
+        title="Notifications"
+        barColorWhenSelected="#1FA597" />
+    <tab
+        id="@+id/tab_ranking"
+        icon="@drawable/ic_challenge"
+        title="Classement"
+        barColorWhenSelected="#565656" />
+
+</tabs>

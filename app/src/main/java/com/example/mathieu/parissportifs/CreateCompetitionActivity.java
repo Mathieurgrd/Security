@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
-import android.view.View;
+    import android.util.Log;
+    import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.ChildEventListener;
     import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,13 +27,16 @@ import com.google.firebase.database.FirebaseDatabase;
     import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+    import java.util.HashMap;
+    import java.util.List;
 
     import static com.example.mathieu.parissportifs.Constants.COMPET;
     import static com.example.mathieu.parissportifs.Constants.USER;
 
     public class CreateCompetitionActivity extends AppCompatActivity implements
             View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+        private static final String TAG = "CreateCompetitionActy";
 
         private FirebaseUser mUser;
         private FirebaseDatabase database;
@@ -43,8 +46,8 @@ import java.util.List;
         private ImageView frenchFlag;
         private List<String> championshipList;
         private EditText etnameCompetition;
-        private DatabaseReference myRef, finalPush;
-        private List<UserModel> userfornewCompetitionList;
+        private DatabaseReference finalPush;
+        private HashMap<String, UserModel> members;
         private int scaleVictory, scaleScore;
         private FirebaseAuth mAuth;
         private FirebaseAuth.AuthStateListener mAuthListener;
@@ -81,15 +84,7 @@ import java.util.List;
 
             etnameCompetition = (EditText) findViewById(R.id.eTextNameYourCompetition);
 
-            FirebaseAuth.getInstance().getCurrentUser();
-            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
-
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            myRef = database.child("users/" + UserId);
-
-
-            myRef.addValueEventListener(new ValueEventListener() {
+            mUserRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -98,8 +93,8 @@ import java.util.List;
 
 
                     //ArrayList To create the Competition Object
-                    List<UserModel> userfornewCompetitionList = new ArrayList<>();
-                    userfornewCompetitionList.add(userProfile);
+                    members = new HashMap<String, UserModel>();
+                    members.put(userProfile.getUserId(), userProfile);
 
                 }
 
@@ -192,32 +187,35 @@ import java.util.List;
 
 
 
-                String UserId = mUser.getUid().toString();
+                String userId = mUser.getUid().toString();
+
 
 
                 final CompetitionModel userCompetition = new CompetitionModel(competitionName,
-                        championHShipName, UserId, userfornewCompetitionList, null);
+                        championHShipName, userId,members, null);
 
 
                 final DatabaseReference pushedPostRf = competitionRef.push();
                 pushedPostRf.setValue(userCompetition);
-                mUserRef.child(COMPET).push().setValue(pushedPostRf.getKey());
                 mUserRef.runTransaction(new Transaction.Handler() {
                     @Override
                     public Transaction.Result doTransaction(MutableData mutableData) {
                         UserModel currentUser = mutableData.getValue(UserModel.class);
-                        ArrayList<String> newList = currentUser.getUserCompetitions();
-                        if (newList == null){
-                            newList = new ArrayList<>();
+                        HashMap<String, Integer> newHash = currentUser.getUserScorePerCompetition();
+                        if (newHash == null){
+                            newHash = new HashMap<String, Integer>();
                         }
-                        newList.add(pushedPostRf.getKey());
+                        newHash.put(pushedPostRf.getKey(), 0);
+                        currentUser.setUserScorePerCompetition(newHash);
                         mutableData.setValue(currentUser);
                         return Transaction.success(mutableData);
                     }
 
                     @Override
                     public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
+                        if (databaseError != null) {
+                            Log.d(TAG, databaseError.getMessage());
+                        }
                     }
                 });
 
@@ -264,7 +262,7 @@ import java.util.List;
                         }
 
 
-                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 UserModel currentUser = dataSnapshot.getValue(UserModel.class);

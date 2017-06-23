@@ -22,6 +22,12 @@ public class Navigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra(CreateOrJoinCompetition.COMPETITION_ID);
+        key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
+
+
+
 
 
         keytv = (TextView) findViewById(R.id.keytv);
@@ -39,16 +45,20 @@ public class Navigation extends AppCompatActivity {
                 if (tabId == R.id.tab_homeCompetition) {
                     selectedFragment = HomeCompetition.newInstance();
                 } else if (tabId == R.id.tab_competition) {
-                    selectedFragment = Competition.newInstance();
+                    selectedFragment = Competition.newInstance(key);
                 } else if (tabId == R.id.tab_challenge) {
                     selectedFragment = Challenge.newInstance();
-                } else if (tabId == R.id.tab_chat) {
-                    selectedFragment = Chat.newInstance();
                 }
                 Intent intent = getIntent();
                 Bundle bundle = intent.getBundleExtra("key");
                 key = bundle.getString("key");
                 keytv.setText(key);
+
+
+
+
+
+
 
 
 

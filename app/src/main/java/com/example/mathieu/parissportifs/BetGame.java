@@ -27,6 +27,7 @@ import static com.example.mathieu.parissportifs.Constants.USER;
 public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
     private NewGame newGame;
+    private String mCompetitonId;
     private TextView homeTeam;
     private TextView awayTeam;
     private TextView hour;
@@ -39,14 +40,19 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private String mWinner;
     private DatabaseReference mDatabaseUser;
     private FirebaseUser mUser;
+    private DatabaseReference mDatabaseCompet;
+    private DatabaseReference currentCompetitionRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_game);
 
+        mDatabaseCompet = FirebaseDatabase.getInstance().getReference(Constants.COMPET);
+
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
+        mCompetitonId = i.getStringExtra(CreateOrJoinCompetition.COMPETITION_ID);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseUser = FirebaseDatabase.getInstance()
@@ -104,6 +110,7 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
             checkWinnerBet();
             betGameModel = new BetGameModel(
                     newGame.getmIdGame(),
+                    mCompetitonId,
                     newGame.getmHomeTeam(),
                     newGame.getmAwayTeam(),
                     mScoreHome,
@@ -112,9 +119,14 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     mWinner,
                     newGame.getmReportDate()
             );
-            mDatabaseUser.runTransaction(new Transaction.Handler() {
+
+            currentCompetitionRef = mDatabaseCompet.child(mCompetitonId).child("membersMap").child(mUser.getUid());
+            currentCompetitionRef.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
+                    if (mutableData.getValue() == null){
+                        return Transaction.success(mutableData);
+                    }
                     UserModel currentUser = mutableData.getValue(UserModel.class);
                     HashMap<String, BetGameModel> newBetList = currentUser.getUsersBets();
                     if(newBetList == null){
