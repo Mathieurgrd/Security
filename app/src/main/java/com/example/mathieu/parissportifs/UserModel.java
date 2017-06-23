@@ -2,7 +2,6 @@ package com.example.mathieu.parissportifs;
 
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -13,7 +12,6 @@ public class UserModel {
     private String userId;
     private String userName;
     private HashMap<String, Integer> userScorePerCompetition;
-    private ArrayList<String> userCompetitions;
     private String favoriteTeam;
     private String email;
     private HashMap<String, BetGameModel> usersBets;
@@ -28,7 +26,7 @@ public class UserModel {
 
   
 
-    public UserModel(String userId, String userName, @Nullable  ArrayList<String> userCompetitions, float userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
+    public UserModel(String userId, String userName, HashMap<String, Integer> userScorePerCompetition, String favoriteTeam, String email, @Nullable HashMap<String, BetGameModel> usersBets) {
         this.userId = userId;
         this.userName = userName;
         this.userScorePerCompetition = userScorePerCompetition;
