@@ -39,7 +39,12 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
 
+public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+
+
     private ListView mCompetitionListView;
+    public static final String REC_DATA = "REC_DATA";
     private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
     private FirebaseUser user;
     private Button createCompetition;
@@ -317,6 +322,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         String postKey = mCompetitionResultAdapter.getmKey(position);
 
 
+
         Bundle bundle = new Bundle();
         bundle.putString(COMPETITION_ID, postKey);
 
@@ -327,6 +333,36 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
         intent.putExtra(COMPETITION_ID, bundle);
+        startActivity(intent);
+
+        CreateOrJoinCompetition.this.finish();
+
+    }
+
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //goToCompetition = mCompetitionResultAdapter.getItem(position);
+        //String key = mCompetitionResultAdapter.getRef(position).getKey();
+        //String postKey = competitionModel.get(position).getKey();
+        //String postKey = mCompetitionResultAdapter.getItemId(position);
+
+        String postKey = mCompetitionResultAdapter.getmKey(position);
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("key", postKey);
+
+
+
+
+        Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
+        intent.putExtra("key", bundle);
         startActivity(intent);
 
         CreateOrJoinCompetition.this.finish();
