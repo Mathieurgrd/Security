@@ -29,131 +29,120 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.mathieu.parissportifs.Constants.ADMIN_USER;
 import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final String REC_DATA = "REC_DATA";
     public static final String COMPETITION_ID = "competitionId";
 
+        private ListView mCompetitionListView;
+        public static final String REC_DATA = "REC_DATA";
+        private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
+        private FirebaseUser user;
+        private Button createCompetition;
+        private Button joinCompettion;
+        private Spinner championshipSelector;
+        private String pass, userId, competitionKey;
+        private FirebaseDatabase database;
+        private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
+        private FirebaseAuth mAuth;
+        private FirebaseAuth.AuthStateListener mAuthStateListener;
+        private List<UserModel> userList;
+        private ArrayList<CompetitionModel> competitionsList;
+        private Button goModifyProfil;
+        private String uId;
+        private UserModel userData;
+
+        private CompetitionListAdapter mCompetitionResultAdapter;
+        private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
-public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_create_or_join_competition);
 
 
+            mAuth = FirebaseAuth.getInstance();
 
-    private ListView mCompetitionListView;
-    public static final String REC_DATA = "REC_DATA";
-    private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
-    private FirebaseUser user;
-    private Button createCompetition;
-    private Button joinCompettion;
-    private Spinner championshipSelector;
-    private String pass, userId, competitionKey;
-    private FirebaseDatabase database;
-    private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private List<UserModel> userList;
-    private ArrayList<CompetitionModel> competitionsList;
-    private Button goModifyProfil;
-    private String uId;
-    private UserModel userData;
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            uId = user.getUid();
+            getUserData();
+            if (uId.equals(ADMIN_USER)) {
+                startActivity(new Intent(CreateOrJoinCompetition.this, AdminGames.class));
+                finish();
+            }
+            if (user == null) {
+                startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
+            }
 
-    private CompetitionListAdapter mCompetitionResultAdapter;
-    private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_or_join_competition);
-
-
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        uId = user.getUid();
-        getUserData();
-        if (uId.equals(ADMIN_USER)) {
-            startActivity(new Intent(CreateOrJoinCompetition.this, AdminGames.class));
-            finish();
-        }
-        if (user == null) {
-            startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
-        }
-
-        findViewById(R.id.button_create_competition).setOnClickListener(this);
-        findViewById(R.id.button_join_competition).setOnClickListener(this);
-        goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
-        goModifyProfil.setOnClickListener(this);
-        final EditText input = new EditText(CreateOrJoinCompetition.this);
-
-
-
-
-        database = FirebaseDatabase.getInstance();
-
-        mDatabaseCompetitionRef = database.getReference("Competitions");
-
-        mDatabaseUserRef = database.getReference("users");
-
-        mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
-
-
-        mCompetitionResultAdapter = new CompetitionListAdapter(mDatabaseCompetitionRef, this,
-                R.layout.competitions_list_items); // APPELLE L'ADAPTER
-
-        mCompetitionListView.setAdapter(mCompetitionResultAdapter); //FUSION LIST ET ADAPTER
-
-        mCompetitionResultAdapter.notifyDataSetChanged();
-
-        mCompetitionListView.setOnItemClickListener(this);
-
-
-
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.button_create_competition) {
-            startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
-            CreateOrJoinCompetition.this.finish();
-        }
-
-        if (i == R.id.goModifyProfil) {
-            startActivity(new Intent(CreateOrJoinCompetition.this, ModifyProfile.class));
-            CreateOrJoinCompetition.this.finish();
-        }
-
-        if (i == R.id.button_join_competition) {
-
-
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateOrJoinCompetition.this);
-            alertDialog.setTitle("Join Competition");
-            alertDialog.setMessage("Enter Password");
+            findViewById(R.id.button_create_competition).setOnClickListener(this);
+            findViewById(R.id.button_join_competition).setOnClickListener(this);
+            goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
+            goModifyProfil.setOnClickListener(this);
             final EditText input = new EditText(CreateOrJoinCompetition.this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            alertDialog.setView(input);
 
 
-            alertDialog.setPositiveButton("Validate",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            database = FirebaseDatabase.getInstance();
+
+            mDatabaseCompetitionRef = database.getReference("Competitions");
+
+            mDatabaseUserRef = database.getReference("users");
+
+            mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
 
 
-                            addUserToCompetition(input);
-                            addCompetitionToUSer(input);
-                            final String competitionPassword = input.getText().toString();
-                            final Query competitionQuery = mDatabaseCompetitionRef;
+            mCompetitionResultAdapter = new CompetitionListAdapter(mDatabaseCompetitionRef, this,
+                    R.layout.competitions_list_items); // APPELLE L'ADAPTER
 
-                            pass = "";
+            mCompetitionListView.setAdapter(mCompetitionResultAdapter); //FUSION LIST ET ADAPTER
+
+            mCompetitionResultAdapter.notifyDataSetChanged();
+
+            mCompetitionListView.setOnItemClickListener(this);
+
+
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            int i = v.getId();
+            if (i == R.id.button_create_competition) {
+                startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
+                CreateOrJoinCompetition.this.finish();
+            }
+
+            if (i == R.id.goModifyProfil) {
+                startActivity(new Intent(CreateOrJoinCompetition.this, ModifyProfile.class));
+                CreateOrJoinCompetition.this.finish();
+            }
+
+            if (i == R.id.button_join_competition) {
+
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateOrJoinCompetition.this);
+                alertDialog.setTitle("Join Competition");
+                alertDialog.setMessage("Enter Password");
+                final EditText input = new EditText(CreateOrJoinCompetition.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                alertDialog.setView(input);
+
+
+                alertDialog.setPositiveButton("Validate",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                addUserToCompetition(input);
+                                addCompetitionToUSer(input);
+                                final String competitionPassword = input.getText().toString();
+                                final Query competitionQuery = mDatabaseCompetitionRef;
+
+                                pass = "";
 
                             /*
                             competitionQuery.addValueEventListener(new ValueEventListener() {
@@ -224,79 +213,52 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                                 }
                             });*/
 
-                        }
-                    });
+                            }
+                        });
 
-            alertDialog.setNegativeButton("NO",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
+                alertDialog.setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
 
-            alertDialog.show();
+                alertDialog.show();
+            }
         }
-    }
 
-    private void getUserData(){
-        DatabaseReference database = FirebaseDatabase
-                .getInstance().getReference();
-        myRef = database.child("users/" + uId);
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userData = dataSnapshot.getValue(UserModel.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void addUserToCompetition(EditText input){
-        final String competitionPassword = input.getText().toString();
-        database.getReference("Competitions").child(competitionPassword).runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                if (mutableData.getValue() == null){
-                    return Transaction.success(mutableData);
+        private void getUserData() {
+            DatabaseReference database = FirebaseDatabase
+                    .getInstance().getReference();
+            myRef = database.child("users/" + uId);
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userData = dataSnapshot.getValue(UserModel.class);
                 }
-                CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
 
-                HashMap<String, UserModel> membersMap = currentCompetition.getMembersMap();
-                membersMap.put(userData.getUserId(), userData);
-                currentCompetition.setMembersMap(membersMap);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                mutableData.setValue(currentCompetition);
-                return Transaction.success(mutableData);
-            }
+                }
+            });
+        }
 
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    }
-
-    private void addCompetitionToUSer(EditText input){
-        final String competitionPassword = input.getText().toString();
-        if (mAuth.getCurrentUser() != null) {
-            database.getReference(USER).child(mAuth.getCurrentUser().getUid()).runTransaction(new Transaction.Handler() {
+        private void addUserToCompetition(EditText input) {
+            final String competitionPassword = input.getText().toString();
+            database.getReference("Competitions").child(competitionPassword).runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
                     if (mutableData.getValue() == null) {
                         return Transaction.success(mutableData);
                     }
-                    UserModel currentUser = mutableData.getValue(UserModel.class);
-                    HashMap<String, Integer> newHash = currentUser.getUserScorePerCompetition();
-                    if (newHash == null){
-                        newHash = new HashMap<String, Integer>();
-                    }
-                    newHash.put(competitionPassword, 0);
-                    currentUser.setUserScorePerCompetition(newHash);
-                    mutableData.setValue(currentUser);
+                    CompetitionModel currentCompetition = mutableData.getValue(CompetitionModel.class);
+
+                    HashMap<String, UserModel> membersMap = currentCompetition.getMembersMap();
+                    membersMap.put(userData.getUserId(), userData);
+                    currentCompetition.setMembersMap(membersMap);
+
+                    mutableData.setValue(currentCompetition);
                     return Transaction.success(mutableData);
                 }
 
@@ -306,69 +268,62 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 }
             });
         }
+
+        private void addCompetitionToUSer(EditText input) {
+            final String competitionPassword = input.getText().toString();
+            if (mAuth.getCurrentUser() != null) {
+                database.getReference(USER).child(mAuth.getCurrentUser().getUid()).runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
+                        if (mutableData.getValue() == null) {
+                            return Transaction.success(mutableData);
+                        }
+                        UserModel currentUser = mutableData.getValue(UserModel.class);
+                        HashMap<String, Integer> newHash = currentUser.getUserScorePerCompetition();
+                        if (newHash == null) {
+                            newHash = new HashMap<String, Integer>();
+                        }
+                        newHash.put(competitionPassword, 0);
+                        currentUser.setUserScorePerCompetition(newHash);
+                        mutableData.setValue(currentUser);
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                    }
+                });
+            }
+        }
+
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            //goToCompetition = mCompetitionResultAdapter.getItem(position);
+            //String key = mCompetitionResultAdapter.getRef(position).getKey();
+            //String postKey = competitionModel.get(position).getKey();
+            //String postKey = mCompetitionResultAdapter.getItemId(position);
+
+            String postKey = mCompetitionResultAdapter.getmKey(position);
+
+
+            Bundle bundle = new Bundle();
+            bundle.putString("key", postKey);
+
+
+            Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
+            intent.putExtra("key", bundle);
+            startActivity(intent);
+
+            CreateOrJoinCompetition.this.finish();
+
+        }
     }
 
-
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        //goToCompetition = mCompetitionResultAdapter.getItem(position);
-        //String key = mCompetitionResultAdapter.getRef(position).getKey();
-        //String postKey = competitionModel.get(position).getKey();
-        //String postKey = mCompetitionResultAdapter.getItemId(position);
-
-        String postKey = mCompetitionResultAdapter.getmKey(position);
-
-
-
-        Bundle bundle = new Bundle();
-        bundle.putString(COMPETITION_ID, postKey);
-
-
-
-
-        Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
-        intent.putExtra(COMPETITION_ID, bundle);
-        startActivity(intent);
-
-        CreateOrJoinCompetition.this.finish();
-
-    }
-
-
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        //goToCompetition = mCompetitionResultAdapter.getItem(position);
-        //String key = mCompetitionResultAdapter.getRef(position).getKey();
-        //String postKey = competitionModel.get(position).getKey();
-        //String postKey = mCompetitionResultAdapter.getItemId(position);
-
-        String postKey = mCompetitionResultAdapter.getmKey(position);
-
-
-        Bundle bundle = new Bundle();
-        bundle.putString("key", postKey);
-
-
-
-
-        Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
-        intent.putExtra("key", bundle);
-        startActivity(intent);
-
-        CreateOrJoinCompetition.this.finish();
-
-    }
-}
 
 
 

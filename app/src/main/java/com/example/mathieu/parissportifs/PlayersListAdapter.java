@@ -54,4 +54,4 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
         }
 
     }
-}
+
