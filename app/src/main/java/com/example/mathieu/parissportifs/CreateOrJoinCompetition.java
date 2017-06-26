@@ -72,7 +72,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         uId = user.getUid();
         getUserData();
         if (uId.equals(ADMIN_USER)) {
-            startActivity(new Intent(CreateOrJoinCompetition.this, AdminGames.class));
+            startActivity(new Intent(CreateOrJoinCompetition.this, SuperUserNavigation.class));
             finish();
         }
         if (user == null) {

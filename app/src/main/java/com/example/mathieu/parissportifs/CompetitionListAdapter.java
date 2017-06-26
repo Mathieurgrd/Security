@@ -23,7 +23,7 @@ public class CompetitionListAdapter extends Firebaseadapter<CompetitionModel> {
 
 
     @Override
-    protected void populateView(View view, CompetitionModel mCompetition) {
+    protected void populateView(View view, CompetitionModel mCompetition, int position) {
 
         CompetitionName = (TextView) view.findViewById(R.id.eTextCompetitionName);
 

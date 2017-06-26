@@ -42,7 +42,7 @@ public class Navigation extends AppCompatActivity {
                 } else if (tabId == R.id.tab_competition) {
                     selectedFragment = Competition.newInstance(key);
                 } else if (tabId == R.id.tab_challenge) {
-                    selectedFragment = Challenge.newInstance();
+                    selectedFragment = Challenge.newInstance(key);
                 }
 
 
