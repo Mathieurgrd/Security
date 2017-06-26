@@ -37,6 +37,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
         playerScore.setText(String.valueOf(model.getUserScorePerCompetition()));
 
         /*if (model.getUserScorePerCompetition() < 5) {
+        if (model.getUserScorePerCompetition() < 5) {
             playerRank.setText("Polisseur de banc");
         }else if (model.getUserScorePerCompetition() < 10){
             playerRank.setText("Presseur d'orange");
@@ -50,5 +51,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
             playerRank.setText("Zlatan");
         }*/
 
+        }
+
     }
-}
+
