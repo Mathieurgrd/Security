@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,9 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private NewGame newGame;
     private String mCompetitonId;
     private TextView homeTeam;
+    private ImageView imageViewHomeTeam;
     private TextView awayTeam;
+    private ImageView imageViewAwayTeam;
     private TextView hour;
     private Button buttonSaveBet;
     private NumberPicker numberPickerHome;
@@ -42,6 +45,7 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser mUser;
     private DatabaseReference mDatabaseCompet;
     private DatabaseReference currentCompetitionRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,9 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
+        imageViewHomeTeam = (ImageView) findViewById(R.id.imageViewHomeTeam);
+        imageViewAwayTeam = (ImageView) findViewById(R.id.imageViewAwayTeam);
+
         hour = (TextView) findViewById(R.id.textViewHour);
         buttonSaveBet = (Button) findViewById(R.id.buttonSaveBet);
         buttonSaveBet.setOnClickListener(this);
@@ -142,7 +149,15 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
                 }
+                public void   switchLogo (TextView homeTeam, TextView awayTeam){
+
+
+
+                }
+
+
             });
+
         }
 
     }
