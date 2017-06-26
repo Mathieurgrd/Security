@@ -36,4 +36,25 @@
 
     <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string>
     <string name="derni_re_ligne_droite_avant_de_rejoindre_la_comp_tition_nous_aimerions_savoir_votre_quipe_favorite_n_oublie_pas_de_choisir_un_pseudo_avant_de_rejoindre_ton_groupe_merci_et_amusez_vous_bien">Dernière ligne droite avant de rejoindre la compétition, nous aimerions savoir votre équipe favorite, n\'oublie pas de choisir un pseudo avant de rejoindre ton groupe, merci et amusez vous bien !</string>
+    <string name="SelectTeam">Select your Favorite Team !</string>
+    <string name="AngersSCO">Angers SCO</string>
+    <string name="ACBastia">AC Bastia</string>
+    <string name="GirondinsBordeaux">Girondins Bordeaux</string>
+    <string name="Caen">Caen</string>
+    <string name="DijonFC">Dijon FC</string>
+    <string name="EAGuingamp">EA Guingamp</string>
+    <string name="Lorient">Lorient</string>
+    <string name="Lille">Lille</string>
+    <string name="Lyon">Lyon</string>
+    <string name="Marseille">Marseille</string>
+    <string name="Monaco">Monaco</string>
+    <string name="Metz">Metz</string>
+    <string name="Montpellier">Montpellier</string>
+    <string name="Nancy">Nancy</string>
+    <string name="Nantes">Nantes</string>
+    <string name="Nice">OGC Nice</string>
+    <string name="PSG">PSG</string>
+    <string name="Rennes">Rennes</string>
+    <string name="ASSE">ASSE</string>
+    <string name="TFC">TFC</string>
 </resources>

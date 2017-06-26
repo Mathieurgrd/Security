@@ -75,4 +75,24 @@
 
         />
 
+    <ImageView
+        android:id="@+id/imageViewHomeTeam"
+        android:layout_width="15dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewHomeTeam"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHour"
+        app:srcCompat="@drawable/angers" />
+
+    <ImageView
+        android:id="@+id/imageViewAwayTeam"
+        android:layout_width="15dp"
+        android:layout_height="18dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintRight_toLeftOf="@+id/textViewAwayTeam"
+        app:layout_constraintTop_toTopOf="@+id/textViewHour"
+        app:srcCompat="@drawable/amiens" />
+
 </android.support.constraint.ConstraintLayout>
