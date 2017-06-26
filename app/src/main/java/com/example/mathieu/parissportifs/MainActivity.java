@@ -1,15 +1,10 @@
 package com.example.mathieu.parissportifs;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,11 +22,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.example.mathieu.parissportifs.Constants.TEAM;
@@ -43,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     private EditText editTextModifyPseudo;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, checkUserScore;
     private Spinner favoriteTeamSelector;
     private String equipefavorite, favoriteTeam;
     private ProgressDialog progressDialog;
@@ -74,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         progressDialog = new ProgressDialog(this);
         //pseudo = user.getDisplayName();
         addItemFavoriteTeamSelector();
+
 
 
         email= user.getEmail();
@@ -112,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
 
     }
+
+
 
 
     public void changeProfil() {
@@ -188,34 +185,6 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     }
 
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = null;
-
-            switch (getResultCode()) {
-                case Activity.RESULT_OK:
-                    message = "Message sent!";
-                    break;
-                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                    message = "Error. Message not sent.";
-                    break;
-                case SmsManager.RESULT_ERROR_NO_SERVICE:
-                    message = "Error: No service.";
-                    break;
-                case SmsManager.RESULT_ERROR_NULL_PDU:
-                    message = "Error: Null PDU.";
-                    break;
-                case SmsManager.RESULT_ERROR_RADIO_OFF:
-                    message = "Error: Radio off.";
-                    break;
-            }
-
-
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-        }
-    };
 
 
     public void conditionItent() {
@@ -231,9 +200,11 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
             /** FirebaseDatabase database = FirebaseDatabase.getInstance();
              DatabaseReference myRef = database.getReference("Competitions");*/
 
-            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             String userName = editTextModifyPseudo.getText().toString();
+
+
             UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
             mDatabase.setValue(user);
 

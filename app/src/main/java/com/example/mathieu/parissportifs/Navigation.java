@@ -49,9 +49,7 @@ public class Navigation extends AppCompatActivity {
                 } else if (tabId == R.id.tab_challenge) {
                     selectedFragment = Challenge.newInstance();
                 }
-                Intent intent = getIntent();
-                Bundle bundle = intent.getBundleExtra("key");
-                key = bundle.getString("key");
+
                 keytv.setText(key);
 
 

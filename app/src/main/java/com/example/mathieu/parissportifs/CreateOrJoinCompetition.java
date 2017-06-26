@@ -235,6 +235,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     userData = dataSnapshot.getValue(UserModel.class);
+
                 }
 
                 @Override
@@ -310,13 +311,13 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
 
             Bundle bundle = new Bundle();
-            bundle.putString("key", postKey);
+            bundle.putString(COMPETITION_ID, postKey);
 
 
             Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
-            intent.putExtra("key", bundle);
+            intent.putExtra(COMPETITION_ID, bundle);
             startActivity(intent);
 
             CreateOrJoinCompetition.this.finish();

@@ -1,14 +1,10 @@
     package com.example.mathieu.parissportifs;
 
-    import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+    import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
-    import android.util.Log;
-    import android.view.View;
+import android.util.Log;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,20 +14,20 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-    import com.google.firebase.database.MutableData;
-    import com.google.firebase.database.Transaction;
-    import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.List;
+import java.util.HashMap;
+import java.util.List;
 
-    import static com.example.mathieu.parissportifs.Constants.COMPET;
-    import static com.example.mathieu.parissportifs.Constants.USER;
+import static com.example.mathieu.parissportifs.Constants.COMPET;
+import static com.example.mathieu.parissportifs.Constants.USER;
 
     public class CreateCompetitionActivity extends AppCompatActivity implements
             View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -72,8 +68,7 @@ import java.util.ArrayList;
                 Toast.makeText(CreateCompetitionActivity.this,
                         "Yay you're logged !", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(CreateCompetitionActivity.this, "FAIL !", Toast.LENGTH_LONG).show();
-
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
 
 
@@ -138,35 +133,6 @@ import java.util.ArrayList;
 
         }
 
-
-        private BroadcastReceiver receiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String message = null;
-
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        message = "Message sent!";
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        message = "Error. Message not sent.";
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        message = "Error: No service.";
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        message = "Error: Null PDU.";
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        message = "Error: Radio off.";
-                        break;
-                }
-
-
-                Toast.makeText(CreateCompetitionActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        };
 
 
         @Override
@@ -245,6 +211,13 @@ import java.util.ArrayList;
                                         //MgroupId renvoie au child qui correspond a l'ID de la competition qui vient d'être crée par l'user
                                         userCompetition.setCompetitionIdReedeemCode(mGroupId);
                                         competitionRef.child(mGroupId).setValue(userCompetition);
+                                        intent = new Intent(CreateCompetitionActivity.this,
+                                                PickContactActivity.class);
+
+                                        intent.putExtra("oui", mGroupId);
+
+                                        //competitionRef.removeEventListener(this);
+                                        startActivity(intent);
 
 
                                     }
@@ -262,7 +235,7 @@ import java.util.ArrayList;
                         }
 
 
-                        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                      /**  mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 UserModel currentUser = dataSnapshot.getValue(UserModel.class);
@@ -272,20 +245,14 @@ import java.util.ArrayList;
                                         .child(currentUser.getUserId());
 
                                 finalPush.setValue(currentUser);
-                                intent = new Intent(CreateCompetitionActivity.this,
-                                        PickContactActivity.class);
 
-                                intent.putExtra("oui", mGroupId);
-
-                                //competitionRef.removeEventListener(this);
-                                startActivity(intent);
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
-                        });
+                        }); */
 
 
 

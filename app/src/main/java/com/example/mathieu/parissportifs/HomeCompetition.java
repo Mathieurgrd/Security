@@ -19,10 +19,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class HomeCompetition extends Fragment implements  AdapterView.OnItemClickListener {
+public class HomeCompetition extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView playersList;
-    private TextView test, competitionNametv;
+    private TextView competitionNametv;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -55,18 +55,7 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
         View view = inflater.inflate(R.layout.fragment_home_competition, container, false);
 
 
-
-
-
-
-
-         test = (TextView) view.findViewById(R.id.test);
-
-        strtext = ((Navigation)getActivity()).getKey();
-
-        test.setText(strtext);
-
-
+        strtext = ((Navigation) getActivity()).getKey();
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -81,7 +70,7 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
 
 
         playersRef = database.getReference("Competitions")
-                .child(strtext).child("Members :/");
+                .child(strtext).child("membersMap");
         playerListQuery = playersRef;
 
         Query competitionQuery = database.getReference("Competitions")
@@ -104,10 +93,12 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
         competitionNametv.setText(competitionTitle);
         aPlayersListAdapter = new PlayersListAdapter(playerListQuery.
                 orderByChild("userScorePerCompetition").limitToFirst(25),
-                HomeCompetition.this.getActivity(), R.layout.players_items_list);
+                HomeCompetition.this.getActivity(), R.layout.players_items_list, strtext);
 
         playersList.setAdapter(aPlayersListAdapter);
 
+        // To fix
+       // updateView(playersList);
 
         playersList.setOnItemClickListener(this);
 
@@ -115,15 +106,71 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
         return view;
     }
 
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
 
+    private void updateView(ListView listView) {
+
+        int count = listView.getAdapter().getCount();
+
+        View firstPlayer = playersList.getChildAt(playersList.getFirstVisiblePosition());
+        View secondPlayer = playersList.getChildAt(playersList.getFirstVisiblePosition() - 1);
+        View beforelastPlayer = playersList.getChildAt(playersList.getLastVisiblePosition() + 1);
+        View lastPlayer = playersList.getChildAt(playersList.getLastVisiblePosition());
+
+        TextView first = ((TextView) firstPlayer.findViewById(R.id.playerRank));
+        TextView last = ((TextView) lastPlayer.findViewById(R.id.playerRank));
+        TextView b4last = ((TextView) beforelastPlayer.findViewById(R.id.playerRank));
+        TextView second = ((TextView) secondPlayer.findViewById(R.id.playerRank));
 
 
+        switch (count) {
 
+            case 1:
+                break;
 
+            case 2:
+                first.setText("Zlatan");
+                last.setText("Jallet");
 
+                break;
+            case 3:
+                first.setText("Zlatan");
+                second.setText("Aubameyang");
+                last.setText("Jallet");
+                break;
+            case 4:
+                first.setText("Zlatan");
+                second.setText("Aubameyang");
+                last.setText("Jallet");
+                b4last.setText("Gourcuff");
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
 
+        }
     }
+}
+
+
+
+
+
+
+

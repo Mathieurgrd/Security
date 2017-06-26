@@ -69,12 +69,22 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
                 } else {
                     int previousIndex = mKeys.indexOf(previousChildName);
                     int nextIndex = previousIndex + 1;
+
                     if (nextIndex == mModels.size()) {
-                        mModels.add(model);
-                        mKeys.add(key);
+                        //mModels.add(model);
+                        //mKeys.add(key);
+
+                        // prepend instead append
+                        mModels.add(0,model);
+                        mKeys.add(0,key);
                     } else {
-                        mModels.add(nextIndex, model);
-                        mKeys.add(nextIndex, key);
+                        //mModels.add(nextIndex, model);
+                        //mKeys.add(nextIndex, key);
+
+                        // prepend instead append
+                        mModels.add(previousIndex, model);
+                        mKeys.add(previousIndex, key);
+
                     }
                 }
 
