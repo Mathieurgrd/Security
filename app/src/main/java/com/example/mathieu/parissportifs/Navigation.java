@@ -25,6 +25,10 @@ public class Navigation extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(CreateOrJoinCompetition.COMPETITION_ID);
         key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
+        keytv = (TextView) findViewById(R.id.keytv);
+        keytv.setText(key);
+
+
 
 
 
