@@ -17,15 +17,21 @@ public class CompetitionModel {
     private HashMap<String, UserModel> membersMap;
     private int competitionScore;
     private String competitionIdReedeemCode;
+    private String emailAdmin;
+    private String nameAdmin;
+
 
     private CompetitionModel() {}
 
-    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, HashMap<String, UserModel> userList,  @Nullable String competitionIdReedeemCode) {
+    public CompetitionModel(String competitionName, String chamionshipName, String userAdmin, HashMap<String, UserModel> userList,  @Nullable String competitionIdReedeemCode, String emailAdmin, String nomAdmin) {
         this.competitionName = competitionName;
         this.chamionshipName = chamionshipName;
         this.userAdmin = userAdmin;
         this.membersMap = userList;
         this.competitionIdReedeemCode = competitionIdReedeemCode;
+        this.emailAdmin = emailAdmin;
+        this.nameAdmin = nomAdmin;
+
     }
 
     public String getCompetitionName() {
@@ -74,5 +80,21 @@ public class CompetitionModel {
 
     public void setCompetitionIdReedeemCode(String competitionIdReedeemCode) {
         this.competitionIdReedeemCode = competitionIdReedeemCode;
+    }
+
+    public String getEmailAdmin() {
+        return emailAdmin;
+    }
+
+    public void setEmailAdmin(String emailAdmin) {
+        this.emailAdmin = emailAdmin;
+    }
+
+    public String getNameAdmin() {
+        return nameAdmin;
+    }
+
+    public void setNameAdmin(String nameAdmin) {
+        this.nameAdmin = nameAdmin;
     }
 }

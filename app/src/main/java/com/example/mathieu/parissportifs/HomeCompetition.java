@@ -58,6 +58,7 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
         strtext = ((Navigation) getActivity()).getKey();
 
 
+
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         uId = user.getUid();

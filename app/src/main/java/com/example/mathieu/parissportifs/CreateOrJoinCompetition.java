@@ -33,55 +33,56 @@ import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class CreateOrJoinCompetition extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+        public static final String REC_DATA = "REC_DATA";
     public static final String COMPETITION_ID = "competitionId";
 
-        private ListView mCompetitionListView;
-        public static final String REC_DATA = "REC_DATA";
-        private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
-        private FirebaseUser user;
-        private Button createCompetition;
-        private Button joinCompettion;
-        private Spinner championshipSelector;
-        private String pass, userId, competitionKey;
-        private FirebaseDatabase database;
-        private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
-        private FirebaseAuth mAuth;
-        private FirebaseAuth.AuthStateListener mAuthStateListener;
-        private List<UserModel> userList;
-        private ArrayList<CompetitionModel> competitionsList;
-        private Button goModifyProfil;
-        private String uId;
-        private UserModel userData;
-
-        private CompetitionListAdapter mCompetitionResultAdapter;
-        private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_create_or_join_competition);
+    private ListView mCompetitionListView;
+    private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
+    private FirebaseUser user;
+    private Button createCompetition;
+    private Button joinCompettion;
+    private Spinner championshipSelector;
+    private String pass, userId, competitionKey;
+    private FirebaseDatabase database;
+    private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private List<UserModel> userList;
+    private ArrayList<CompetitionModel> competitionsList;
+    private Button goModifyProfil;
+    private String uId;
+    private UserModel userData;
+
+    private CompetitionListAdapter mCompetitionResultAdapter;
+    private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
-            mAuth = FirebaseAuth.getInstance();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_or_join_competition);
 
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            uId = user.getUid();
-            getUserData();
-            if (uId.equals(ADMIN_USER)) {
-                startActivity(new Intent(CreateOrJoinCompetition.this, AdminGames.class));
-                finish();
-            }
-            if (user == null) {
-                startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
-            }
 
-            findViewById(R.id.button_create_competition).setOnClickListener(this);
-            findViewById(R.id.button_join_competition).setOnClickListener(this);
-            goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
-            goModifyProfil.setOnClickListener(this);
-            final EditText input = new EditText(CreateOrJoinCompetition.this);
+        mAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        uId = user.getUid();
+        getUserData();
+        if (uId.equals(ADMIN_USER)) {
+            startActivity(new Intent(CreateOrJoinCompetition.this, SuperUserNavigation.class));
+            finish();
+        }
+        if (user == null) {
+            startActivity(new Intent(CreateOrJoinCompetition.this, LoginActivity.class));
+        }
+
+        findViewById(R.id.button_create_competition).setOnClickListener(this);
+        findViewById(R.id.button_join_competition).setOnClickListener(this);
+        goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
+        goModifyProfil.setOnClickListener(this);
+        final EditText input = new EditText(CreateOrJoinCompetition.this);
 
             database = FirebaseDatabase.getInstance();
 

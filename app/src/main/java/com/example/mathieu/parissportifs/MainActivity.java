@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     private DatabaseReference mDatabase, checkUserScore;
     private Spinner favoriteTeamSelector;
     private String equipefavorite, favoriteTeam;
-    private ProgressDialog progressDialog;
     private FirebaseUser user;
     private Button buttonGo;
+    private ProgressDialog progressDialog;
 
 
     private static String email;
@@ -57,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid());
+        // checking firebase information in progressdialog
         isOnFirebase();
+
+
         // Spinner
         favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
         favoriteTeamSelector.setOnItemSelectedListener(this);
@@ -137,27 +141,27 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
 
         List<String> ligue1List = new ArrayList<String>();
-        ligue1List.add("Select your Favorite Team !");
-        ligue1List.add("Angers SCO");
-        ligue1List.add("AC Bastia");
-        ligue1List.add("Girondins Bordeaux");
-        ligue1List.add("Caen");
-        ligue1List.add("Dijon FC");
-        ligue1List.add("EA Guingamp");
-        ligue1List.add("Lorient");
-        ligue1List.add("Lille");
-        ligue1List.add("Lyon");
-        ligue1List.add("Marseille");
-        ligue1List.add("Monaco");
-        ligue1List.add("Metz");
-        ligue1List.add("Montpellier");
-        ligue1List.add("Nancy");
-        ligue1List.add("Nantes");
-        ligue1List.add("OGC Nice");
-        ligue1List.add("PSG");
-        ligue1List.add("Rennes");
-        ligue1List.add("ASSE");
-        ligue1List.add("TFC");
+        ligue1List.add(getString(R.string.SelectTeam));
+        ligue1List.add(getString(R.string.AngersSCO));
+        ligue1List.add(getString(R.string.ACBastia));
+        ligue1List.add(getString(R.string.GirondinsBordeaux));
+        ligue1List.add(getString(R.string.Caen));
+        ligue1List.add(getString(R.string.DijonFC));
+        ligue1List.add(getString(R.string.EAGuingamp));
+        ligue1List.add(getString(R.string.Lorient));
+        ligue1List.add(getString(R.string.Lille));
+        ligue1List.add(getString(R.string.Lyon));
+        ligue1List.add(getString(R.string.Marseille));
+        ligue1List.add(getString(R.string.Monaco));
+        ligue1List.add(getString(R.string.Metz));
+        ligue1List.add(getString(R.string.Montpellier));
+        ligue1List.add(getString(R.string.Nancy));
+        ligue1List.add(getString(R.string.Nantes));
+        ligue1List.add(getString(R.string.Nice));
+        ligue1List.add(getString(R.string.PSG));
+        ligue1List.add(getString(R.string.Rennes));
+        ligue1List.add(getString(R.string.ASSE));
+        ligue1List.add(getString(R.string.TFC));
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ligue1List);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -222,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
                     Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
                     startActivity(intent);
                     finish();
+                }else {
+                    progressDialog.setMessage("Vérification de votre compte : en cours");
+                    progressDialog.show();
+                    progressDialog.cancel();
+
                 }
             }
 
@@ -230,7 +239,9 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
             }
         });
+
     }
+
 }
 
 
