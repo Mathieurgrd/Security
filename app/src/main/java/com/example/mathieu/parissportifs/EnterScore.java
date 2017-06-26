@@ -333,13 +333,11 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 mutableData.setValue(competitionModel);
                 return Transaction.success(mutableData);
             }
-
-
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
             }
-    });
+        });
     }
 
 

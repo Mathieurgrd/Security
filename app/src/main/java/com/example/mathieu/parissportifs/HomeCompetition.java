@@ -60,7 +60,7 @@ public class HomeCompetition extends Fragment implements  AdapterView.OnItemClic
 
 
 
-         test = (TextView) view.findViewById(R.id.test);
+        test = (TextView) view.findViewById(R.id.test);
 
         strtext = ((Navigation)getActivity()).getKey();
 

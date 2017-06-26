@@ -38,7 +38,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
 
     @Override
-    protected void populateView(View view, NewGame mNewGame) {
+    protected void populateView(View view, NewGame mNewGame, int position) {
 
         mDatabaseref = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(mNewGame.getmReportDate()).child(mNewGame.getmIdGame());
 

@@ -26,7 +26,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
 
 
     @Override
-    protected void populateView(View v, UserModel model) {
+    protected void populateView(View v, UserModel model, int position) {
 
         playerName = (TextView) v.findViewById(R.id.playerName);
         playerRank = (TextView) v.findViewById(R.id.playerRank);
