@@ -83,7 +83,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
        
-        TextView tvScore = (TextView) view.findViewById(R.id.playerScore);
+       // TextView tvScore = (TextView) view.findViewById(R.id.playerScore);
 
 
 
