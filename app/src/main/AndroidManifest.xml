@@ -43,14 +43,9 @@
         <activity android:name=".SplashScreenActivity">
             android:label="@string/title_activity_fullscreen">
         </activity>
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".ModifyProfile">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+        
         <activity android:name=".AdminGames">
 
         </activity>
@@ -64,7 +59,7 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".ModifyProfile">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

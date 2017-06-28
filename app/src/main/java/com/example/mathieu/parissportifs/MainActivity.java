@@ -1,17 +1,28 @@
 package com.example.mathieu.parissportifs;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +38,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import static com.example.mathieu.parissportifs.Constants.TEAM;
 import static com.example.mathieu.parissportifs.Constants.USER;
 
@@ -45,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     private Button buttonGo;
     private ProgressDialog progressDialog;
 
-
     private static String email;
 
 
@@ -55,200 +68,192 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         setContentView(R.layout.activity_main);
 
         //Get Firebase auth instance
-        mAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid());
-        // checking firebase information in progressdialog
-        isOnFirebase();
+            mAuth = FirebaseAuth.getInstance();
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            mDatabase = FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid());
 
-
-        // Spinner
-        favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
-        favoriteTeamSelector.setOnItemSelectedListener(this);
-        // Nickname
-        editTextModifyPseudo = (EditText) findViewById(R.id.editTextModifyPseudo);
-        // Button
-        buttonGo = (Button) findViewById(R.id.buttonGo);
-        progressDialog = new ProgressDialog(this);
-        //pseudo = user.getDisplayName();
-        addItemFavoriteTeamSelector();
+            // Spinner
+            favoriteTeamSelector = (Spinner) findViewById(R.id.spinner_favorite_team);
+            favoriteTeamSelector.setOnItemSelectedListener(this);
+            // Nickname
+            editTextModifyPseudo = (EditText) findViewById(R.id.editTextModifyPseudo);
+            // Button
+            buttonGo = (Button) findViewById(R.id.buttonGo);
+            progressDialog = new ProgressDialog(this);
+            //pseudo = user.getDisplayName();
+            addItemFavoriteTeamSelector();
 
 
 
-        email= user.getEmail();
+            email = user.getEmail();
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
 
-                    UserModel userActuel = dataSnapshot.getValue(UserModel.class);
-                    editTextModifyPseudo.setText(userActuel.getUserName());
+                        UserModel userActuel = dataSnapshot.getValue(UserModel.class);
+                        editTextModifyPseudo.setText(userActuel.getUserName());
+                    }
+
+
                 }
 
 
-            }
 
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        buttonGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                conditionItent();
-            }
-        });
-
-
-
-
-
-
-
-    }
-
-
-
-
-    public void changeProfil() {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String newPseudo = editTextModifyPseudo.getText().toString().trim();
-
-        //Uri newPhoto = userImg.
-
-        //Update Pseudo & Photo
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(newPseudo)
-                .build();
-
-        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-            }
-        });
-    }
-
-    public void addItemFavoriteTeamSelector() {
-
-
-        List<String> ligue1List = new ArrayList<String>();
-        ligue1List.add(getString(R.string.SelectTeam));
-        ligue1List.add(getString(R.string.AngersSCO));
-        ligue1List.add(getString(R.string.ACBastia));
-        ligue1List.add(getString(R.string.GirondinsBordeaux));
-        ligue1List.add(getString(R.string.Caen));
-        ligue1List.add(getString(R.string.DijonFC));
-        ligue1List.add(getString(R.string.EAGuingamp));
-        ligue1List.add(getString(R.string.Lorient));
-        ligue1List.add(getString(R.string.Lille));
-        ligue1List.add(getString(R.string.Lyon));
-        ligue1List.add(getString(R.string.Marseille));
-        ligue1List.add(getString(R.string.Monaco));
-        ligue1List.add(getString(R.string.Metz));
-        ligue1List.add(getString(R.string.Montpellier));
-        ligue1List.add(getString(R.string.Nancy));
-        ligue1List.add(getString(R.string.Nantes));
-        ligue1List.add(getString(R.string.Nice));
-        ligue1List.add(getString(R.string.PSG));
-        ligue1List.add(getString(R.string.Rennes));
-        ligue1List.add(getString(R.string.ASSE));
-        ligue1List.add(getString(R.string.TFC));
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ligue1List);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        favoriteTeamSelector.setAdapter(dataAdapter);
+            });
+            buttonGo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    conditionItent();
+                }
+            });
 
 
-    }
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        Toast.makeText(parent.getContext(),
-                "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                Toast.LENGTH_SHORT).show();
-        favoriteTeam = parent.getItemAtPosition(position).toString();
-
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-
-    }
-
-
-
-
-    public void conditionItent() {
-
-        if (editTextModifyPseudo.getText().length() == 0 || favoriteTeam.equals("Select your Favorite Team !")) {
-            Toast.makeText(MainActivity.this, favoriteTeam, Toast.LENGTH_LONG).show();
-            return;
         }
-        else{
 
 
 
-            /** FirebaseDatabase database = FirebaseDatabase.getInstance();
-             DatabaseReference myRef = database.getReference("Competitions");*/
 
-            String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        public void changeProfil() {
 
-            String userName = editTextModifyPseudo.getText().toString();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String newPseudo = editTextModifyPseudo.getText().toString().trim();
+
+            //Uri newPhoto = userImg.
+
+            //Update Pseudo & Photo
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newPseudo)
+                    .build();
+
+            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+
+                    }
+                }
+            });
+        }
 
 
-            UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
-            mDatabase.setValue(user);
+        public void addItemFavoriteTeamSelector() {
 
-            Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
-            startActivity(intent);
-            finish();
+
+            List<String> ligue1List = new ArrayList<String>();
+            ligue1List.add(getString(R.string.SelectTeam));
+            ligue1List.add(getString(R.string.AngersSCO));
+            ligue1List.add(getString(R.string.ACBastia));
+            ligue1List.add(getString(R.string.GirondinsBordeaux));
+            ligue1List.add(getString(R.string.Caen));
+            ligue1List.add(getString(R.string.DijonFC));
+            ligue1List.add(getString(R.string.EAGuingamp));
+            ligue1List.add(getString(R.string.Lorient));
+            ligue1List.add(getString(R.string.Lille));
+            ligue1List.add(getString(R.string.Lyon));
+            ligue1List.add(getString(R.string.Marseille));
+            ligue1List.add(getString(R.string.Monaco));
+            ligue1List.add(getString(R.string.Metz));
+            ligue1List.add(getString(R.string.Montpellier));
+            ligue1List.add(getString(R.string.Nancy));
+            ligue1List.add(getString(R.string.Nantes));
+            ligue1List.add(getString(R.string.Nice));
+            ligue1List.add(getString(R.string.PSG));
+            ligue1List.add(getString(R.string.Rennes));
+            ligue1List.add(getString(R.string.ASSE));
+            ligue1List.add(getString(R.string.TFC));
+
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ligue1List);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            favoriteTeamSelector.setAdapter(dataAdapter);
+
+
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+            Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                    Toast.LENGTH_SHORT).show();
+            favoriteTeam = parent.getItemAtPosition(position).toString();
+
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+
+        }
+
+
+         String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+         String userName = editTextModifyPseudo.getText().toString();
+
+
+         UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
+         mDatabase.setValue(user);
+
+
+        private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = null;
+
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        message = "Message sent!";
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        message = "Error. Message not sent.";
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        message = "Error: No service.";
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        message = "Error: Null PDU.";
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        message = "Error: Radio off.";
+                        break;
+                }
+
+
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        };
+
+
+        public void conditionItent() {
+
+            if (editTextModifyPseudo.getText().length() == 0 || favoriteTeam.equals("Select your Favorite Team !")) {
+                Toast.makeText(MainActivity.this, favoriteTeam, Toast.LENGTH_LONG).show();
+                return;
+            } else {
+
+
+                /** FirebaseDatabase database = FirebaseDatabase.getInstance();
+                 DatabaseReference myRef = database.getReference("Competitions");*/
+
+                String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+                String userName = editTextModifyPseudo.getText().toString();
+                UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
+                mDatabase.setValue(user);
+
+                Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
-
-    void isOnFirebase(){
-        mDatabase.child(TEAM).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null){
-                    Intent intent = new Intent(MainActivity.this, CreateOrJoinCompetition.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                    progressDialog.setMessage("Vérification de votre compte : en cours");
-                    progressDialog.show();
-                    progressDialog.cancel();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-}
-
-
-
-
-
-
-
-
-

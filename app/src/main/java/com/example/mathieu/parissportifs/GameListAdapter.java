@@ -28,6 +28,8 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     TextView scoreAwayTeam;
     TextView awayTeam;
     TextView hour;
+    ImageView imageViewAway;
+    ImageView imageViewHome;
     public DatabaseReference mDatabaseref;
 
 
@@ -47,7 +49,8 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
         awayTeam = (TextView) view.findViewById(R.id.textViewAwayTeam);
         scoreHomeTeam = (TextView) view.findViewById(R.id.textViewScoreHome);
         scoreAwayTeam = (TextView) view.findViewById(R.id.textViewScoreAway);
-
+        imageViewAway = (ImageView) view.findViewById(R.id.imageViewAwayTeam);
+        imageViewHome = (ImageView) view.findViewById(R.id.imageViewHomeTeam);
 
         if (mNewGame.getmStatus().equals("OUVERT")){
 
@@ -72,6 +75,9 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         homeTeam.setText(String.valueOf(mNewGame.getmHomeTeam()));
         awayTeam.setText(String.valueOf(mNewGame.getmAwayTeam()));
+
+        SwitchLogoModel.switchLogo(homeTeam, imageViewHome, awayTeam , imageViewAway);
+
     }
 
     private class StopBet extends TimerTask {

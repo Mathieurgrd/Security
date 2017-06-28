@@ -1,5 +1,6 @@
 package com.example.mathieu.parissportifs;
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,10 +36,17 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
 
 import static com.example.mathieu.parissportifs.Constants.RC_SIGN_IN;
+import static com.example.mathieu.parissportifs.Constants.TEAM;
+import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,12 +63,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private final static String TAG = "LOGIN_ACTIVITY";
     private GoogleApiClient mGoogleApiClient;
     private String uId;
+    private DatabaseReference mDatabase;
+    private MyDialogFragment dialogFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        dialogFragment = MyDialogFragment.newInstance();
+        dialogFragment.show(getSupportFragmentManager(), "tag");
+
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -78,16 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Get Firebase auth instance
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        user = firebaseAuth.getCurrentUser();
-
-
-        if (user !=  null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            LoginActivity.this.finish();
-        }
-
-        firebaseAuth = FirebaseAuth.getInstance();
+        //Get Firebase auth instance
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -111,17 +116,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                  goMainScreen();
+                    LoginActivity.this.user = user;
+                    isOnFirebase(user);
+                }
+                else{
+                    dialogFragment.dismiss();
                 }
             }
         };
-
         // Google sign in method
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -140,12 +147,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        loginGoogle.setOnClickListener(new View.OnClickListener() {
+     loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  signInGoogle();
             }
         });
+
 
 
     }
@@ -160,12 +168,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.d(TAG, "SignInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed,",Toast.LENGTH_SHORT).show();
 
-                        } else { // if success
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                            if (user != null) {
-                                goMainScreen();
-                            }
                         }
 
                         // ...
@@ -211,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         progress = ProgressDialog.show(this, "Signin' you in", "please wait ...", true);
-        ;
+
 
         // [START sign_in_with_email]
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -227,8 +229,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        } else {// if success
-                            startActivity(new Intent(getApplicationContext(), CreateOrJoinCompetition.class));
                         }
 
                         progress.dismiss();
@@ -272,8 +272,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                firebaseAuthWithGoogle(result.getSignInAccount());
 
             } else {
                 // Google Sign In failed, update UI appropriately
@@ -319,6 +318,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
+
+    void isOnFirebase(FirebaseUser user) {
+        FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid()).child(TEAM).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    dialogFragment.dismiss();
+                    Intent intent = new Intent(LoginActivity.this, CreateOrJoinCompetition.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+
+                    goMainScreen();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
 
 
