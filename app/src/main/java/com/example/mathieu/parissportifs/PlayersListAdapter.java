@@ -1,28 +1,37 @@
 package com.example.mathieu.parissportifs;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
-/**
- * Created by mathieu on 15/06/17.
- */
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class PlayersListAdapter extends Firebaseadapter<UserModel> {
 
     private TextView playerName;
     private TextView playerRank;
     private TextView playerScore;
+    private TextView nickname;
     private int scoreValue;
     private String CompetitionKey;
-    DatabaseReference checkIfUserhasCompetition;
-    private de.hdodenhof.circleimageview.CircleImageView playerPic;
+    private CircleImageView playerPic;
+    private StorageReference mStorageRef;
+    private Context context;
+
 
 
     public PlayersListAdapter(Query ref, Activity activity, int layout) {
@@ -43,57 +52,79 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
     @Override
     protected void populateView(View v, UserModel model, int position) {
 
+        context = v.getContext().getApplicationContext();
 
-        playerName = (TextView) v.findViewById(R.id.playerName);
-        playerRank = (TextView) v.findViewById(R.id.playerRank);
-        playerScore = (TextView) v.findViewById(R.id.playerScore);
+        playerName = (TextView) v.findViewById(R.id.textViewPlayerName);
+        playerRank = (TextView) v.findViewById(R.id.textViewPlayerRank);
+        playerScore = (TextView) v.findViewById(R.id.textViewPoints);
+        nickname = (TextView) v.findViewById(R.id.textViewNickName);
+        playerPic = (CircleImageView) v.findViewById(R.id.playerPic);
 
 
+        downloadPicture(model,playerPic);
+        playerRank.setText(String.valueOf(position+1));
+        playerName.setText(model.getUserName());
 
         if (model.getUserScorePerCompetition() == null) {
             playerScore.setText(String.valueOf(0));
-        }else {
+        } else {
             HashMap<String, Integer> playerScoreMap = model.getUserScorePerCompetition();
-            playerScore.setText(playerScoreMap.get(CompetitionKey).toString());
+            Integer value = playerScoreMap.get(CompetitionKey);
+            if(value == null){
+                playerScore.setText(String.valueOf(0));
+            } else {
+                playerScore.setText(String.valueOf(value));
+            }
+
+
         }
 
-        playerName.setText(model.getUserName());
+        int i = getCount();
 
-
-
-
-        /*if (model.getUserScorePerCompetition() < 5) {
-        if (model.getUserScorePerCompetition() < 5) {
-            playerRank.setText("Polisseur de banc");
-        }else if (model.getUserScorePerCompetition() < 10){
-            playerRank.setText("Presseur d'orange");
-        }else if (model.getUserScorePerCompetition() < 15){
-            playerRank.setText("Porteur de gourde");
-        }else if (model.getUserScorePerCompetition() < 20){
-            playerRank.setText("Ventre mou");
-        }else if (model.getUserScorePerCompetition() < 25){
-            playerRank.setText("Jeune talent");
-        }else if (model.getUserScorePerCompetition() < 30){
-            playerRank.setText("Zlatan");
-        }*/
+        if (i >= 2 && i <= 4) {
+            if(position == 0){
+                nickname.setText(R.string.first);
+            } else if (position == i - 1){
+                nickname.setText(R.string.last);
+            }
+        } else if (i > 3){
+            if (position == 0){
+                nickname.setText(R.string.first);
+            } else if (position == 1){
+                nickname.setText(R.string.second);
+            } else if (position == i-2){
+                nickname.setText(R.string.before_last);
+            } else if (position == i-1){
+                nickname.setText(R.string.last);
+            }
+        }
 
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-       
-        TextView tvScore = (TextView) view.findViewById(R.id.playerScore);
-
-
-
-
-
         return super.getView(i, view, viewGroup);
+    }
 
+    private void downloadPicture (UserModel userModel, final CircleImageView circleAvatar) {
+        mStorageRef = FirebaseStorage.getInstance().getReference("users_avatar");
 
-          }
+        StorageReference userPicture = mStorageRef.child(userModel.getUserId()+"_avatar");
 
+            userPicture.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(context)
+                            .load(uri)
+                            .into(circleAvatar);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
 
+    }
 }
 

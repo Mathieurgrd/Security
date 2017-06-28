@@ -98,6 +98,7 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
 
         playersList.setAdapter(aPlayersListAdapter);
 
+
         // To fix
        // updateView(playersList);
 
@@ -133,10 +134,10 @@ public class HomeCompetition extends Fragment implements AdapterView.OnItemClick
         View beforelastPlayer = playersList.getChildAt(playersList.getLastVisiblePosition() + 1);
         View lastPlayer = playersList.getChildAt(playersList.getLastVisiblePosition());
 
-        TextView first = ((TextView) firstPlayer.findViewById(R.id.playerRank));
-        TextView last = ((TextView) lastPlayer.findViewById(R.id.playerRank));
-        TextView b4last = ((TextView) beforelastPlayer.findViewById(R.id.playerRank));
-        TextView second = ((TextView) secondPlayer.findViewById(R.id.playerRank));
+        TextView first = ((TextView) firstPlayer.findViewById(R.id.textViewPlayerRank));
+        TextView last = ((TextView) lastPlayer.findViewById(R.id.textViewPlayerRank));
+        TextView b4last = ((TextView) beforelastPlayer.findViewById(R.id.textViewPlayerRank));
+        TextView second = ((TextView) secondPlayer.findViewById(R.id.textViewPlayerRank));
 
 
         switch (count) {

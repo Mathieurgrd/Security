@@ -25,6 +25,7 @@ public class Navigation extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra(CreateOrJoinCompetition.COMPETITION_ID);
         key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
 
+
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
         bottomBar.selectTabAtPosition(1);

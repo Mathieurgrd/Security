@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,9 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,7 +78,7 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         etEmail = (EditText) findViewById(R.id.editTextModifyEmail);
         etName = (EditText) findViewById(R.id.editTextModifyPseudo);
 
-        civProfilePic = (CircleImageView)findViewById(R.id.profile_image);
+        civProfilePic = (CircleImageView)findViewById(R.id.playerPic);
         civProfilePic.setOnClickListener(this);
 
 
