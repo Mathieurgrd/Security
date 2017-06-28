@@ -104,27 +104,33 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
 
             List<String> ligue1List = new ArrayList<String>();
-            ligue1List.add(getString(R.string.SelectTeam));
-            ligue1List.add(getString(R.string.AngersSCO));
-            ligue1List.add(getString(R.string.ACBastia));
-            ligue1List.add(getString(R.string.GirondinsBordeaux));
-            ligue1List.add(getString(R.string.Caen));
-            ligue1List.add(getString(R.string.DijonFC));
-            ligue1List.add(getString(R.string.EAGuingamp));
-            ligue1List.add(getString(R.string.Lorient));
-            ligue1List.add(getString(R.string.Lille));
-            ligue1List.add(getString(R.string.Lyon));
-            ligue1List.add(getString(R.string.Marseille));
-            ligue1List.add(getString(R.string.Monaco));
-            ligue1List.add(getString(R.string.Metz));
-            ligue1List.add(getString(R.string.Montpellier));
-            ligue1List.add(getString(R.string.Nancy));
-            ligue1List.add(getString(R.string.Nantes));
-            ligue1List.add(getString(R.string.Nice));
-            ligue1List.add(getString(R.string.PSG));
-            ligue1List.add(getString(R.string.Rennes));
-            ligue1List.add(getString(R.string.ASSE));
-            ligue1List.add(getString(R.string.TFC));
+            ligue1List.add(Constants.SELECT_TEAM_SPINNER);
+            ligue1List.add(Constants.MONACO);
+            ligue1List.add(Constants.LILLE);
+            ligue1List.add(Constants.EA_GUINGAMP);
+            ligue1List.add(Constants.ANGERS_SCO);
+            ligue1List.add(Constants.GIRONDINS_BORDEAUX);
+            ligue1List.add(Constants.CAEN);
+            ligue1List.add(Constants.DIJON_FC);
+            ligue1List.add(Constants.LYON);
+            ligue1List.add(Constants.MARSEILLE);
+            ligue1List.add(Constants.METZ);
+            ligue1List.add(Constants.MONTPELIER);
+            ligue1List.add(Constants.LYON);
+            ligue1List.add(Constants.NICE);
+            ligue1List.add(Constants.PSG);
+            ligue1List.add(Constants.RENNES);
+            ligue1List.add(Constants.SAINT_ETIENNE);
+            ligue1List.add(Constants.STRASBOURG);
+            ligue1List.add(Constants.TFC);
+            ligue1List.add(Constants.TROYES);
+            ligue1List.add(Constants.AMIENS);
+
+
+
+
+
+
 
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ligue1List);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

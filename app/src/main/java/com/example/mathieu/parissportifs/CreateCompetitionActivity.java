@@ -81,9 +81,7 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                     UserModel userProfile = dataSnapshot.getValue(UserModel.class);
-
 
                     //ArrayList To create the Competition Object
                     members = new HashMap<String, UserModel>();
@@ -107,8 +105,6 @@ import static com.example.mathieu.parissportifs.Constants.USER;
             List<String> championshipList = new ArrayList<String>();
             championshipList.add("Select your Championship");
             championshipList.add("Ligue 1");
-            championshipList.add("Barclays League");
-            championshipList.add("Bundesliga");
 
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_item, championshipList);
@@ -131,14 +127,11 @@ import static com.example.mathieu.parissportifs.Constants.USER;
 
         }
 
-
-
         @Override
         public void onClick(View v) {
             int i = v.getId();
 
             if (i == R.id.button_validate_mycompetition) {
-
 
                 final String competitionName = etnameCompetition.getText().toString();
 
@@ -148,9 +141,6 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                 }
 
                 // Write a message to the database
-
-
-
                 String userId = mUser.getUid();
                 String emailAdmin = mUser.getEmail();
                 String nameAdmin = mUser.getDisplayName();
@@ -184,11 +174,6 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                         }
                     }
                 });
-
-
-
-                // ----------------------------------------------
-
 
                 competitionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -229,33 +214,7 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                                 }
                             });
 
-
-
-
                         }
-
-
-                      /**  mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                UserModel currentUser = dataSnapshot.getValue(UserModel.class);
-
-
-                                finalPush = competitionRef.child(mGroupId).child("Members :/")
-                                        .child(currentUser.getUserId());
-
-                                finalPush.setValue(currentUser);
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        }); */
-
-
-
 
                     }
 
@@ -263,21 +222,10 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-
-
-
                 });
 
-
-
-
-
-
                 finish();
-
-
             }
-            // Spinners selection methods
         }
     }
 
