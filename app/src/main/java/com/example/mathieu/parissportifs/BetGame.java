@@ -76,6 +76,9 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
         homeTeam.setText(newGame.getmHomeTeam());
         awayTeam.setText(newGame.getmAwayTeam());
+        // Appel de la classe switchLogo et de la methode
+        SwitchLogoModel.switchLogo(homeTeam, imageViewHomeTeam, awayTeam , imageViewAwayTeam);
+
         hour.setText(String.valueOf(newGame.getmHour())+ " : "+String.valueOf(newGame.getmMinute()));
 
 

@@ -14,7 +14,6 @@ import com.roughike.bottombar.OnTabSelectListener;
 public class Navigation extends AppCompatActivity {
 
     private BottomBar bottomBar;
-    private TextView keytv;
     private String key;
 
     @Override
