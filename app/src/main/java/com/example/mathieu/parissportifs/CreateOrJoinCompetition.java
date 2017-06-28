@@ -236,6 +236,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     userData = dataSnapshot.getValue(UserModel.class);
+
                 }
 
                 @Override

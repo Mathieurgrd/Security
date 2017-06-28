@@ -45,8 +45,7 @@
         </activity>
         <activity android:name=".ModifyProfile">
 
-
-        </activity>
+        
         <activity android:name=".AdminGames">
 
         </activity>

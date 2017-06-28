@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,11 +34,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     private EditText editTextModifyPseudo;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, checkUserScore;
     private Spinner favoriteTeamSelector;
     private String equipefavorite, favoriteTeam;
     private FirebaseUser user;
@@ -84,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
             progressDialog = new ProgressDialog(this);
             //pseudo = user.getDisplayName();
             addItemFavoriteTeamSelector();
+
 
 
             email = user.getEmail();
@@ -177,9 +176,9 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         }
 
-
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
 
             Toast.makeText(parent.getContext(),
                     "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
@@ -195,6 +194,14 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         }
 
+
+         String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+         String userName = editTextModifyPseudo.getText().toString();
+
+
+         UserModel user = new UserModel(UserId, userName, null, favoriteTeam, email, null);
+         mDatabase.setValue(user);
 
 
         private BroadcastReceiver receiver = new BroadcastReceiver() {

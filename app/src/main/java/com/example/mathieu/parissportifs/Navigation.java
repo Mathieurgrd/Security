@@ -14,7 +14,6 @@ import com.roughike.bottombar.OnTabSelectListener;
 public class Navigation extends AppCompatActivity {
 
     private BottomBar bottomBar;
-    private TextView keytv;
     private String key;
 
     @Override
@@ -25,14 +24,6 @@ public class Navigation extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(CreateOrJoinCompetition.COMPETITION_ID);
         key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
-
-
-
-
-
-
-
-        keytv = (TextView) findViewById(R.id.keytv);
 
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
