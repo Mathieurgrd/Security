@@ -15,13 +15,17 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
     public TextView textViewPosition;
     public TextView textViewPoints;
     public TextView textViewNameCompetition;
-    public Challenge mChallenge;
+    public String competitionId;
 
 
 
 
-    public ChallengeAdapter(Query ref, Activity activity, int layout) {
+
+
+    public ChallengeAdapter(Query ref, Activity activity, int layout, String competitionId) {
         super(ref, CompetitionModel.class, layout, activity);
+
+        this.competitionId = competitionId;
 
 
     }
@@ -31,23 +35,14 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
     protected void populateView(View view, CompetitionModel competition, int position) {
 
         textViewPosition = (TextView) view.findViewById(R.id.textViewPosition);
-        textViewPoints = (TextView) view.findViewById(R.id.textViewPoints);
+        textViewPoints = (TextView) view.findViewById(R.id.textViewPlayerRank);
         textViewNameCompetition = (TextView) view.findViewById(R.id.textViewNameCompetition);
-
 
         textViewPosition.setText(String.valueOf(getItemId(position+1)));
         textViewNameCompetition.setText(competition.getCompetitionName());
         textViewPoints.setText(String.valueOf(competition.getCompetitionScore()));
 
 
-
-
-
     }
-
-
-
-
-
 
 }

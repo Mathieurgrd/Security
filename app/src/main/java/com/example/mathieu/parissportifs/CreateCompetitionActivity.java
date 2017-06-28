@@ -64,11 +64,9 @@ import static com.example.mathieu.parissportifs.Constants.USER;
             mUserRef = database.getReference(USER).child(mUser.getUid());
 
 
-            if (mAuth.getCurrentUser() != null) {
-                Toast.makeText(CreateCompetitionActivity.this,
-                        "Yay you're logged !", Toast.LENGTH_LONG).show();
-            } else {
+            if (mAuth.getCurrentUser() == null) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
 
 

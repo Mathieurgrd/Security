@@ -167,10 +167,13 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
         return mModels.size();
     }
 
+
     @Override
     public Object getItem(int i) {
         return mModels.get(i);
     }
+
+
 
     @Override
     public long getItemId(int i) {
@@ -186,6 +189,7 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
         T model = mModels.get(i);
         // Call out to subclass to marshall this model into the provided view
         populateView(view, model, i);
+
         return view;
     }
 
@@ -199,4 +203,5 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
      * @param model The object containing the data used to populate the view
      */
     protected abstract void populateView(View v, T model, int position);
+
 }

@@ -26,7 +26,7 @@
         android:layout_marginTop="26dp" />
 
     <TextView
-        android:id="@+id/textViewPoints"
+        android:id="@+id/textViewPlayerRank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="200"
@@ -42,6 +42,6 @@
         android:text="points"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="26dp"
-        app:layout_constraintLeft_toRightOf="@+id/textViewPoints"
+        app:layout_constraintLeft_toRightOf="@+id/textViewPlayerRank"
         android:layout_marginLeft="18dp" />
 </android.support.constraint.ConstraintLayout>

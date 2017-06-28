@@ -27,11 +27,6 @@ public class Navigation extends AppCompatActivity {
         key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
 
 
-
-
-
-        keytv = (TextView) findViewById(R.id.keytv);
-
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
         bottomBar.selectTabAtPosition(1);
@@ -49,20 +44,6 @@ public class Navigation extends AppCompatActivity {
                 } else if (tabId == R.id.tab_challenge) {
                     selectedFragment = Challenge.newInstance(key);
                 }
-
-                keytv.setText(key);
-
-
-
-
-
-
-
-
-
-
-
-
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, selectedFragment);

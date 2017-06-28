@@ -338,32 +338,6 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
-        // Crée l serscorecompetitions d'un user.
-    private void setUserScore(DatabaseReference currentUserRef, final String competitionID, final int score){
-        final DatabaseReference UserRef = FirebaseDatabase.getInstance().getReference("Competitions").child(competitionID)
-                .child(user.getUid()).child("userScore");
-        UserRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                if (mutableData.getValue() == null){
-                    return Transaction.success(mutableData);
-                }
-                UserModel currentUser = mutableData.getValue(UserModel.class);
-                HashMap<String, Integer> competitionMap = currentUser.getUserScorePerCompetition();
-                if (currentUser.getUserScorePerCompetition().containsKey(competitionID)) {
-                    int newScore = competitionMap.get(competitionID) + score;
-                    competitionMap.put(competitionID, newScore);
-                    currentUser.setUserScorePerCompetition(competitionMap);
-                    mutableData.setValue(currentUser);
-                    updateCompetition(competitionID, score, currentUser);
-                }
-                return Transaction.success(mutableData);
-            }
-
-
-
-
-
 
     private UserModel updateUser(UserModel userModel, String competiitionID){
 
