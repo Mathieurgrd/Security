@@ -1,7 +1,5 @@
 package com.example.mathieu.parissportifs;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,7 +27,7 @@ public class Challenge extends Fragment {
     private String mCompetitionId;
     private int prout = 0;
 
-    public static Challenge newInstance (String competitionId) {
+    public static Challenge newInstance(String competitionId) {
         Bundle bundle = new Bundle();
         bundle.putString(CreateOrJoinCompetition.COMPETITION_ID, competitionId);
         Challenge fragment = new Challenge();
@@ -56,18 +54,87 @@ public class Challenge extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_challenge, container, false);
 
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference(Constants.COMPET);
         Query query = mDatabase.orderByChild("competitionScore");
         mListViewRanking = (ListView) view.findViewById(R.id.listViewRanking);
 
+
         mChallengeAdapter = new ChallengeAdapter(query, getActivity(),
-                R.layout.challenge_items, mCompetitionId);
+                R.layout.challenge_items, mCompetitionId); // APPELLE L'ADAPTER
 
-        mListViewRanking.setAdapter(mChallengeAdapter);
 
+
+        mListViewRanking.setAdapter(mChallengeAdapter);//FUSION LIST ET ADAPTER
         mChallengeAdapter.notifyDataSetChanged();
+
+        Handler handleer = new Handler();
+
+        handleer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+
+                final int itemPos = getPosition(mListViewRanking, mCompetitionId);
+
+                goToItem(mListViewRanking.getFirstVisiblePosition(),
+                        mListViewRanking.getAdapter().getCount());
+              //  View v = mListViewRanking.getChildAt(itemPos);
+               // v.setBackgroundColor(getResources().getColor(R.color.highlight_list_competition));
+                mListViewRanking.smoothScrollToPosition(itemPos);
+
+
+            }
+        },1000);
+
+
+
+
+
 
         return view;
     }
 
+
+    public void goToItem(int positionStart, int itemCount) {
+        int myCompetPos = getPosition(mListViewRanking, mCompetitionId);
+        mListViewRanking.smoothScrollToPosition(myCompetPos);
+    }
+
+    public int getPosition(ListView listView, String key) {
+
+        CompetitionModel v = null;
+        int allItems = listView.getCount();
+        int firstItem = listView.getFirstVisiblePosition();
+        int lastItem = listView.getLastVisiblePosition();
+
+        for (int i = 0; i < allItems + 1; i ++){
+
+            v = (CompetitionModel) mListViewRanking.getItemAtPosition(i);
+            String Compareid = v.getCompetitionIdReedeemCode();
+
+            if (v != null){
+           // TextView tag = (TextView) v.findViewById(R.id.textViewTag);
+            if (Compareid.equals(key)){
+                return i;
+            }}
+
+        }
+        return 0;
+
+    }
+
+    public int getItemPosition(long id, ListView listView)
+    {
+        for (int position=0; position<listView.getAdapter().getCount(); position++)
+            if (listView.getAdapter().getItemId(position) == id)
+                return position;
+        return 0;
+    }
+
+
+
 }
+
+

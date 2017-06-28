@@ -104,6 +104,7 @@ public class PlayersListAdapter extends Firebaseadapter<UserModel> {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
+
         return super.getView(i, view, viewGroup);
     }
 
