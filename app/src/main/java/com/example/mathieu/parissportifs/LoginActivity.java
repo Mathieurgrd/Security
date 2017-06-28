@@ -154,8 +154,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
-
     }
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -179,10 +177,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-
-
-
 
     private boolean validateForm() {
         boolean valid = true;
