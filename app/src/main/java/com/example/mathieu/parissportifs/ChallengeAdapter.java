@@ -20,11 +20,17 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
     private String CompetitionKey;
     private int Count;
 
+    public String competitionId;
 
 
 
-    public ChallengeAdapter(Query ref, Activity activity, int layout) {
+
+
+
+    public ChallengeAdapter(Query ref, Activity activity, int layout, String competitionId) {
         super(ref, CompetitionModel.class, layout, activity);
+
+        this.competitionId = competitionId;
 
 
     }
@@ -41,10 +47,9 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
 
 
         textViewPosition = (TextView) view.findViewById(R.id.textViewPosition);
-        textViewPoints = (TextView) view.findViewById(R.id.textViewPoints);
+        textViewPoints = (TextView) view.findViewById(R.id.textViewPlayerRank);
         textViewNameCompetition = (TextView) view.findViewById(R.id.textViewNameCompetition);
         textViewTag = (TextView) view.findViewById(R.id.textViewTag);
-
 
         textViewPosition.setText(String.valueOf(getItemId(position+1)));
         textViewTag.setText(competition.getCompetitionIdReedeemCode());
@@ -62,6 +67,7 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
 
 
     }
+
 
 
 

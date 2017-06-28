@@ -36,11 +36,5 @@
         android:layout_marginTop="0dp"
         app:layout_constraintVertical_bias="0.0"></FrameLayout>
 
-    <TextView
-        android:id="@+id/keytv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
 
 </android.support.constraint.ConstraintLayout>

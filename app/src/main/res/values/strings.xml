@@ -57,4 +57,10 @@
     <string name="Rennes">Rennes</string>
     <string name="ASSE">ASSE</string>
     <string name="TFC">TFC</string>
+
+    <string name="first">Platoche</string>
+    <string name="second">El Fenomeno</string>
+    <string name="before_last">Cireur de banc</string>
+    <string name="last">Porteur d\'eau</string>
+
 </resources>

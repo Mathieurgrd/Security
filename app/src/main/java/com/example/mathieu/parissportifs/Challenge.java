@@ -6,11 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Challenge extends Fragment {
 
@@ -18,6 +25,7 @@ public class Challenge extends Fragment {
     private ListView mListViewRanking;
     private ChallengeAdapter mChallengeAdapter;
     private String mCompetitionId;
+    private int prout = 0;
 
     public static Challenge newInstance(String competitionId) {
         Bundle bundle = new Bundle();
@@ -37,6 +45,7 @@ public class Challenge extends Fragment {
         }
 
 
+
     }
 
     @Override
@@ -54,6 +63,7 @@ public class Challenge extends Fragment {
 
         mChallengeAdapter = new ChallengeAdapter(query, getActivity(),
                 R.layout.challenge_items, mCompetitionId); // APPELLE L'ADAPTER
+
 
 
         mListViewRanking.setAdapter(mChallengeAdapter);//FUSION LIST ET ADAPTER
