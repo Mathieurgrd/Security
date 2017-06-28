@@ -80,6 +80,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private DatabaseReference currentUserRef;
     private HashMap<String, UserModel> membersMap;
     private CompetitionModel currentCompetition;
+    private AlertDialog alertDialog;
 
 
 

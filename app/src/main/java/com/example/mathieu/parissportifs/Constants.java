@@ -37,7 +37,7 @@ public class Constants {
     public static final String NICE = "Nice";
     public static final String PSG = "PSG";
     public static final String RENNES = "Renne";
-    public static final String SAINT_ETIENNE = "Saint Etienne";
+    public static final String SAINT_ETIENNE = "ASSE";
     public static final String STRASBOURG = "Strasbourg";
     public static final String TFC = "TFC";
     public static final String TROYES = "Troyes";

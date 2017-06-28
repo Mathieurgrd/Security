@@ -43,7 +43,7 @@
         <activity android:name=".SplashScreenActivity">
             android:label="@string/title_activity_fullscreen">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ModifyProfile">
 
 
         </activity>
@@ -60,7 +60,7 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".ModifyProfile">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

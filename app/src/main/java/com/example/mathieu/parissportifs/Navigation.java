@@ -25,8 +25,6 @@ public class Navigation extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(CreateOrJoinCompetition.COMPETITION_ID);
         key = bundle.getString(CreateOrJoinCompetition.COMPETITION_ID);
-        keytv = (TextView) findViewById(R.id.keytv);
-        keytv.setText(key);
 
 
 
@@ -53,22 +51,6 @@ public class Navigation extends AppCompatActivity {
                 } else if (tabId == R.id.tab_challenge) {
                     selectedFragment = Challenge.newInstance(key);
                 }
-                Intent intent = getIntent();
-                Bundle bundle = intent.getBundleExtra("key");
-                key = bundle.getString("key");
-                keytv.setText(key);
-
-
-
-
-
-
-
-
-
-
-
-
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, selectedFragment);
