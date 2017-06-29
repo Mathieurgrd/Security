@@ -26,6 +26,7 @@
         android:layout_height="436dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="0dp"
+
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
@@ -36,6 +37,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.68"></FrameLayout>
+</FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageViewSettings"
+        android:layout_width="52dp"
+        android:layout_height="51dp"
+        app:srcCompat="@drawable/cast_expanded_controller_seekbar_thumb"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="3dp"
+        app:layout_constraintHorizontal_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>
