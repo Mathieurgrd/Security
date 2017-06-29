@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bkgtopbar"
     tools:context="com.example.mathieu.parissportifs.MainActivity">
 
 
@@ -47,6 +48,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="Rejoin ton équipe !"
+        android:background="@drawable/bouton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -62,7 +64,7 @@
         android:layout_marginTop="125dp"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="@string/derni_re_ligne_droite_avant_de_rejoindre_la_comp_tition_nous_aimerions_savoir_votre_quipe_favorite_n_oublie_pas_de_choisir_un_pseudo_avant_de_rejoindre_ton_groupe_merci_et_amusez_vous_bien"
+        android:text="@string/derni_re_ligne_droite_avant_que_tu_rejoigne_le_vestiaire_en_tant_que_fan_de_foot_nous_aimerions_savoir_ton_quipe_favorite_ainsi_que_ton_pseudo_amuse_toi_bien"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
