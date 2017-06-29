@@ -3,7 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name ="colorChampionBet">#3F51B5</color>
     <color name="blueSky">#87CEFA</color>
     <color name="black_overlay">#66000000</color>
     <color name="highlight_list_competition">#ff2e</color>
+    <color name="BleuFoncéTOP">#20295B</color>
 </resources>

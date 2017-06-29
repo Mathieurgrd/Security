@@ -38,7 +38,6 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
     @Override
     protected void populateView(View view, CompetitionModel competition, int position) {
 
-
         textViewPosition = (TextView) view.findViewById(R.id.textViewPosition);
         textViewPoints = (TextView) view.findViewById(R.id.textViewPlayerRank);
         textViewNameCompetition = (TextView) view.findViewById(R.id.textViewNameCompetition);
@@ -50,13 +49,6 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
 
         textViewNameCompetition.setText(competition.getCompetitionName());
         textViewPoints.setText(String.valueOf(competition.getCompetitionScore()));
-
-
-
-
-
-
-
 
 
     }

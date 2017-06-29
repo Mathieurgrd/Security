@@ -21,17 +21,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:bb_behavior="shifting"/>
+
+        />
     <!--app:bb_behavior="shifting" -->
 
     <FrameLayout
         android:id="@+id/frame_layout_super_user"
-        android:layout_width="0dp"
-        android:layout_height="456dp"
+        android:layout_width="357dp"
+        android:layout_height="512dp"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp"
         android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="-26dp"></FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

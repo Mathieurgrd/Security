@@ -55,9 +55,6 @@ public class SuperUserCalendar extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_super_user_calendar, container, false);
 
-
-        ImageButton firebase_notif = (ImageButton) view.findViewById(R.id.firebase_notif);
-
         mGameListView = (ListView) view.findViewById(R.id.gameListSuperUser);
 
         /** end after 1 month from now */
@@ -89,7 +86,7 @@ public class SuperUserCalendar extends Fragment {
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Date date, int position) {
-                Toast.makeText(getActivity(), DateFormat.getDateInstance().format(date) + " is selected!", Toast.LENGTH_SHORT).show();
+
 
                 DateFormat df = new SimpleDateFormat("yyMMdd");
                 String reportDate = df.format(date);

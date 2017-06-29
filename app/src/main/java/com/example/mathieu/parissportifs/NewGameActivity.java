@@ -174,7 +174,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        hour.setText(hourOfDay + ":" + minute);
+                        if (minute < 10){
+                            String min = "0"+minute;
+                            hour.setText(hourOfDay + ":" + min);
+                        } else {
+                            hour.setText(hourOfDay + ":" + minute);
+                        }
+
+
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();

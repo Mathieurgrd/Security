@@ -2,6 +2,7 @@ package com.example.mathieu.parissportifs;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -148,9 +149,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             if (i == R.id.button_join_competition) {
 
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateOrJoinCompetition.this);
-                alertDialog.setTitle("Join Competition");
-                alertDialog.setMessage("Enter Password");
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateOrJoinCompetition.this);
+                        //(CreateOrJoinCompetition.this);
+                alertDialog.setTitle("Rejoins tes amis !");
+                alertDialog.setMessage("Rentre la clé secrète pour entrer dans le vestiaire");
                 final EditText input = new EditText(CreateOrJoinCompetition.this);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -159,9 +161,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 alertDialog.setView(input);
 
 
-                alertDialog.setPositiveButton("Validate",
+
+                alertDialog.setPositiveButton("GO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+
 
 
                                 addUserToCompetition(input);
@@ -174,7 +178,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                             }
                         });
 
-                alertDialog.setNegativeButton("NO",
+                alertDialog.setNegativeButton("NOPE",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
