@@ -55,7 +55,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private String uId;
     private UserModel userData;
 
-    private CompetitionListAdapter mCompetitionResultAdapter;
+    private SwipeCompetitionAdapter mCompetitionResultAdapter;
     private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
@@ -93,8 +93,9 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         competitionsList = new ArrayList<>();
         mCompetitionListView = (ListView) findViewById(R.id.CompetitionList);
-        mCompetitionResultAdapter = new CompetitionListAdapter(competitionsList, CreateOrJoinCompetition.this, this.getLayoutInflater());
+        mCompetitionResultAdapter = new SwipeCompetitionAdapter(competitionsList, CreateOrJoinCompetition.this, this.getLayoutInflater(),uId);
         mCompetitionListView.setAdapter(mCompetitionResultAdapter);
+
 
         Query query = mDatabaseCompetitionRef;
         query.addValueEventListener(new ValueEventListener() {

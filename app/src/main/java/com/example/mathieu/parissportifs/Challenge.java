@@ -46,8 +46,6 @@ public class Challenge extends Fragment {
             mCompetitionId = getArguments().getString(CreateOrJoinCompetition.COMPETITION_ID);
         }
 
-
-
     }
 
     @Override
