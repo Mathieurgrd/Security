@@ -39,6 +39,7 @@ abstract class Firebaseadapter<T> extends BaseAdapter {
     private ChildEventListener mListener;
 
 
+
     /**
      * @param mRef        The Firebase location to watch for data changes. Can also be a slice of a location, using some
      *                    combination of <code>limit()</code>, <code>startAt()</code>, and <code>endAt()</code>,
