@@ -8,9 +8,11 @@
     tools:context="com.example.mathieu.parissportifs.SuperUserNavigation">
 
     <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBarSuperUser"
+        android:id="@+id/bottomBar"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
+        app:bb_inActiveTabColor="#3F51B4"
+        app:bb_activeTabColor="#3F51B4"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
@@ -18,15 +20,18 @@
         app:bb_tabXmlResource="@xml/bottombar_superuser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
     <!--app:bb_behavior="shifting" -->
 
     <FrameLayout
         android:id="@+id/frame_layout_super_user"
-        android:layout_width="398dp"
-        android:layout_height="458dp"
+        android:layout_width="357dp"
+        android:layout_height="512dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="0dp"
+
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="0dp"

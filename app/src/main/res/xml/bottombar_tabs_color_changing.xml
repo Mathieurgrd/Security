@@ -4,16 +4,16 @@
         id="@+id/tab_homeCompetition"
         icon="@drawable/ic_home"
         title="Home"
-        barColorWhenSelected="#F9A02E" />
+        barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_competition"
         icon="@drawable/ic_flux"
         title="Pronostique"
-        barColorWhenSelected="#1FA597" />
+        barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_challenge"
         icon="@drawable/ic_challenge"
         title="Challenge"
-        barColorWhenSelected="#565656" />
+        barColorWhenSelected="#E6E6E6" />
 
 </tabs>
