@@ -7,20 +7,23 @@
 
     <Button
         android:id="@+id/pickcontact"
+        android:background="@drawable/bouton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pick Contact" />
+        android:text="Invite un ami" />
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="385dp" />
+        android:layout_width="409dp"
+        android:layout_height="385dp"
+        android:layout_weight="0.51" />
 
     <Button
         android:id="@+id/buttonfinishpickcontacts"
         android:layout_width="match_parent"
         android:layout_height="29dp"
         android:layout_weight="0.60"
-        android:text="Finish" />
+        android:background="@drawable/bouton"
+        android:text="Validation" />
 
 </LinearLayout>
