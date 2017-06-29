@@ -116,19 +116,6 @@ public class SuperUserCalendar extends Fragment {
             }
         });
 
-        /*firebase_notif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("https://console.firebase.google.com/project/parissportifs-d74e4/notification/compose?campaignId=8388219356442312473"));
-                startActivity(intent);
-
-
-            }
-        });*/
-
         mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

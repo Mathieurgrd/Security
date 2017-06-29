@@ -4,16 +4,19 @@
         id="@+id/tab_calendar"
         icon="@drawable/ic_home"
         title="Calendrier"
-        barColorWhenSelected="#F9A02E" />
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
     <tab
         id="@+id/tab_notifications"
         icon="@drawable/ic_flux"
         title="Notifications"
-        barColorWhenSelected="#1FA597" />
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
     <tab
         id="@+id/tab_ranking"
         icon="@drawable/ic_challenge"
         title="Classement"
-        barColorWhenSelected="#565656" />
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
 
 </tabs>

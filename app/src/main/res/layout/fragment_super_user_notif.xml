@@ -5,5 +5,9 @@
     tools:context="com.example.mathieu.parissportifs.SuperUserNotif">
 
 
-
+    <Button
+        android:id="@+id/sendNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notifications" />
 </FrameLayout>

@@ -35,13 +35,6 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
 
     }
 
-    public ChallengeAdapter(Query ref, Activity activity, int layout, final String CompetKey) {
-        super(ref, CompetitionModel.class, layout, activity);
-
-        this.CompetitionKey = CompetKey;
-
-    }
-
     @Override
     protected void populateView(View view, CompetitionModel competition, int position) {
 

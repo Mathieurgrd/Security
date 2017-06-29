@@ -109,10 +109,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                     HashMap<String,UserModel> membersMap = competitionModel.getMembersMap();
 
-                    if(membersMap.get(uId)!= null){
-                        competitionsList.add(competitionModel);
+                    if (membersMap != null){
+                        if(membersMap.get(uId)!= null){
+                            competitionsList.add(competitionModel);
+                        }
                     }
-
                     mCompetitionResultAdapter.notifyDataSetChanged();
                 }
             }

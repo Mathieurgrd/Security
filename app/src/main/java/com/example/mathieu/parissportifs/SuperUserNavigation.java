@@ -19,7 +19,7 @@ public class SuperUserNavigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_super_user_navigation);
 
-        bottomBar = (BottomBar) findViewById(R.id.bottomBarSuperUser);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
         bottomBar.selectTabAtPosition(0);
 
