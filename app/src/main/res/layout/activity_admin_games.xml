@@ -46,9 +46,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_above="@+id/fab"
-        android:layout_alignEnd="@+id/fab"
+        app:srcCompat="@drawable/notif"
         android:layout_alignRight="@+id/fab"
-        app:srcCompat="@drawable/firebase" />
+        android:layout_alignEnd="@+id/fab"
+        android:layout_alignLeft="@+id/fab"
+        android:layout_alignStart="@+id/fab" />
 
     <ListView
         android:id="@+id/gameList"

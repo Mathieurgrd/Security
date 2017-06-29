@@ -1,5 +1,7 @@
 package com.example.mathieu.parissportifs;
 
+import android.content.res.Resources;
+
 /**
  * Created by apprenti on 03/06/17.
  */
@@ -43,6 +45,7 @@ public class Constants {
     public static final String TFC = "TFC";
     public static final String TROYES = "Troyes";
     public static final String AMIENS = "Amiens";
+    public static final Resources.Theme  THEME_HOLO_LIGHT = null;
 
 
 
