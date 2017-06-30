@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,6 +43,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     @Override
     protected void populateView(View view, NewGame mNewGame, int position) {
 
+        String prout = mNewGame.getmReportDate();
         mDatabaseref = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(mNewGame.getmReportDate()).child(mNewGame.getmIdGame());
 
         hour = (TextView) view.findViewById(R.id.textViewHour);
@@ -86,29 +88,22 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         public void run () {
 
-            ValueEventListener gameListener = new ValueEventListener() {
+
+            mDatabaseref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // Get Post object and use the values to update the UI
                     newGame = dataSnapshot.getValue(NewGame.class);
                     newGame.setmStatus("EN COURS");
                     mDatabaseref.setValue(newGame);
-
-                    // ...
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    // Getting Post failed, log a message
-                    Log.w("Erreur", "loadPost:onCancelled", databaseError.toException());
-                    // ...
+
                 }
-            };
-             mDatabaseref.addValueEventListener(gameListener);
 
 
-
-
+            });
         }
 
     }

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.example.mathieu.parissportifs.SuperUserNavigation">
 
     <com.roughike.bottombar.BottomBar
@@ -27,8 +28,8 @@
 
     <FrameLayout
         android:id="@+id/frame_layout_super_user"
-        android:layout_width="357dp"
-        android:layout_height="512dp"
+        android:layout_width="358dp"
+        android:layout_height="529dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="0dp"
         android:animateLayoutChanges="true"

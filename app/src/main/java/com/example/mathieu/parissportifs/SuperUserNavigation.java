@@ -8,11 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabSelectListener;
 
 public class SuperUserNavigation extends AppCompatActivity {
 
     private BottomBar bottomBar;
+    private SuperUserCalendar superUserCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,5 +44,11 @@ public class SuperUserNavigation extends AppCompatActivity {
                 transaction.commit();
             }
         });
+
+        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_calendar);
+        superUserCalendar = new SuperUserCalendar();
+        int prout = superUserCalendar.badges();
+        nearby.setBadgeCount(prout);
+
     }
 }
