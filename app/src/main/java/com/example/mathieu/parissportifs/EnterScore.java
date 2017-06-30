@@ -258,12 +258,14 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 }, mHour, mMinute, false);
         timePickerDialog.show();
 
+
+
     }
 
     private void updateGame (){
-        NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object, mHour, mMinute, newGame.getmMatchWeek(), ourDate, newGame.getmReportDate(), status_open, winner);
         dff = new SimpleDateFormat("yyMMdd");
         update_date_firebase = dff.format(date_time_object);
+        NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object, mHour, mMinute, newGame.getmMatchWeek(), ourDate, update_date_firebase, status_open, winner);
         mDatabaseGame.child(update_date_firebase).child(uploadId).setValue(newGameTimeTable);
     }
 
@@ -286,6 +288,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 mDatabaseGame.child(date_firebase).child(uploadId).removeValue();
 
                 updateDate();
+
+
 
             }
 

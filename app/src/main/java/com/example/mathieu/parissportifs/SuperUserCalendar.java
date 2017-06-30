@@ -14,12 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,6 +41,7 @@ public class SuperUserCalendar extends Fragment {
     private HorizontalCalendar horizontalCalendar;
     private ListView mGameListView;
     private DatabaseReference mDatabaseGameRef;
+    private int gameToday;
 
 
     public static SuperUserCalendar newInstance () {
@@ -105,8 +110,8 @@ public class SuperUserCalendar extends Fragment {
 
         horizontalCalendar.goToday(true);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button buttonNewGame = (Button) view.findViewById(R.id.buttonNewGame);
+        buttonNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), NewGameActivity.class));
@@ -127,6 +132,34 @@ public class SuperUserCalendar extends Fragment {
         });
 
 
+
         return view;
+    }
+
+    public int badges(){
+        DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+        Date date = new Date();
+        String todayDate = dateFormat.format(date);
+        gameToday = 0;
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(todayDate);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot game : dataSnapshot.getChildren()){
+
+                    NewGame newGame = game.getValue(NewGame.class);
+                    if (newGame.getmStatus().equals("EN COURS")){
+                        gameToday ++;
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    return gameToday;
     }
 }
