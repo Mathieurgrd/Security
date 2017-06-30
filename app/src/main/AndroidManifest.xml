@@ -59,7 +59,7 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".NewGameActivity">
 
 
         </activity>
@@ -71,7 +71,7 @@
         <activity android:name=".Navigation">
 
         </activity>
-        <activity android:name=".NewGameActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

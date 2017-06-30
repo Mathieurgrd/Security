@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,10 +12,16 @@
         android:layout_width="23dp"
         android:layout_height="18dp"
         android:text="1"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="7dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintRight_toLeftOf="@+id/textViewNameCompetition"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.23" />
 
     <TextView
         android:id="@+id/textViewPlayerRank"
@@ -22,9 +29,12 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/textViewNameCompetition"
-        android:layout_marginLeft="17dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.014"
+        app:layout_constraintRight_toLeftOf="@+id/textViewNameAdmin"
+        android:layout_marginRight="61dp" />
 
     <TextView
         android:id="@+id/textViewNameCompetition"
@@ -32,27 +42,31 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/textViewPosition"
-        android:layout_marginLeft="38dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.014"
+        app:layout_constraintRight_toLeftOf="@+id/textViewPlayerRank"
+        android:layout_marginRight="38dp" />
 
     <TextView
         android:id="@+id/textViewNameAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="6dp"
-        app:layout_constraintLeft_toRightOf="@+id/textViewPlayerRank"
-        android:layout_marginLeft="41dp" />
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="299dp" />
 
     <TextView
         android:id="@+id/textViewEmailAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
         android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNameAdmin"
         app:layout_constraintLeft_toRightOf="@+id/textViewPlayerRank"
-        android:layout_marginLeft="41dp" />
+        android:layout_marginLeft="61dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="516dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
