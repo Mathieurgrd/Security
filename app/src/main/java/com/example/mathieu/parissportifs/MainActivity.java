@@ -142,10 +142,6 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
-            Toast.makeText(parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_SHORT).show();
             favoriteTeam = parent.getItemAtPosition(position).toString();
 
 

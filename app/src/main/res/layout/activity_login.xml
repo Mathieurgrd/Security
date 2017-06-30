@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@drawable/topbar"
     tools:context="com.example.mathieu.parissportifs.LoginActivity">
 
 
@@ -55,8 +55,8 @@
 
     <Button
         android:id="@+id/buttonSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="152dp"
+        android:layout_height="30dp"
         android:text="@string/login_button_text"
         android:background="@drawable/bouton"
         android:layout_marginStart="23dp"
@@ -67,8 +67,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/textViewForgotPassword"
         android:layout_marginLeft="23dp"
-        app:layout_constraintHorizontal_bias="0.562"
-        android:layout_marginBottom="122dp"
+        android:layout_marginBottom="134dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewCreateNewAccount"
         android:layout_marginEnd="8dp" />
 

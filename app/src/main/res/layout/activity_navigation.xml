@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/topbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mathieu.parissportifs.Navigation">
@@ -20,10 +21,24 @@
         app:layout_constraintRight_toRightOf="parent" />
         <!--app:bb_behavior="shifting" -->
 
+
+    <ImageView
+        android:id="@+id/imageViewSettings"
+        android:layout_width="52dp"
+        android:layout_height="51dp"
+        app:srcCompat="@drawable/mechanical"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="3dp"
+        app:layout_constraintHorizontal_bias="1.0" />
+
     <FrameLayout
         android:id="@+id/frame_layout"
-        android:layout_width="357dp"
-        android:layout_height="436dp"
+        android:layout_width="384dp"
+        android:layout_height="454dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="0dp"
 
@@ -32,25 +47,13 @@
         android:layout_marginTop="0dp"
         android:animateLayoutChanges="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68"></FrameLayout>
-</FrameLayout>
-
-    <ImageView
-        android:id="@+id/imageViewSettings"
-        android:layout_width="52dp"
-        android:layout_height="51dp"
-        app:srcCompat="@drawable/cast_expanded_controller_seekbar_thumb"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="3dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        app:layout_constraintVertical_bias="0.898"
+        tools:layout_editor_absoluteY="50dp"
+        tools:layout_editor_absoluteX="-13dp"></FrameLayout>
 
 
 </android.support.constraint.ConstraintLayout>
