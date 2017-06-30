@@ -58,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_button_text"
+        android:background="@drawable/bouton"
         android:layout_marginStart="23dp"
         android:layout_below="@+id/textViewForgotPassword"
         android:layout_toRightOf="@+id/textViewForgotPassword"
@@ -74,6 +75,7 @@
     <TextView
         android:id="@+id/textViewForgotPassword"
         android:layout_width="wrap_content"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:text="@string/ForgotPassword"
         android:layout_below="@+id/inputEmail"
@@ -91,6 +93,7 @@
         android:id="@+id/textViewCreateNewAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:layout_alignEnd="@+id/buttonSignIn"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/buttonSignIn"

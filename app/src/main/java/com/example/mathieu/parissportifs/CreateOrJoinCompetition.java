@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -55,6 +56,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private Button goModifyProfil;
     private String uId;
     private UserModel userData;
+    private ImageView imageViewSettings;
 
     private SwipeCompetitionAdapter mCompetitionResultAdapter;
     private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
@@ -64,7 +66,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_or_join_competition);
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -83,6 +84,8 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         findViewById(R.id.button_join_competition).setOnClickListener(this);
         goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
         goModifyProfil.setOnClickListener(this);
+        imageViewSettings = (ImageView) findViewById(R.id.imageViewSettings);
+        imageViewSettings.setOnClickListener(this);
 
         final EditText input = new EditText(CreateOrJoinCompetition.this);
 
@@ -139,6 +142,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             if (i == R.id.button_create_competition) {
                 startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
                 CreateOrJoinCompetition.this.finish();
+            }
+            if (i == R.id.imageViewSettings){
+                Intent intent = new Intent(CreateOrJoinCompetition.this, ModifyProfile.class);
+                startActivity(intent);
+                finish();
             }
 
             if (i == R.id.goModifyProfil) {
@@ -257,8 +265,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
                     }
                 });
+
             }
         }
+
 
 
         @Override
