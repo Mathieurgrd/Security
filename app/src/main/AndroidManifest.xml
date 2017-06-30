@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".ModifyProfile"/>
 
-        
+
         <activity android:name=".AdminGames">
 
         </activity>
@@ -59,7 +59,7 @@
         <activity android:name=".CreateCompetitionActivity">
 
         </activity>
-        <activity android:name=".NewGameActivity">
+        <activity android:name=".LoginActivity">
 
 
         </activity>
@@ -71,9 +71,7 @@
         <activity android:name=".Navigation">
 
         </activity>
-
-
-        </activity>
+        <activity android:name=".NewGameActivity" />
         <activity android:name=".EnterScore" />
         <activity android:name=".BetGame" />
         <activity android:name=".SuperUserNavigation">
