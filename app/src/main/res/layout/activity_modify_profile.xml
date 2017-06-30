@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/topbar"
+    android:background="@drawable/fond"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mathieu.parissportifs.ModifyProfile">
@@ -24,6 +24,8 @@
 
     <EditText
         android:id="@+id/editTextModifyPseudo"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="39dp"
         android:ems="10"
@@ -48,6 +50,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,6 +64,7 @@
 
     <TextView
         android:id="@+id/textViewModifyPicture"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Modifier ma photo de profil"
@@ -72,6 +77,7 @@
 
     <TextView
         android:id="@+id/textViewResetMyPassword"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Modifier mon mot de passe"
@@ -84,6 +90,7 @@
 
     <TextView
         android:id="@+id/textViewRemoveMyAccount"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Supprimer mon compte "
@@ -97,21 +104,24 @@
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="196dp"
+        android:layout_height="45dp"
         android:text="Enregistrer"
-        android:background="@drawable/bouton"
+        android:textColor="@color/white"
+        android:background="@color/BleuFoncéTOP"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="22dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRemoveMyAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemoveMyAccount"
+        app:layout_constraintHorizontal_bias="0.502" />
 
     <TextView
         android:id="@+id/textViewDisconnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Deconnexion"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"

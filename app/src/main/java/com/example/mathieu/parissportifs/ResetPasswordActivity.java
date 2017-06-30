@@ -31,7 +31,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
         inputEmail = (EditText) findViewById(R.id.email);
         findViewById(R.id.btn_reset_password).setOnClickListener(this);
-        findViewById(R.id.btn_back).setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
@@ -66,9 +65,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                         }
                     });
 
-        }
-        if (i == R.id.btn_back) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
 
     }

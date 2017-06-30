@@ -63,5 +63,6 @@
     <string name="before_last">Cireur de banc</string>
     <string name="last">Porteur d\'eau</string>
     <string name="derni_re_ligne_droite_avant_que_tu_rejoigne_le_vestiaire_en_tant_que_fan_de_foot_nous_aimerions_savoir_ton_quipe_favorite_ainsi_que_ton_pseudo_amuse_toi_bien">Dernière ligne droite avant que tu rejoigne le vestiaire: en tant que fan de foot nous aimerions savoir ton équipe favorite, ainsi que ton pseudo ! Amuse toi bien</string>
+    <string name="email">Email</string>
 
 </resources>

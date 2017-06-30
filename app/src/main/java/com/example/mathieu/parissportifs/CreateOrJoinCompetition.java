@@ -82,8 +82,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         findViewById(R.id.button_create_competition).setOnClickListener(this);
         findViewById(R.id.button_join_competition).setOnClickListener(this);
-        goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
-        goModifyProfil.setOnClickListener(this);
         imageViewSettings = (ImageView) findViewById(R.id.imageViewSettings);
         imageViewSettings.setOnClickListener(this);
 
@@ -147,11 +145,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 Intent intent = new Intent(CreateOrJoinCompetition.this, ModifyProfile.class);
                 startActivity(intent);
                 finish();
-            }
-
-            if (i == R.id.goModifyProfil) {
-                startActivity(new Intent(CreateOrJoinCompetition.this, ModifyProfile.class));
-                CreateOrJoinCompetition.this.finish();
             }
 
             if (i == R.id.button_join_competition) {

@@ -152,12 +152,6 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
                 }
-                public void   switchLogo (TextView homeTeam, TextView awayTeam){
-
-
-
-                }
-
 
             });
 

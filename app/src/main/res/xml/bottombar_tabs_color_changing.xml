@@ -2,17 +2,17 @@
 <tabs>
     <tab
         id="@+id/tab_homeCompetition"
-        icon="@drawable/ic_home"
+        icon="@drawable/ic_maillot"
         title="Home"
         barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_competition"
-        icon="@drawable/ic_flux"
+        icon="@drawable/ic_tableau"
         title="Pronostique"
         barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_challenge"
-        icon="@drawable/ic_challenge"
+        icon="@drawable/ic_stade"
         title="Challenge"
         barColorWhenSelected="#E6E6E6" />
 

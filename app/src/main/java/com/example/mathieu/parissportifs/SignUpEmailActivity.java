@@ -66,7 +66,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //Button
         findViewById(R.id.buttonSignUp).setOnClickListener(this);
-        findViewById(R.id.buttonBack).setOnClickListener(this);
 
 
 
@@ -177,10 +176,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
             createAccount();
 
         }
-        if (i == R.id.buttonBack) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 
-        }
     }
 }
 
