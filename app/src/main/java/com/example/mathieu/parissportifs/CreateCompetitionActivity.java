@@ -115,9 +115,7 @@ import static com.example.mathieu.parissportifs.Constants.USER;
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            Toast.makeText(parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_SHORT).show();
+
 
             championHShipName = parent.getItemAtPosition(position).toString();
         }

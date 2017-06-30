@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/topbar"
     tools:context="com.example.mathieu.parissportifs.CreateOrJoinCompetition">
 
     <Button
@@ -55,7 +56,7 @@
         android:id="@+id/imageViewSettings"
         android:layout_width="51dp"
         android:layout_height="52dp"
-        app:srcCompat="@drawable/bordeaux"
+        app:srcCompat="@drawable/mechanical"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
