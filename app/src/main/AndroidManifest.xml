@@ -58,9 +58,15 @@
 
         <activity android:name=".CreateCompetitionActivity">
 
+            <activity android:name=".Competition" />
+
         </activity>
         <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
@@ -75,11 +81,7 @@
         <activity android:name=".EnterScore" />
         <activity android:name=".BetGame" />
         <activity android:name=".SuperUserNavigation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

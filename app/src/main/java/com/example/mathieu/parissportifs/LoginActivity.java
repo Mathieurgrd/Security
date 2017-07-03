@@ -1,6 +1,5 @@
 package com.example.mathieu.parissportifs;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,8 +42,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.net.URL;
 
 import static com.example.mathieu.parissportifs.Constants.RC_SIGN_IN;
 import static com.example.mathieu.parissportifs.Constants.TEAM;
@@ -173,6 +172,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
 
     }
+
+    private void ShakeBaby(View v, int duration){
+
+        YoYo.with(Techniques.Shake)
+                .duration(duration)
+                .repeat(2)
+                .playOn(v);
+    }
+
+
     private void signInGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -183,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = inputEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
             inputEmail.setError("Required.");
+            ShakeBaby(inputEmail, 500);
             valid = false;
         } else {
             inputEmail.setError(null);
@@ -191,6 +201,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = inputPassword.getText().toString();
         if (TextUtils.isEmpty(password)) {
             inputPassword.setError("Required.");
+            ShakeBaby(inputPassword, 500);
             valid = false;
         } else {
             inputPassword.setError(null);
