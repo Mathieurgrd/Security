@@ -10,14 +10,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Navigation extends AppCompatActivity {
 
     private BottomBar bottomBar;
     private String key;
     private ImageView imageViewSettings;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,4 +78,11 @@ public class Navigation extends AppCompatActivity {
     public String getKey() {
         return key;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
 }

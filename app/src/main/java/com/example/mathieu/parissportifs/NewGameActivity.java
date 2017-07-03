@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.app.DatePickerDialog;
@@ -61,6 +62,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private int years;
     private Date ourDate;
     private String reportDate;
+    private ImageButton imageButtonChoiceTimetable;
 
 
 
@@ -71,11 +73,12 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES);
 
-        hour = (TextView) findViewById(R.id.textViewChangeHour);
+
         dateView = (TextView) findViewById(R.id.textViewDate);
         choiceMatchWeek = (TextView) findViewById(R.id.textViewChoiceJourney);
+        imageButtonChoiceTimetable = (ImageButton) findViewById(R.id.imageButtonChoiceTimeTable);
+        imageButtonChoiceTimetable.setOnClickListener(this);
         choiceMatchWeek.setOnClickListener(this);
-        hour.setOnClickListener(this);
         dateView.setOnClickListener(this);
 
         teamHome = (Spinner) findViewById(R.id.spinnerHome);
@@ -125,8 +128,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         ligue1List.add(Constants.TROYES);
         ligue1List.add(Constants.AMIENS);
 
-
-        updateTextLabelDate();
         addItemTeamAwaySelector();
         addItemTeamHomeSelector();
     }
@@ -148,10 +149,9 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                         years = view.getYear();
                         String displayMonth = String.valueOf(view.getMonth()+1);
 
-                        date_time = date + "/" + displayMonth + "/" + years;
+                        date_time = date + "." + displayMonth + "." + years;
                         date_time_object = new Date(years, view.getMonth(), date).getTime();
 
-                        dateView.setText(date_time);
                         //*************Call Time Picker Here ********************
                         updateTime();
                      }
@@ -175,26 +175,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        if (minute < 10){
-                            String min = "0"+minute;
-                            hour.setText(hourOfDay + ":" + min);
-                        } else {
-                            hour.setText(hourOfDay + ":" + minute);
-                        }
 
 
+                        openDialogJourney();
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
 
     }
-
-    private void updateTextLabelDate(){
-
-
-        dateView.setText(formatDateTime.format(dateCalendar.getTime()));
-    }
-
 
 
     public void addItemTeamAwaySelector() {
@@ -231,7 +219,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
     public void updateGame(){
 
-        ourDate = new Date (years-1900, month, date, mHour,mMinute);
+        ourDate = new Date (years-1900, month, date, mHour +8 - 1,mMinute);
         long mydate = ourDate.getTime();
 
         DateFormat df = new SimpleDateFormat("yyMMdd");
@@ -252,7 +240,18 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         matchWeek = numberPicker.getValue();
-                        choiceMatchWeek.setText(Integer.toString(matchWeek));
+
+                        if (mMinute < 10){
+                            String min = "0"+mMinute;
+                            dateView.setText(date_time + " - " + mHour + ":" + min);
+                        } else {
+                            dateView.setText(date_time + " - " + mHour + ":" + mMinute);
+                        }
+                        if (matchWeek == 1){
+                            choiceMatchWeek.setText(Integer.toString(matchWeek) + " ère Journée");
+                        } else {
+                            choiceMatchWeek.setText(Integer.toString(matchWeek) + " ème Journée");
+                        }
 
                     }
                 })
@@ -281,6 +280,11 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         }
         if(v==choiceMatchWeek){
             openDialogJourney();
+        }
+        if (v==imageButtonChoiceTimetable){
+
+            updateDate();
+
         }
     }
 
