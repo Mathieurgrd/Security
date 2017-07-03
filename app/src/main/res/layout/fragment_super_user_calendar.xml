@@ -3,50 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/topbar"
     android:layout_height="match_parent"
     tools:context="com.example.mathieu.parissportifs.SuperUserCalendar">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-
-        <devs.mulham.horizontalcalendar.HorizontalCalendarView
-            android:id="@+id/superUserCalendar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="40dp"
-            app:layout_constraintHorizontal_bias="0.0" />
-
-        <Button
-            android:id="@+id/buttonNewGame"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                android:id="@+id/superUserCalendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:textColorSelected="#FFFF"
+                app:textSizeDayName="14sp"
+                app:textSizeDayNumber="20sp"/>
+
+        </android.support.design.widget.AppBarLayout>
 
         <ListView
             android:id="@+id/gameListSuperUser"
-            android:layout_width="0dp"
-            android:layout_height="482dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/appBar"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_weight="60"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNewGame"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/superUserCalendar" />
-    </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/superUserCalendar"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+        <Button
+            android:id="@+id/buttonNewGame"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="10"
+            android:gravity="center"
+            android:text="Nouveau Match"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1" />
+    </LinearLayout>
 
 </FrameLayout>

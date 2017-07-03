@@ -8,13 +8,13 @@
         barColorWhenSelected="#F2F2F2" />
     <tab
         id="@+id/tab_notifications"
-        icon="@drawable/cloche"
+        icon="@drawable/ic_cloche"
         title="Notifications"
         color= "#3F51B4"
         barColorWhenSelected="#F2F2F2" />
     <tab
         id="@+id/tab_ranking"
-        icon="@drawable/mail"
+        icon="@drawable/ic_notifications"
         title="Classement"
         color= "#3F51B4"
         barColorWhenSelected="#F2F2F2" />

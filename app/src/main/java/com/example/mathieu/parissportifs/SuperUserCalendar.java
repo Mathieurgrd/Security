@@ -83,30 +83,9 @@ public class SuperUserCalendar extends Fragment {
                 .monthFormat("MMM")
                 .showDayName(true)
                 .showMonthName(true)
-                .defaultSelectedDate(defaultDate.getTime())
                 .textColor(Color.LTGRAY, Color.WHITE)
                 .selectedDateBackground(Color.TRANSPARENT)
                 .build();
-
-        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
-            @Override
-            public void onDateSelected(Date date, int position) {
-
-
-                DateFormat df = new SimpleDateFormat("yyMMdd");
-                String reportDate = df.format(date);
-
-                mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
-
-                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items); // APPELLE L'ADAPTER
-
-                mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
-
-                mGameListAdapter.notifyDataSetChanged();
-
-            }
-
-        });
 
         horizontalCalendar.goToday(true);
 
@@ -130,6 +109,32 @@ public class SuperUserCalendar extends Fragment {
                 startActivity(i);
             }
         });
+
+
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Date date, int position) {
+
+
+                DateFormat df = new SimpleDateFormat("yyMMdd");
+                String reportDate = df.format(date);
+
+                mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
+
+                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items); // APPELLE L'ADAPTER
+
+                mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
+
+                mGameListAdapter.notifyDataSetChanged();
+
+            }
+
+        });
+
+
+
+
 
 
 
