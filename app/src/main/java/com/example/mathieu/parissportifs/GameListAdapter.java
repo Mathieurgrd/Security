@@ -66,6 +66,10 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
         imageViewAway = (ImageView) view.findViewById(R.id.imageViewAwayTeam);
         imageViewHome = (ImageView) view.findViewById(R.id.imageViewHomeTeam);
 
+
+
+
+
         if (mNewGame.getmStatus().equals("OUVERT")){
 
             StopBet myTask = new StopBet();
@@ -91,34 +95,40 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         homeTeam.setText(String.valueOf(mNewGame.getmHomeTeam()));
         awayTeam.setText(String.valueOf(mNewGame.getmAwayTeam()));
+        GetBet(competitionid, userid, mNewGame.getmIdGame());
 
-        GetBet(competitionid, userid, mNewGame);
 
-        betScoreAway.setText(String.valueOf(ScoreBetAway));
-        betScoreHome.setText(String.valueOf(ScoreBetHome));
+
 
         SwitchLogoModel.switchLogo(homeTeam, imageViewHome, awayTeam , imageViewAway);
 
     }
 
 
-    private void GetBet(String GetCompetitionId, String GetUserId, NewGame newGame){
+    public void GetBet(String GetCompetitionId, String GetUserId, String GameId){
 
         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(Constants.COMPET).child(GetCompetitionId).child("membersMap")
-                .child(GetUserId).child("usersBets").child(newGame.getmIdGame());
+                .child(GetUserId).child("usersBets").child(GameId);
 
         mUserRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 BetGameModel userBetOnCurrentMatch = dataSnapshot.getValue(BetGameModel.class);
+
                 if (userBetOnCurrentMatch != null) {
+
                     ScoreBetAway = userBetOnCurrentMatch.getmAwayScore();
                     ScoreBetHome = userBetOnCurrentMatch.getmHomeScore();
+
                 }else{
                     ScoreBetAway = 0 ;
                     ScoreBetHome = 0;
+
                 }
+
+                betScoreAway.setText(String.valueOf(ScoreBetAway));
+                betScoreHome.setText(String.valueOf(ScoreBetHome));
             }
 
             @Override
