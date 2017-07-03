@@ -33,7 +33,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     ImageView imageViewAway;
     ImageView imageViewHome;
     public DatabaseReference mDatabaseref;
-
+    private NewGame newGame;
 
     public GameListAdapter(Query ref, Activity activity, int layout) {
         super(ref, NewGame.class, layout, activity);
@@ -58,14 +58,11 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         if (mNewGame.getmStatus().equals("OUVERT")){
 
-            StopBet myTask = new StopBet();
-            Timer myTimer = new Timer();
-
-            Date date_game = new Date(mNewGame.getmOurDate());
-            long proutprout = System.currentTimeMillis();
-            myTimer.schedule(myTask, date_game);
-
-            hour.setText(String.valueOf(mNewGame.getmHour()) + ":" + String.valueOf(mNewGame.getmMinute()));
+            if (mNewGame.getmMinute() == 0){
+                hour.setText(String.valueOf(mNewGame.getmHour()) + ":0" + String.valueOf(mNewGame.getmMinute()));
+            } else {
+                hour.setText(String.valueOf(mNewGame.getmHour()) + ":" + String.valueOf(mNewGame.getmMinute()));
+            }
 
         } else if (mNewGame.getmStatus().equals("EN COURS")) {
 
@@ -88,26 +85,12 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
     private class StopBet extends TimerTask {
 
-        private NewGame newGame;
+
 
         public void run () {
 
 
-            mDatabaseref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    newGame = dataSnapshot.getValue(NewGame.class);
-                    newGame.setmStatus("EN COURS");
-                    mDatabaseref.setValue(newGame);
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-
-
-            });
         }
 
     }

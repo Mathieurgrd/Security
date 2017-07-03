@@ -42,6 +42,7 @@ public class SuperUserCalendar extends Fragment {
     private ListView mGameListView;
     private DatabaseReference mDatabaseGameRef;
     private int gameToday;
+    private DatabaseReference mDatabase;
 
 
     public static SuperUserCalendar newInstance () {
@@ -59,6 +60,8 @@ public class SuperUserCalendar extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_super_user_calendar, container, false);
+
+        changeStatus();
 
         mGameListView = (ListView) view.findViewById(R.id.gameListSuperUser);
 
@@ -166,5 +169,39 @@ public class SuperUserCalendar extends Fragment {
         });
 
     return gameToday;
+    }
+
+    private void changeStatus(){
+        final long currentDate_long = System.currentTimeMillis();
+        final Date currentDate = new Date(currentDate_long);
+        DateFormat dff = new SimpleDateFormat("yyMMdd");
+        String reportDate = dff.format(currentDate);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot competition : dataSnapshot.getChildren()){
+
+                    NewGame mNewGame = competition.getValue(NewGame.class);
+
+                    if (mNewGame.getmStatus().equals("OUVERT")){
+
+                        long myDate = mNewGame.getmOurDate();
+                        if (currentDate_long >= myDate){
+                            mNewGame.setmStatus("EN COURS");
+                            mDatabase.child(mNewGame.getmIdGame()).setValue(mNewGame);
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

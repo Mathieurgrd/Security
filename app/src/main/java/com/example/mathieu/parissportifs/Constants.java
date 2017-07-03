@@ -24,7 +24,7 @@ public class Constants {
 
      //TEAMLOGO CONSTANT & SPINNER SELECT TEAM
 
-    public static final String SELECT_TEAM_SPINNER = "Select your Favorite Team ! ";
+    public static final String SELECT_TEAM_SPINNER = "Choisis une équipe !";
     public static final String MONACO = "Monaco";
     public static final String LILLE = "Lille";
     public static final String EA_GUINGAMP = "Guingamp";

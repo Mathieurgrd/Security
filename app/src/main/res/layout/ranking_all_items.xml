@@ -38,6 +38,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="18dp"
         android:text="TextView"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/textViewPosition"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,17 +61,18 @@
         android:id="@+id/textViewEmailAdmin"
         android:layout_width="165dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="44dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="7dp"
         android:text="TextView"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintLeft_toRightOf="@+id/textViewPlayerRank"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNameAdmin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.012" />
 </android.support.constraint.ConstraintLayout>
