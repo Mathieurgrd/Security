@@ -58,6 +58,8 @@
 
         <activity android:name=".CreateCompetitionActivity">
 
+            <activity android:name=".Competition" />
+
         </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>

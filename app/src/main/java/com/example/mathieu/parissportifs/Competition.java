@@ -106,7 +106,10 @@ public class Competition extends Fragment {
 
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
+
                 mGameListAdapter.notifyDataSetChanged();
+
+
 
             }
         });

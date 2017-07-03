@@ -105,7 +105,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     }
 
 
-    public void GetBet(String GetCompetitionId, String GetUserId, String GameId){
+    public void GetBet(String GetCompetitionId, String GetUserId, final String GameId){
 
         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(Constants.COMPET).child(GetCompetitionId).child("membersMap")
                 .child(GetUserId).child("usersBets").child(GameId);
@@ -116,7 +116,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 BetGameModel userBetOnCurrentMatch = dataSnapshot.getValue(BetGameModel.class);
 
-                if (userBetOnCurrentMatch != null) {
+                if (userBetOnCurrentMatch != null && userBetOnCurrentMatch.getmGameId().equals(GameId)) {
 
                     ScoreBetAway = userBetOnCurrentMatch.getmAwayScore();
                     ScoreBetHome = userBetOnCurrentMatch.getmHomeScore();
