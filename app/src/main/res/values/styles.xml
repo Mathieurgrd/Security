@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/BleuFoncéTOP</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/BleuFoncéTOP</item>
         <item name="windowNoTitle">true</item>
     </style>
 

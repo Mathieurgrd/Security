@@ -3,17 +3,17 @@
     <tab
         id="@+id/tab_homeCompetition"
         icon="@drawable/ic_maillot"
-        title="Home"
+        title="Le Vestiaire"
         barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_competition"
         icon="@drawable/ic_tableau"
-        title="Pronostique"
+        title="Pronostic"
         barColorWhenSelected="#E6E6E6" />
     <tab
         id="@+id/tab_challenge"
         icon="@drawable/ic_stade"
-        title="Challenge"
+        title="Classement"
         barColorWhenSelected="#E6E6E6" />
 
 </tabs>

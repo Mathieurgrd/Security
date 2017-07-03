@@ -25,6 +25,9 @@
     <color name="Azure">#F0FFFF</color>
     <color name="AliceBlue">#F0F8FF</color>
     <color name="greybackground">#ac434242</color>
+    <color name="greyList">#414141</color>
+    <color name="grisProfile">#b6c9c9c9</color>
+
 
 
 </resources>

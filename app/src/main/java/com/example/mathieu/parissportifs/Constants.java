@@ -35,7 +35,7 @@ public class Constants {
     public static final String LYON = "Lyon";
     public static final String MARSEILLE = "OM";
     public static final String METZ = "Metz";
-    public static final String MONTPELIER = "Montpelier";
+    public static final String MONTPELIER = "Montpellier";
     public static final String NANTES = "Nantes";
     public static final String NICE = "Nice";
     public static final String PSG = "PSG";

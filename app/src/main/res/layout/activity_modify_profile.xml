@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/fond"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mathieu.parissportifs.ModifyProfile">
@@ -15,21 +14,26 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         app:civ_border_color="#FF000000"
+        android:background="@drawable/profile_test"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.113" />
+        app:layout_constraintVertical_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.507" />
 
     <EditText
         android:id="@+id/editTextModifyPseudo"
         android:gravity="center"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="39dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textStyle="bold"
+        android:background="@color/grisProfile"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
@@ -43,28 +47,33 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewModifyPicture"
         app:layout_constraintVertical_bias="0.06" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextModifyEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
+        android:layout_width="215dp"
+        android:layout_height="37dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:gravity="center"
-        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_edditext_profile"
         android:ems="10"
+        android:gravity="center"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/editTextModifyPseudo"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.047"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        tools:layout_editor_absoluteY="300dp" />
 
     <TextView
         android:id="@+id/textViewModifyPicture"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Modifier ma photo de profil"
@@ -73,11 +82,12 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/textViewResetMyPassword"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Modifier mon mot de passe"
@@ -86,11 +96,12 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/textViewRemoveMyAccount"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Supprimer mon compte "
@@ -100,28 +111,31 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewResetMyPassword"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintHorizontal_bias="0.502"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="196dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:text="Enregistrer"
         android:textColor="@color/white"
-        android:background="@color/BleuFoncéTOP"
+        android:background="@drawable/rounded_edittext"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="22dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewRemoveMyAccount"
-        app:layout_constraintHorizontal_bias="0.502" />
+        app:layout_constraintHorizontal_bias="0.502"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/textViewDisconnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:text="Deconnexion"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -132,6 +146,8 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -26,6 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
@@ -71,12 +72,13 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private Date date_time_object;
     private String winner = "O";
     private String status_open = "OUVERT";
-    private Date ourDate;
+    private GregorianCalendar ourDate;
     private String update_date_firebase;
     private DatabaseReference currentUserRef;
     private HashMap<String, UserModel> membersMap;
     private CompetitionModel currentCompetition;
     private AlertDialog alertDialog;
+    private long ourDateLong;
 
 
 
@@ -228,7 +230,6 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         String date_time = date_of_month + "/" + displayMonth + "/" + years;
                         date_time_object = new Date(years, month, date_of_month);
                         textViewDate.setText(date_time);
-                        ourDate = new Date (years-1900, month, date_of_month, mHour,mMinute);
 
                         updateTime();
                     }
@@ -265,7 +266,10 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private void updateGame (){
         dff = new SimpleDateFormat("yyMMdd");
         update_date_firebase = dff.format(date_time_object);
-        NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object, mHour, mMinute, newGame.getmMatchWeek(), ourDate, update_date_firebase, status_open, winner);
+        ourDate = new GregorianCalendar(years, month, date_of_month, mHour,mMinute);
+
+        ourDateLong = ourDate.getTimeInMillis();
+        NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object.getTime(), mHour, mMinute, newGame.getmMatchWeek(), ourDateLong, update_date_firebase, status_open, winner);
         mDatabaseGame.child(update_date_firebase).child(uploadId).setValue(newGameTimeTable);
     }
 

@@ -51,7 +51,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private int mHour;
     private int mMinute;
     private String date_time;
-    private Date date_time_object;
+    private long date_time_object;
     private List<String> ligue1List;
     private MaterialNumberPicker numberPicker;
     private int matchWeek;
@@ -61,7 +61,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private int years;
     private Date ourDate;
     private String reportDate;
-    private Date mydate;
+
 
 
     @Override
@@ -149,7 +149,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                         String displayMonth = String.valueOf(view.getMonth()+1);
 
                         date_time = date + "/" + displayMonth + "/" + years;
-                        date_time_object = new Date(years, view.getMonth(), date);
+                        date_time_object = new Date(years, view.getMonth(), date).getTime();
+
                         dateView.setText(date_time);
                         //*************Call Time Picker Here ********************
                         updateTime();
@@ -231,8 +232,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     public void updateGame(){
 
         ourDate = new Date (years-1900, month, date, mHour,mMinute);
-        long prout = ourDate.getTime();
-        mydate = new Date (prout);
+        long mydate = ourDate.getTime();
 
         DateFormat df = new SimpleDateFormat("yyMMdd");
         reportDate = df.format(date_time_object);

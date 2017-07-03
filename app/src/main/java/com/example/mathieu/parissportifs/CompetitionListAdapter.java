@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.List;
 
+import static com.example.mathieu.parissportifs.R.id.textViewPlayerRank;
+
 
 public class CompetitionListAdapter extends BaseAdapter {
 
@@ -50,6 +52,7 @@ public class CompetitionListAdapter extends BaseAdapter {
         ChampionshipName = (TextView) convertView.findViewById(R.id.eTextChampionnatName);
 
         ChampionshipName.setText(String.valueOf(competitionModelList.get(position).getChamionshipName()));
+
 
         return convertView;
     }
