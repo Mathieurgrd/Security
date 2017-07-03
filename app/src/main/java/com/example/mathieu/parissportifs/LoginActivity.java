@@ -324,6 +324,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
     void isOnFirebase(FirebaseUser user) {
         FirebaseDatabase.getInstance().getReference().child(USER).child(user.getUid()).child(TEAM).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
