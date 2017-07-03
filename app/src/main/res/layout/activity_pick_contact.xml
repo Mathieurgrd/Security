@@ -7,7 +7,8 @@
 
     <Button
         android:id="@+id/pickcontact"
-        android:background="@drawable/bouton"
+        android:textColor="@color/white"
+        android:background="@color/BleuFoncéTOP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Invite un ami" />
@@ -23,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="29dp"
         android:layout_weight="0.60"
-        android:background="@drawable/bouton"
+        android:textColor="@color/white"
+        android:background="@color/BleuFoncéTOP"
         android:text="Validation" />
 
 </LinearLayout>

@@ -8,4 +8,26 @@
     <color name="black_overlay">#66000000</color>
     <color name="highlight_list_competition">#ff2e</color>
     <color name="BleuFoncéTOP">#20295B</color>
+    <color name="blued">#0000FF</color>
+    <color name="LightSteelBlue">#42696a6b</color>
+    <color name="PaleGreen">#98FB98</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="DarkSeaGreen">#8FBC8F</color>
+    <color name="yellowgolden">#ab881e </color>
+    <color name="green">#008000</color>>
+    <color name="purple">#800080</color>
+    <color name="orange">#ffa500</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="grey">#6E6E6E</color>
+    <color name="blue">#00BFFF</color>
+    <item name="red" type="color">#FFFF4444</item>
+    <color name="Azure">#F0FFFF</color>
+    <color name="AliceBlue">#F0F8FF</color>
+    <color name="greybackground">#ac434242</color>
+    <color name="greyList">#414141</color>
+    <color name="grisProfile">#b6c9c9c9</color>
+
+
+
 </resources>

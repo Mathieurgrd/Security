@@ -153,6 +153,7 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
 
                 }
 
+
             });
 
             startActivity(new Intent(BetGame.this, Navigation.class));

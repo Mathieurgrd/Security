@@ -110,6 +110,7 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                     android.R.layout.simple_spinner_item, championshipList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             championShipSelector.setAdapter(dataAdapter);
+
         }
 
         @Override

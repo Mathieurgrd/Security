@@ -185,8 +185,8 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         public void conditionItent() {
 
-            if (editTextModifyPseudo.getText().length() == 0 || favoriteTeam.equals("Select your Favorite Team !")) {
-                Toast.makeText(MainActivity.this, favoriteTeam, Toast.LENGTH_LONG).show();
+            if (editTextModifyPseudo.getText().length() == 0 || favoriteTeam.equals(Constants.SELECT_TEAM_SPINNER)) {
+                Toast.makeText(MainActivity.this, "Veuillez remplir votre pseudo, et votre équipe favorite ! merci", Toast.LENGTH_LONG).show();
                 return;
             } else {
 

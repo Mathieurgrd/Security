@@ -28,7 +28,7 @@ import java.util.List;
 
 public class SignUpEmailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText inputEmail, inputPassword, verifyPassword, inputUserName;
+    private EditText inputEmail, inputPassword, verifyPassword;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -51,12 +51,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         mAuth = FirebaseAuth.getInstance();
 
 
-
-
-
         //EditText et ProgressBar
-
-        inputUserName = (EditText) findViewById(R.id.eTextuserName);
         inputEmail = (EditText) findViewById(R.id.emailText);
         inputPassword = (EditText) findViewById(R.id.passwordText);
         verifyPassword = (EditText) findViewById(R.id.editTextVerifyPass);
@@ -66,7 +61,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
         //Button
         findViewById(R.id.buttonSignUp).setOnClickListener(this);
-        findViewById(R.id.buttonBack).setOnClickListener(this);
 
 
 
@@ -95,14 +89,10 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     private void createAccount() {
         email = inputEmail.getText().toString().trim();
         password  = inputPassword.getText().toString().trim();
-        userName = inputUserName .getText().toString().trim();
         verify = verifyPassword.getText().toString().trim();
         password = inputPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(userName)) {
-            inputUserName.setError("Required.");
-            return;
-        }
+
         if (TextUtils.isEmpty(email)) {
             inputEmail.setError("Required.");
             return;
@@ -168,7 +158,6 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -177,10 +166,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
             createAccount();
 
         }
-        if (i == R.id.buttonBack) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 
-        }
     }
 }
 

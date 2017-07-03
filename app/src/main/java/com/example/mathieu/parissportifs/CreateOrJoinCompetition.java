@@ -56,7 +56,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
     private Button goModifyProfil;
     private String uId;
     private UserModel userData;
-    private ImageView imageViewSettings;
 
     private SwipeCompetitionAdapter mCompetitionResultAdapter;
     private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
@@ -82,10 +81,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         findViewById(R.id.button_create_competition).setOnClickListener(this);
         findViewById(R.id.button_join_competition).setOnClickListener(this);
-        goModifyProfil = (Button) findViewById(R.id.goModifyProfil);
-        goModifyProfil.setOnClickListener(this);
-        imageViewSettings = (ImageView) findViewById(R.id.imageViewSettings);
-        imageViewSettings.setOnClickListener(this);
 
         final EditText input = new EditText(CreateOrJoinCompetition.this);
 
@@ -135,22 +130,11 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
         }
 
-
         @Override
         public void onClick(View v) {
             int i = v.getId();
             if (i == R.id.button_create_competition) {
                 startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
-                CreateOrJoinCompetition.this.finish();
-            }
-            if (i == R.id.imageViewSettings){
-                Intent intent = new Intent(CreateOrJoinCompetition.this, ModifyProfile.class);
-                startActivity(intent);
-                finish();
-            }
-
-            if (i == R.id.goModifyProfil) {
-                startActivity(new Intent(CreateOrJoinCompetition.this, ModifyProfile.class));
                 CreateOrJoinCompetition.this.finish();
             }
 
@@ -168,12 +152,9 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 input.setLayoutParams(lp);
                 alertDialog.setView(input);
 
-
-
                 alertDialog.setPositiveButton("GO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
 
 
                                 addUserToCompetition(input);

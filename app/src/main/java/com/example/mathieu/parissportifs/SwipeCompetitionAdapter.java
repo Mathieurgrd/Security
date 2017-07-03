@@ -31,6 +31,7 @@ public class SwipeCompetitionAdapter extends BaseSwipeAdapter {
     private List<CompetitionModel> competitionModelList;
     private TextView competitionName;
     private TextView championshipName;
+    private TextView textViewPlayerRank;
     private Context context;
     private LayoutInflater inflater;
     private Button removeCompetition;
@@ -60,9 +61,13 @@ public class SwipeCompetitionAdapter extends BaseSwipeAdapter {
         competitionName = (TextView) convertView.findViewById(R.id.eTextCompetitionName);
         championshipName = (TextView) convertView.findViewById(R.id.eTextChampionnatName);
         removeCompetition = (Button) convertView.findViewById(R.id.removeCompetition);
+        textViewPlayerRank = (TextView) convertView.findViewById(R.id.textViewPlayerRank);
 
         competitionName.setText(competitionModelList.get(position).getCompetitionName());
         championshipName.setText(String.valueOf(competitionModelList.get(position).getChamionshipName()));
+        textViewPlayerRank.setText(String.valueOf(competitionModelList.get(position).getCompetitionScore()));
+
+
 
         removeCompetition.setOnClickListener(new View.OnClickListener() {
             @Override

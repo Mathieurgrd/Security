@@ -47,9 +47,9 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
-    private EditText etEmail, etName;
+    private EditText  etName;
     private CircleImageView civProfilePic;
-    private TextView modifyPicture, modifyPassword, removeAccount, logOut;
+    private TextView modifyPicture, modifyPassword, removeAccount, logOut, etEmail;
     private Button save;
     private FirebaseUser user;
     private String pseudo;
@@ -75,7 +75,7 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
         user = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("users_avatar");
 
-        etEmail = (EditText) findViewById(R.id.editTextModifyEmail);
+        etEmail = (TextView) findViewById(R.id.editTextModifyEmail);
         etName = (EditText) findViewById(R.id.editTextModifyPseudo);
 
         civProfilePic = (CircleImageView)findViewById(R.id.playerPic);
