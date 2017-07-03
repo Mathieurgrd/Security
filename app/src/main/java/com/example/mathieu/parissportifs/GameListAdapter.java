@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,6 +44,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     @Override
     protected void populateView(View view, NewGame mNewGame, int position) {
 
+
         String prout = mNewGame.getmReportDate();
         mDatabaseref = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(mNewGame.getmReportDate()).child(mNewGame.getmIdGame());
 
@@ -59,7 +61,9 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
             StopBet myTask = new StopBet();
             Timer myTimer = new Timer();
 
-            myTimer.schedule(myTask, mNewGame.getmOurDate());
+            Date date_game = new Date(mNewGame.getmOurDate());
+            long proutprout = System.currentTimeMillis();
+            myTimer.schedule(myTask, date_game);
 
             hour.setText(String.valueOf(mNewGame.getmHour()) + ":" + String.valueOf(mNewGame.getmMinute()));
 
