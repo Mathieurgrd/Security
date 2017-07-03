@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +31,8 @@ public class Competition extends Fragment {
     private ListView mGameListView;
     private DatabaseReference mDatabaseGameRef;
     private String mCompetitionId;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     public static Competition newInstance (String competitonId) {
         Bundle bundle = new Bundle();
@@ -53,6 +57,12 @@ public class Competition extends Fragment {
         View view = inflater.inflate(R.layout.fragment_competition, container, false);
 
         mGameListView = (ListView) view.findViewById(R.id.gameListUser);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
 
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
@@ -92,7 +102,7 @@ public class Competition extends Fragment {
 
                 mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
 
-                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items); // APPELLE L'ADAPTER
+                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items, mCompetitionId, user.getUid()); // APPELLE L'ADAPTER
 
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
