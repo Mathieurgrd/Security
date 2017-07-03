@@ -1,8 +1,8 @@
 package com.example.mathieu.parissportifs;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import biz.borealis.numberpicker.NumberPicker;
 import biz.borealis.numberpicker.OnValueChangeListener;
 
-import static com.example.mathieu.parissportifs.Constants.DATABASE_PATH_GAMES;
 import static com.example.mathieu.parissportifs.Constants.USER;
 
 public class BetGame extends AppCompatActivity implements View.OnClickListener {
@@ -148,12 +147,20 @@ public class BetGame extends AppCompatActivity implements View.OnClickListener {
                     return Transaction.success(mutableData);
                 }
 
+
                 @Override
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
                 }
 
+
             });
+
+            startActivity(new Intent(BetGame.this, Navigation.class));
+            BetGame.this.finish();
+
+
+
 
         }
 

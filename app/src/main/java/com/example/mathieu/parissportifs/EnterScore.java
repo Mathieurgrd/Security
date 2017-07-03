@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.mathieu.parissportifs.Constants.WINNER_AWAY;
 import static com.example.mathieu.parissportifs.Constants.WINNER_HOME;
@@ -79,6 +81,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     private CompetitionModel currentCompetition;
     private AlertDialog alertDialog;
     private long ourDateLong;
+    private String hourGame;
+    private Button removeCompetition;
 
 
 
@@ -94,7 +98,6 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
 
         textViewDate = (TextView) findViewById(R.id.textViewDate);
-        hour = (TextView) findViewById(R.id.textViewHour);
         homeTeam = (TextView) findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) findViewById(R.id.textViewAwayTeam);
         homeScore = (TextView) findViewById(R.id.textViewHomeScore);
@@ -105,6 +108,8 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         buttonUpload.setOnClickListener(this);
         buttonChangeTimeTable = (Button) findViewById(R.id.buttonChangeHoraire);
         buttonChangeTimeTable.setOnClickListener(this);
+        removeCompetition = (Button) findViewById(R.id.buttonRemoveGame);
+        removeCompetition.setOnClickListener(this);
 
 
 
@@ -135,19 +140,22 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         Intent i = getIntent();
         newGame = (NewGame) i.getSerializableExtra("newGame");
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        DateFormat df = new SimpleDateFormat("dd.MM.yy");
         String reportDate = df.format(newGame.getmDate());
 
-        String hourGame = String.valueOf(newGame.getmHour())+" : "+String.valueOf(newGame.getmMinute());
+        if (newGame.getmMinute() < 10){
+            hourGame = String.valueOf(newGame.getmHour())+" : 0"+String.valueOf(newGame.getmMinute());
+        } else {
+            hourGame = String.valueOf(newGame.getmHour())+" : "+String.valueOf(newGame.getmMinute());
+        }
 
-        textViewDate.setText(reportDate);
-        hour.setText(hourGame);
+        textViewDate.setText(reportDate + " - " + hourGame);
         homeTeam.setText(newGame.getmHomeTeam());
         awayTeam.setText(newGame.getmAwayTeam());
 
         if(newGame.getmScoreHomeTeam() == -1){
-            homeScore.setText("/");
-            awayScore.setText("/");
+            homeScore.setText("");
+            awayScore.setText("");
         } else {
             homeScore.setText(String.valueOf(newGame.getmScoreHomeTeam()));
             awayScore.setText(String.valueOf(newGame.getmScoreAwayTeam()));
@@ -167,6 +175,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
                         homeScore.setText(Integer.toString(numberPickerHome.getValue()));
                         newGame.setmScoreHomeTeam(numberPickerHome.getValue());
+                        changeScoreAwayTeam();
 
                     }
                 }).show();
@@ -184,6 +193,63 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
 
                         awayScore.setText(Integer.toString(numberPickerAway.getValue()));
                         newGame.setmScoreAwayTeam(numberPickerAway.getValue());
+
+
+                        int scoreHome = numberPickerHome.getValue();
+                        int scoreAway = numberPickerAway.getValue();
+
+                        String prout = newGame.getmHomeTeam()+ " " + String.valueOf(scoreHome) + "  -  " + String.valueOf(scoreAway) + " " + newGame.getmAwayTeam();
+
+
+                        new SweetAlertDialog(EnterScore.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Es-tu sûre du résultat de la rencontre ?")
+                                .setContentText(prout)
+                                .setCancelText("Non")
+                                .setConfirmText("Oui")
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.setTitleText("C'est noté !")
+                                                .setContentText("Tu peux modifier le score !")
+                                                .showCancelButton(false)
+                                                .setCancelClickListener(null)
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+
+                                                        sDialog.cancel();
+                                                        finish();
+                                                    }
+                                                })
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+
+                                        checkWinnerGame();
+                                        checkCompetitionBet();
+
+                                        sDialog.setTitleText("Le score est enregistré")
+                                                .setContentText("Le score est bien pris en compte, nous allons calculer le meilleur parieur !")
+                                                .showCancelButton(false)
+                                                .setCancelClickListener(null)
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+
+                                                        sDialog.cancel();
+                                                        finish();
+                                                    }
+                                                })
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    }
+                                })
+                                .show();
 
 
                     }
@@ -253,7 +319,6 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        hour.setText(hourOfDay + ":" + minute);
                         updateGame();
                     }
                 }, mHour, mMinute, false);
@@ -274,15 +339,10 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
     }
 
     public void onClick (View v) {
-        if (v == homeScore) {
-            changeScoreHomeTeam();
-        }
-        if (v == awayScore) {
-            changeScoreAwayTeam();
-        }
+
         if (v == buttonUpload) {
-            checkWinnerGame();
-            checkCompetitionBet();
+            changeScoreHomeTeam();
+
         }
         if (v == buttonChangeTimeTable){
             if (newGame != null) {
@@ -292,11 +352,54 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                 mDatabaseGame.child(date_firebase).child(uploadId).removeValue();
 
                 updateDate();
-
-
-
             }
+        }
 
+        if ( v == removeCompetition) {
+
+            new SweetAlertDialog(EnterScore.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Supprimer la rencontre !")
+                    .setContentText("Es-tu sûre de vouloir supprimer la rencontre ?")
+                    .setCancelText("Non")
+                    .setConfirmText("Oui")
+                    .showCancelButton(true)
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+
+                            sDialog.setTitleText("C'est noté !")
+                                    .setContentText("Les utilisateurs pourront voir ce match !")
+                                    .showCancelButton(false)
+                                    .setCancelClickListener(null)
+                                    .setConfirmClickListener(null)
+                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+                    })
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+
+                            uploadId = newGame.getmIdGame();
+                            dff = new SimpleDateFormat("yyMMdd");
+                            date_firebase = dff.format(newGame.getmDate());
+                            mDatabaseGame.child(date_firebase).child(uploadId).removeValue();
+
+                            sDialog.setTitleText("Supprimer !")
+                                    .setContentText("Nous avons bien supprimer la rencontre !")
+                                    .showCancelButton(false)
+                                    .setCancelClickListener(null)
+                                    .setConfirmText("OK")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.cancel();
+                                            finish();
+                                        }
+                                    })
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        }
+                    })
+                    .show();
         }
     }
 

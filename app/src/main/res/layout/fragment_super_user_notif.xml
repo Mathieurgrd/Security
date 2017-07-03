@@ -12,12 +12,28 @@
 
         <Button
             android:id="@+id/sendNotifications"
+            android:layout_width="178dp"
+            android:layout_height="99dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bouton"
+            android:text="Notifications"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintVertical_bias="0.303" />
+
+        <TextView
+            android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="102dp"
+            android:text="Envoyer des notifications à tes utilisateurs"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
