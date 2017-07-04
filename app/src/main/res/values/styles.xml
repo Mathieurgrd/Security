@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/BleuFoncéTOP</item>
+        <item name="colorPrimaryDark">@color/bruno_bleu_top</item>
         <item name="colorAccent">@color/BleuFoncéTOP</item>
         <item name="windowNoTitle">true</item>
     </style>

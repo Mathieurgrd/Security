@@ -4,41 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/topbar"
     tools:context="com.example.mathieu.parissportifs.CreateOrJoinCompetition">
 
     <Button
         android:id="@+id/button_create_competition"
-        android:layout_width="195dp"
-        android:layout_height="58dp"
-        android:text="Create Competition"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@color/BleuFoncéTOP"
+        android:layout_width="175dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_edittext"
+        android:gravity="center"
+        android:text="Create Competition"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/button_join_competition"
         app:layout_constraintTop_toBottomOf="@+id/CompetitionList"
-        android:layout_marginRight="182dp"
-        app:layout_constraintRight_toRightOf="@+id/button_join_competition"
-        android:layout_marginEnd="182dp" />
+        app:layout_constraintVertical_bias="0.741" />
 
     <Button
         android:id="@+id/button_join_competition"
-        android:layout_width="197dp"
-        android:layout_height="59dp"
-        android:text="Join Competition"
+        android:layout_width="175dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/rounded_edittext"
         android:gravity="center"
+        android:text="Join Competition"
         android:textColor="@color/white"
-        android:background="@color/BleuFoncéTOP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/button_create_competition"
-        android:layout_marginLeft="0dp"
         app:layout_constraintTop_toBottomOf="@+id/CompetitionList"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ListView
         android:id="@+id/CompetitionList"
-        android:layout_width="379dp"
-        android:layout_height="461dp"
+        android:layout_width="370dp"
+        android:layout_height="452dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -46,9 +52,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>
