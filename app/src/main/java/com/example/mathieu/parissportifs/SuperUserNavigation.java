@@ -62,7 +62,7 @@ public class SuperUserNavigation extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SuperUserNavigation.this, ModifyProfile.class);
                 startActivity(intent);
-                finish();
+
 
             }
         });

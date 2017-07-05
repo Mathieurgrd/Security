@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mathieu.parissportifs">
@@ -47,9 +46,6 @@
         <activity android:name=".ModifyProfile"/>
 
 
-        <activity android:name=".AdminGames">
-
-        </activity>
         <activity android:name=".PickContactActivity" />
         <activity android:name=".CreateOrJoinCompetition" />
 
@@ -59,17 +55,9 @@
 
         <activity android:name=".CreateCompetitionActivity">
 
-            <activity android:name=".Competition" />
-
         </activity>
         <activity android:name=".SuperUserNavigation">
-        
-               <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
@@ -83,9 +71,12 @@
         <activity android:name=".NewGameActivity" />
         <activity android:name=".EnterScore" />
         <activity android:name=".BetGame" />
-       
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

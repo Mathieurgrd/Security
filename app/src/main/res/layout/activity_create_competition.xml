@@ -43,7 +43,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eTextNameYourCompetition"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintVertical_bias="0.171"
+        app:layout_constraintHorizontal_bias="0.493" />
 
     <Button
         android:id="@+id/button_validate_mycompetition"

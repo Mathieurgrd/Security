@@ -103,8 +103,8 @@ import static com.example.mathieu.parissportifs.Constants.USER;
 
 
             List<String> championshipList = new ArrayList<String>();
-            championshipList.add("Select your Championship");
-            championshipList.add("Ligue 1");
+            championshipList.add(Constants.SELECT_CHAMPIONSHIP);
+            championshipList.add(Constants.LIGUE_1);
 
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_item, championshipList);
@@ -135,8 +135,12 @@ import static com.example.mathieu.parissportifs.Constants.USER;
                 final String competitionName = etnameCompetition.getText().toString();
 
                 if (competitionName.length() == 0) {
-                    Toast.makeText(CreateCompetitionActivity.this, "You must enter a competition name",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCompetitionActivity.this, "Tu dois renseigner le nom de la compétition", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (championHShipName.equals(Constants.SELECT_CHAMPIONSHIP)){
+                    Toast.makeText(CreateCompetitionActivity.this, "Tu dois renseigner la compétition", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 // Write a message to the database

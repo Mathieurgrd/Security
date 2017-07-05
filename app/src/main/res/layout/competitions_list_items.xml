@@ -7,15 +7,15 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout
         android:tag="Bottom2"
-        android:background="#333"
-        android:layout_width="40dp"
-        android:gravity="center"
+        android:layout_width="160dp"
         android:layout_height="70dp">
+
         <Button
             android:id="@+id/removeCompetition"
-            android:src="@drawable/brassardcaptain"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/itemsup"
+            />
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout

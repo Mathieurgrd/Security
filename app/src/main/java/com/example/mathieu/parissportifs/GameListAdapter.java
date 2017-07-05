@@ -92,7 +92,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         homeTeam.setText(String.valueOf(mNewGame.getmHomeTeam()));
         awayTeam.setText(String.valueOf(mNewGame.getmAwayTeam()));
-        GetBet(competitionid, userid, mNewGame.getmIdGame());
+        //GetBet(competitionid, userid, mNewGame.getmIdGame());
 
 
 

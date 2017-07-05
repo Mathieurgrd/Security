@@ -63,12 +63,13 @@ public class Navigation extends AppCompatActivity {
                 transaction.commit();
             }
         });
+
         imageViewSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Navigation.this, ModifyProfile.class);
                 startActivity(intent);
-                finish();
+
 
             }
         });
@@ -79,10 +80,5 @@ public class Navigation extends AppCompatActivity {
         return key;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
 
 }

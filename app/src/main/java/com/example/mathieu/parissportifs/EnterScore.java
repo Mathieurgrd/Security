@@ -320,6 +320,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
                         mMinute = minute;
 
                         updateGame();
+
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
@@ -336,6 +337,7 @@ public class EnterScore extends AppCompatActivity implements View.OnClickListene
         ourDateLong = ourDate.getTimeInMillis();
         NewGame newGameTimeTable = new NewGame(uploadId, newGame.getmHomeTeam(), newGame.getmAwayTeam(), newGame.getmScoreHomeTeam(), newGame.getmScoreAwayTeam(), date_time_object.getTime(), mHour, mMinute, newGame.getmMatchWeek(), ourDateLong, update_date_firebase, status_open, winner);
         mDatabaseGame.child(update_date_firebase).child(uploadId).setValue(newGameTimeTable);
+        finish();
     }
 
     public void onClick (View v) {
