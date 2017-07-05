@@ -3,18 +3,23 @@ package com.example.mathieu.parissportifs;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +38,11 @@ public class Competition extends Fragment {
     private String mCompetitionId;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private String GameId;
+    private TextView betScoreAway, betScoreHome, textViewTag;
+    int ScoreBetAway;
+    int ScoreBetHome;
+    private GameListAdapter mGameListAdapter;
 
     public static Competition newInstance (String competitonId) {
         Bundle bundle = new Bundle();
@@ -102,12 +112,25 @@ public class Competition extends Fragment {
 
                 mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
 
-                GameListAdapter mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items, mCompetitionId, user.getUid()); // APPELLE L'ADAPTER
+                 mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items, mCompetitionId, user.getUid()); // APPELLE L'ADAPTER
 
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
 
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GetBet(mCompetitionId, user.getUid(), mGameListAdapter);
+
+                    }
+                }, 1000);
+
+
+
                 mGameListAdapter.notifyDataSetChanged();
+
+
 
 
 
@@ -138,4 +161,62 @@ public class Competition extends Fragment {
 
         return view;
     }
-}
+
+    public void GetBet(final String GetCompetitionId, final String GetUserId , GameListAdapter adapter){
+
+
+
+
+
+        for (int i = 0; i < adapter.getCount(); i++){
+
+             View view = adapter.getView(i, null, mGameListView);
+
+            textViewTag = (TextView) view.findViewById(R.id.textViewTag);
+             GameId = textViewTag.getText().toString();
+
+            betScoreHome = (TextView) view.findViewById(R.id.textViewbetScoreHome);
+
+            betScoreAway = (TextView) view.findViewById(R.id.textViewbetScoreAway);
+
+            DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(Constants.COMPET).child(GetCompetitionId).child("membersMap")
+                    .child(GetUserId).child("usersBets").child(GameId);
+
+            mUserRef.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    BetGameModel userBetOnCurrentMatch = dataSnapshot.getValue(BetGameModel.class);
+
+                    if (userBetOnCurrentMatch != null && userBetOnCurrentMatch.getmGameId().equals(GameId)) {
+
+                        ScoreBetAway = userBetOnCurrentMatch.getmAwayScore();
+                        ScoreBetHome = userBetOnCurrentMatch.getmHomeScore();
+
+                    } else {
+                        ScoreBetAway = 0;
+                        ScoreBetHome = 0;
+
+                    }
+
+                    betScoreAway.setText(String.valueOf(ScoreBetAway));
+                    betScoreHome.setText(String.valueOf(ScoreBetHome));
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
+
+
+
+
+        }
+    }
+

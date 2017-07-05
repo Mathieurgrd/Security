@@ -1,20 +1,14 @@
 package com.example.mathieu.parissportifs;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by apprenti on 03/06/17.
@@ -26,11 +20,12 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     TextView scoreHomeTeam, betScoreHome, betScoreAway;
     TextView scoreAwayTeam;
     TextView awayTeam;
-    TextView hour;
+    TextView hour, textviewTag;
     ImageView imageViewAway;
     ImageView imageViewHome;
     int ScoreBetAway, ScoreBetHome;
-    String competitionid, userid;
+    String competitionid, userid, gameId;
+    Handler newHandler;
     public DatabaseReference mDatabaseref;
     private NewGame newGame;
 
@@ -53,9 +48,12 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     protected void populateView(View view, NewGame mNewGame, int position) {
 
 
-        String prout = mNewGame.getmReportDate();
         mDatabaseref = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(mNewGame.getmReportDate()).child(mNewGame.getmIdGame());
 
+        gameId = mNewGame.getmIdGame();
+        textviewTag = (TextView) view.findViewById(R.id.textViewTag);
+        textviewTag.setText(gameId);
+        textviewTag.setVisibility(View.INVISIBLE);
         hour = (TextView) view.findViewById(R.id.textViewHour);
         homeTeam = (TextView) view.findViewById(R.id.textViewHomeTeam);
         awayTeam = (TextView) view.findViewById(R.id.textViewAwayTeam);
@@ -92,7 +90,16 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
         homeTeam.setText(String.valueOf(mNewGame.getmHomeTeam()));
         awayTeam.setText(String.valueOf(mNewGame.getmAwayTeam()));
-        //GetBet(competitionid, userid, mNewGame.getmIdGame());
+
+       /** newHandler = new Handler();
+        newHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                GetBet(competitionid, userid, gameId);
+
+            }
+        },1500);*/
 
 
 
@@ -102,7 +109,7 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
     }
 
 
-    public void GetBet(String GetCompetitionId, String GetUserId, final String GameId){
+   /** public void GetBet(final String GetCompetitionId, final String GetUserId, final String GameId){
 
         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(Constants.COMPET).child(GetCompetitionId).child("membersMap")
                 .child(GetUserId).child("usersBets").child(GameId);
@@ -124,8 +131,12 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
                 }
 
-                betScoreAway.setText(String.valueOf(ScoreBetAway));
-                betScoreHome.setText(String.valueOf(ScoreBetHome));
+                        betScoreAway.setText(String.valueOf(ScoreBetAway));
+                        betScoreHome.setText(String.valueOf(ScoreBetHome));
+
+
+
+
             }
 
             @Override
@@ -137,5 +148,5 @@ public class GameListAdapter extends Firebaseadapter <NewGame> {
 
 
 
-    }
+    }*/
 }
