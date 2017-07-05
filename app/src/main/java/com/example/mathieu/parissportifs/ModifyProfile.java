@@ -57,6 +57,8 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
     private Uri photoUrl;
     private FirebaseDatabase userDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
+    private String newPseudo;
 
     private static final int PICK_IMAGE_REQUEST = 256;
     private static final int REQUEST_IMAGE_CAPTURE = 234;
@@ -110,7 +112,6 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
         downloadPicture();
 
-        // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -124,11 +125,8 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
-                // [END_EXCLUDE]
             }
         };
-        // [END auth_state_listener]
     }
 
 
@@ -136,61 +134,29 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
 
     public void pushUserOnFirebase() {
 
-        Intent intent = getIntent();
-
         userDatabase = FirebaseDatabase.getInstance();
-       DatabaseReference myRef = userDatabase.getReference("users/" + user.getUid());
-
+        myRef = userDatabase.getReference("users").child(user.getUid());
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    UserModel userActuel = dataSnapshot.getValue(UserModel.class);
-                    email = userActuel.getEmail();
-                    etEmail.setText(userActuel.getEmail());
-                    favoriteTeam = userActuel.getFavoriteTeam();
-                    if (email.equals(userActuel.getUserName()) || email.length() != 0 ){
-
-                        email = etName.getText().toString();
-                    }
-                    etName.setText(userActuel.getUserName());
-                    if (pseudo.equals(userActuel.getUserName()) || pseudo.length() != 0 ){
-
-                        pseudo = etName.getText().toString();
-                    }
-
-
-
-
-                    // Get back all competitions where the playrer is actually occuring .
-
+                UserModel userActuel = dataSnapshot.getValue(UserModel.class);
+                userActuel.setUserName(newPseudo);
+                myRef.setValue(userActuel);
                 }
-            }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
-
-        String UserId = currentuser.getUid();
-
-        UserModel user = new UserModel(UserId, pseudo, null, favoriteTeam, email, null);
-        myRef.setValue(user);
     }
 
     public void changeProfil() {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        String newEmail = etEmail.getText().toString().trim();
-        String newPseudo = etName.getText().toString().trim();
+        newPseudo = etName.getText().toString().trim();
 
         //Uri newPhoto = userImg.
 
@@ -208,23 +174,9 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
-        //Update Email
-        user.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-
-                }
-            }
-        });
-
-
     }
 
     public void deleteProfil() {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -354,7 +306,9 @@ public class ModifyProfile extends AppCompatActivity implements View.OnClickList
             public void onSuccess(Uri uri) {
                 Glide.with(ModifyProfile.this)
                         .load(uri)
-                        .into(civProfilePic);
+                        .placeholder(R.drawable.profile_test)
+                        .into(civProfilePic)
+                        ;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

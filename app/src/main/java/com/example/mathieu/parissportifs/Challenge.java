@@ -1,5 +1,6 @@
 package com.example.mathieu.parissportifs;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -78,9 +79,8 @@ public class Challenge extends Fragment {
 
                 goToItem(mListViewRanking.getFirstVisiblePosition(),
                         mListViewRanking.getAdapter().getCount());
-              //  View v = mListViewRanking.getChildAt(itemPos);
-               // v.setBackgroundColor(getResources().getColor(R.color.highlight_list_competition));
-                mListViewRanking.smoothScrollToPosition(itemPos);
+                mListViewRanking.smoothScrollToPosition(itemPos+3);
+
 
 
             }

@@ -42,23 +42,16 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
 
     private ListView mCompetitionListView;
     private Query mDatabaseCompetitionRef, AdapterQuery, mDatabaseUserRef;
-    private FirebaseUser user;
-    private Button createCompetition;
-    private Button joinCompettion;
-    private Spinner championshipSelector;
-    private String pass, userId, competitionKey;
+
+
     private FirebaseDatabase database;
-    private DatabaseReference competitionRef, myRef, finalPush, goToCompetition;
+    private DatabaseReference myRef;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private List<UserModel> userList;
     private List<CompetitionModel> competitionsList;
-    private Button goModifyProfil;
     private String uId;
     private UserModel userData;
-
+    private String pass;
     private SwipeCompetitionAdapter mCompetitionResultAdapter;
-    private static final String ADMIN_USER = "H3KtahUU6nREMuaTpJyqoVoZcT02";
 
 
     @Override
@@ -71,7 +64,7 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         uId = user.getUid();
         getUserData();
-        if (uId.equals(ADMIN_USER)) {
+        if (uId.equals(Constants.ADMIN_USER)) {
             startActivity(new Intent(CreateOrJoinCompetition.this, SuperUserNavigation.class));
             finish();
         }
@@ -135,7 +128,6 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             int i = v.getId();
             if (i == R.id.button_create_competition) {
                 startActivity(new Intent(CreateOrJoinCompetition.this, CreateCompetitionActivity.class));
-                CreateOrJoinCompetition.this.finish();
             }
 
             if (i == R.id.button_join_competition) {
@@ -218,6 +210,8 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
                 }
+
+
             });
         }
 
@@ -266,14 +260,10 @@ public class CreateOrJoinCompetition extends AppCompatActivity implements View.O
             Bundle bundle = new Bundle();
             bundle.putString(COMPETITION_ID, postKey);
 
-
-            Toast.makeText(CreateOrJoinCompetition.this, postKey, Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(CreateOrJoinCompetition.this, Navigation.class);
             intent.putExtra(COMPETITION_ID, bundle);
             startActivity(intent);
 
-            CreateOrJoinCompetition.this.finish();
 
         }
     }

@@ -237,10 +237,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                         progress.dismiss();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_em
     }
 
     private void handleFacebookAccessToken(AccessToken accessToken) {

@@ -1,6 +1,7 @@
 package com.example.mathieu.parissportifs;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,7 +51,11 @@ public class ChallengeAdapter extends Firebaseadapter<CompetitionModel> {
         textViewNameCompetition.setText(competition.getCompetitionName());
         textViewPoints.setText(String.valueOf(competition.getCompetitionScore()));
 
-
+        if (competition.getCompetitionIdReedeemCode().equals(competitionId)){
+            view.setBackgroundResource(R.drawable.list_highlight_background);
+        } else {
+             view.setBackgroundColor(Color.WHITE);
+        }
     }
 
 
