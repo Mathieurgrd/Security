@@ -130,4 +130,12 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
+    <TextView
+        android:id="@+id/textViewTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="-7dp"
+        tools:layout_editor_absoluteY="-2dp" />
+
 </android.support.constraint.ConstraintLayout>
