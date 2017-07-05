@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:tag="Bottom2"
+        android:layout_width="160dp"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/removeCompetition"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/itemsup"
+            />
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:weightSum="1"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_marginRight="31dp"
+            android:layout_marginTop="20dp"
+            android:text="points"
+            android:textColor="@color/greyList"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewPoints"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="1.0" />
+
+
+        <ImageView
+            android:id="@+id/ivCaptain"
+            android:layout_width="56dp"
+            android:layout_height="50dp"
+            android:background="@drawable/france"
+            android:layout_marginLeft="26dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/championshipName"
+            android:layout_width="100dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            app:layout_constraintLeft_toRightOf="@+id/ivCaptain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewCompetitionName"
+            android:layout_width="217dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="13dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ivCaptain"
+            app:layout_constraintTop_toBottomOf="@+id/championshipName"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_marginLeft="33dp"
+            android:text="200"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toRightOf="@+id/championshipName"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp" />
+    </android.support.constraint.ConstraintLayout>
+</com.daimajia.swipe.SwipeLayout>

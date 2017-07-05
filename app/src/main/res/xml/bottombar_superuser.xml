@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_calendar"
+        icon="@drawable/ic_maillot"
+        title="Calendrier"
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
+    <tab
+        id="@+id/tab_notifications"
+        icon="@drawable/ic_cloche"
+        title="Notifications"
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
+    <tab
+        id="@+id/tab_ranking"
+        icon="@drawable/ic_notifications"
+        title="Classement"
+        color= "#3F51B4"
+        barColorWhenSelected="#F2F2F2" />
+
+</tabs>

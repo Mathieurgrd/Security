@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/topbar"
+    tools:context="com.example.mathieu.parissportifs.EnterScore">
+
+    <TextView
+        android:id="@+id/textViewHomeTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="92dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="36dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate"
+        android:layout_marginStart="92dp" />
+
+    <TextView
+        android:id="@+id/textViewAwayTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate"
+        android:layout_marginRight="92dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="92dp" />
+
+    <Button
+        android:id="@+id/buttonUpload"
+        android:layout_width="243dp"
+        android:layout_height="57dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bouton"
+        android:text="Enregistrer le résultat"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        android:layout_marginTop="58dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHomeScore"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="68dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textViewHomeScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="92dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="63dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHomeTeam"
+        android:layout_marginStart="92dp" />
+
+    <TextView
+        android:id="@+id/textViewAwayScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAwayTeam"
+        android:layout_marginRight="92dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="92dp" />
+
+    <Button
+        android:id="@+id/buttonChangeHoraire"
+        android:layout_width="243dp"
+        android:layout_height="57dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bouton"
+        android:text="Changer l'horaire"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="23dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.504"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/buttonRemoveGame"
+        android:layout_width="243dp"
+        android:layout_height="57dp"
+        android:background="@drawable/bouton"
+        android:text="Supprimer la rencontre"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- ou - "
+        android:layout_marginTop="26dp"
+        app:layout_constraintTop_toBottomOf="@+id/buttonUpload"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- ou -"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChangeHoraire"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+</android.support.constraint.ConstraintLayout>
