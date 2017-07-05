@@ -3,7 +3,6 @@ package com.example.mathieu.parissportifs;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +43,7 @@ public class Competition extends Fragment {
     int ScoreBetHome;
     private GameListAdapter mGameListAdapter;
 
-    public static Competition newInstance (String competitonId) {
+    public static Competition newInstance(String competitonId) {
         Bundle bundle = new Bundle();
         bundle.putString(CreateOrJoinCompetition.COMPETITION_ID, competitonId);
         Competition fragment = new Competition();
@@ -72,8 +71,6 @@ public class Competition extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-
-
         /** end after 1 month from now */
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, 1);
@@ -87,8 +84,7 @@ public class Competition extends Fragment {
         defaultDate.add(Calendar.DAY_OF_WEEK, +5);
 
 
-
-         horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarViewUser)
+        horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarViewUser)
                 .startDate(startDate.getTime())
                 .endDate(endDate.getTime())
                 .datesNumberOnScreen(5)
@@ -112,31 +108,25 @@ public class Competition extends Fragment {
 
                 mDatabaseGameRef = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_GAMES).child(reportDate);
 
-                 mGameListAdapter = new GameListAdapter(mDatabaseGameRef,getActivity(), R.layout.game_list_items, mCompetitionId, user.getUid()); // APPELLE L'ADAPTER
+                mGameListAdapter = new GameListAdapter(mDatabaseGameRef, getActivity(), R.layout.game_list_items, mCompetitionId, user.getUid()); // APPELLE L'ADAPTER
 
                 mGameListView.setAdapter(mGameListAdapter); //FUSION LIST ET ADAPTER
 
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+
+                Competition.this.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         GetBet(mCompetitionId, user.getUid(), mGameListAdapter);
+                        mGameListAdapter.notifyDataSetChanged();
 
                     }
-                }, 1000);
-
-
-
-                mGameListAdapter.notifyDataSetChanged();
-
-
-
+                });
 
 
             }
         });
-
 
 
         mGameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,7 +136,7 @@ public class Competition extends Fragment {
 
                 NewGame newGame = (NewGame) parent.getItemAtPosition(position);
 
-                if(newGame.getmStatus().equals("OUVERT")){
+                if (newGame.getmStatus().equals("OUVERT")) {
                     Intent i = new Intent(getActivity(), BetGame.class);
                     i.putExtra("newGame", newGame);
                     i.putExtra(CreateOrJoinCompetition.COMPETITION_ID, mCompetitionId);
@@ -162,18 +152,16 @@ public class Competition extends Fragment {
         return view;
     }
 
-    public void GetBet(final String GetCompetitionId, final String GetUserId , GameListAdapter adapter){
+    public void GetBet(final String GetCompetitionId, final String GetUserId, GameListAdapter adapter) {
 
 
+        for (int i = 0; i < adapter.getCount(); i++) {
 
 
-
-        for (int i = 0; i < adapter.getCount(); i++){
-
-             View view = adapter.getView(i, null, mGameListView);
+            View view = adapter.getView(i, null, mGameListView);
 
             textViewTag = (TextView) view.findViewById(R.id.textViewTag);
-             GameId = textViewTag.getText().toString();
+            GameId = textViewTag.getText().toString();
 
             betScoreHome = (TextView) view.findViewById(R.id.textViewbetScoreHome);
 
@@ -214,9 +202,6 @@ public class Competition extends Fragment {
         }
 
 
-
-
-
-        }
     }
+}
 
